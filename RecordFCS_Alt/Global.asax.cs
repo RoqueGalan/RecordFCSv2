@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RecordFCS_Alt.App_Start;
 using RecordFCS_Alt.Helpers.Seguridad;
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace RecordFCS_Alt
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
+            //AreaRegistration.RegisterAllAreas();
             // Manually installed WebAPI 2.2 after making an MVC project.
             //GlobalConfiguration.Configure(WebApiConfig.Register); // NEW way
             //WebApiConfig.Register(GlobalConfiguration.Configuration); // DEPRECATED
