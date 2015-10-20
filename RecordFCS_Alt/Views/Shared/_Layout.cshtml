@@ -1,43 +1,273 @@
-﻿<!DOCTYPE html>
+﻿@using RecordFCS_Alt.Helpers
+
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico">
+
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet" />
+    <title>@ViewBag.Title - Record</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/animate.css" rel="stylesheet" />
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/datetime")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+
+
+
+
+
+
+
+
+
+
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Nombre de aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<body style="background-color: #ffffff;">
+    @*<div id="loadingAjax">
+            <div class="text-center">
+                <span class="fa fa-spin fa-spinner fa-4x"></span>
+                <br />
+                <span>Procesando solicitud</span>
+                <br />
+                <small>Por favor espere...</small>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
-                </ul>
+        </div>*@
+
+
+    @Html.Partial("_Menu")
+
+
+
+    <div id="alertasDiv" class="notificacion clearfix">
+        @{ Html.RenderPartial("_Alertas"); }
+    </div>
+
+    <div class="container body-content">
+        <div class="container" id="containerbody">
+            @RenderBody()
+
+
+        </div>
+
+        <!-- MODALES -->
+        <!-- modal placeholder-->
+        <div id='miModalFloat' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id='miModalContenidoFloat'></div>
+                </div>
+            </div>
+        </div>
+        <div id='miModal' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id='miModalContenido'></div>
+                </div>
+            </div>
+        </div>
+        <div id='miModal2' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id='miModalContenido2'></div>
+                </div>
+            </div>
+        </div>
+        <div id='miModalLG' class='modal fade in'>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content ">
+                    <div id='miModalContenidoLG'></div>
+                </div>
+            </div>
+        </div>
+
+        <div id='miModalSM' class='modal fade in'>
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content ">
+                    <div id='miModalContenidoSM'></div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
-        </footer>
+
+
+    
+
+
+
+
+
+    <div id='miModalAlerta' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='miModalAlertaContenido'></div>
+            </div>
+        </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+
+
+    <footer>
+        <p class="text-center">
+            &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
+        </p>
+
+        @if (IsAuthenticated)
+        {
+
+
+
+            <script type="text/javascript">
+
+                var IsAuthenticated = true;
+
+                $(document).ready(function () {
+                    $.LazyMouse({
+                        delay: 900000 //15 minutos
+                    });
+                })
+
+
+                $(document).ready(function () {
+                    $("body").bind("mouse.active", function () {
+                        //console.log("Mouse Active");
+
+                    });
+                    $("body").bind("mouse.inactive", function () {
+                        //console.log("Mouse Inctive");
+
+                        if (IsAuthenticated) {
+                            CerrarSesion();
+                        }
+                    });
+                })
+
+
+                @*setInterval(function () {
+                    if (IsAuthenticated) {
+                        ChecarTiempo();
+                    }
+                    //code goes here that will be run every 30 seconds.
+                }, 1000);
+
+
+                var horaStr = "@User.Tiempo";
+                var horaArr = horaStr.split(':');
+                var horas = parseInt(horaArr[0]);
+                var minutos = parseInt(horaArr[1]);
+                var segundos = parseInt(horaArr[2]);
+
+                var horaFinDecimal = horas + (minutos / 60) + ((segundos / 60) / 60);
+
+
+                function ChecarTiempo() {
+
+                    var horaActStr = new Date();
+                    horas = parseInt(horaActStr.getHours());
+                    minutos = parseInt(horaActStr.getMinutes());
+                    segundos = parseInt(horaActStr.getSeconds());
+
+                    var horaActDecimal = horas + (minutos / 60) + ((segundos / 60) / 60);
+
+                    if (horaActDecimal >= horaFinDecimal) {
+
+                        CerrarSesion("Se terminó la sesión.");
+
+                        var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
+
+                        window.location = myUrl;
+                    }
+                }*@
+
+
+
+                function CerrarSesion() {
+                    IsAuthenticated = false;
+                    var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
+                    window.location = myUrl;
+                }
+
+
+                function AlertaModal(mensaje, esModal) {
+
+                    $.ajaxSetup({ cache: false });
+                    var myurl = '@Url.Action("MensajeModal", "Home")';
+
+
+                        $.ajax({
+                            url: myurl,
+                            type: 'GET',
+                            data: { mensaje: mensaje, esModal: esModal },
+                            //async: false,
+                            success: function (result) {
+                                if (result.success) {
+
+                                    //alert("alerta");
+
+                                    $('#alertasDiv').load('/Base/_Alertas');
+
+
+                                }
+                                else
+                                {
+                                    //alert("modal");
+
+                                    $('#miModalAlertaContenido').html(result)
+                                    $('#miModalAlerta').modal({
+                                        backdrop: 'static',
+                                        keyboard: true
+                                    }, 'show');
+                                }
+                                    
+                            }
+                        });
+                 
+                       
+                    
+                    return false;
+                }
+
+
+            </script>
+        }
+    </footer>
+
+
+    <div id='myModal' class='modal fade in'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='myModalContent'></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     @RenderSection("scripts", required: false)
+
+
+
+
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script src="~/Scripts/jquery-lazymouse.js"></script>
+
 </body>
+
+
+
+
+
 </html>

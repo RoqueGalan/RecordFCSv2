@@ -7,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{782A46D5-5DBE-48F6-85C9-88D9A778BE15}</ProjectGuid>
+    <ProjectGuid>{5DB96AC0-6470-428F-97DC-9A33486C2C95}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -39,16 +39,49 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -93,75 +126,493 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="WebGrease">
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
-      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
-    </Reference>
-    <Reference Include="Antlr3.Runtime">
-      <Private>True</Private>
-      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
+    <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
+    <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageAreaRegistration.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageConfigurationExtensions.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\CollectionModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ComplexTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\DictionaryModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumValueDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\IModelDocumentationProvider.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\KeyValuePairModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescriptionGenerator.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameAttribute.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameHelper.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterAnnotation.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\SimpleTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\Models\HelpPageApiModel.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleKey.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ImageSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\InvalidSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ObjectGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
+    <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ApiControllers\PiezaApiController.cs" />
+    <Compile Include="Controllers\AtributoController.cs" />
+    <Compile Include="Controllers\AtributoPiezaController.cs" />
+    <Compile Include="Controllers\AutorController.cs" />
+    <Compile Include="Controllers\AutorPiezaController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BuscadorController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImagenPiezaController.cs" />
+    <Compile Include="Controllers\LetraFolioController.cs" />
+    <Compile Include="Controllers\ListaPiezaController.cs" />
+    <Compile Include="Controllers\ListaValorController.cs" />
+    <Compile Include="Controllers\MedidaPiezaController.cs" />
+    <Compile Include="Controllers\MigracionCEHMController.cs" />
+    <Compile Include="Controllers\MostrarAtributoController.cs" />
+    <Compile Include="Controllers\MovimientoController.cs" />
+    <Compile Include="Controllers\ObraController.cs" />
+    <Compile Include="Controllers\PermisoController.cs" />
+    <Compile Include="Controllers\PiezaController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
+    <Compile Include="Controllers\TecnicaController.cs" />
+    <Compile Include="Controllers\TecnicaPiezaController.cs" />
+    <Compile Include="Controllers\TipoArchivoController.cs" />
+    <Compile Include="Controllers\TipoAtributoController.cs" />
+    <Compile Include="Controllers\TipoMedidaController.cs" />
+    <Compile Include="Controllers\TipoMostrarController.cs" />
+    <Compile Include="Controllers\TipoMovimientoController.cs" />
+    <Compile Include="Controllers\TipoObraController.cs" />
+    <Compile Include="Controllers\TipoPermisoController.cs" />
+    <Compile Include="Controllers\TipoPiezaController.cs" />
+    <Compile Include="Controllers\TipoTecnicaController.cs" />
+    <Compile Include="Controllers\UbicacionController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Alerta.cs" />
+    <Compile Include="Helpers\CampoPieza.cs" />
+    <Compile Include="Helpers\HTMLHelpers.cs" />
+    <Compile Include="Helpers\MultiButtonAttribute.cs" />
+    <Compile Include="Helpers\Seguridad\BaseViewPage.cs" />
+    <Compile Include="Helpers\Seguridad\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Helpers\Seguridad\ICustomPrincipal.cs" />
+    <Compile Include="Helpers\Structs.cs" />
+    <Compile Include="Helpers\Thumbnail.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\AtributoPieza.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\ArchivoPieza.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\MostrarArchivo.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\TipoMostrarArchivo.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\SubCatalogos\TipoArchivo.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\TecnicaPieza.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\Autor.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributo.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\AutorPieza.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\ImagenPieza.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\ListaValor.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\LetraInventario.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\MedidaPieza.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\MostrarAtributo.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Obra.cs" />
+    <Compile Include="Models\DBModels\Movimientos\Movimiento.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoAutorizacion.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoExposicion.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoPieza.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoResponsable.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoSeguro.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoSolicitante.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoTransporte.cs" />
+    <Compile Include="Models\DBModels\Movimientos\TipoMovimiento.cs" />
+    <Compile Include="Models\DBModels\Seguridad\Permiso.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Pieza.cs" />
+    <Compile Include="Models\DBModels\RecordFCSContext.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\Tecnica.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\TipoAtributo.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\SubCatalogos\TipoMedida.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\TipoMostrar.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\TipoObra.cs" />
+    <Compile Include="Models\DBModels\Seguridad\TipoPermiso.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\TipoPieza.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\Ubicacion.cs" />
+    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\SubCatalogos\TipoTecnica.cs" />
+    <Compile Include="Models\DBModels\Seguridad\Usuario.cs" />
+    <Compile Include="Models\Migraciones\RowArchivo.cs" />
+    <Compile Include="Models\Migraciones\RowUsuario.cs" />
+    <Compile Include="Models\ViewModels\itemListaBasicaDefault.cs" />
+    <Compile Include="Models\ViewModels\itemPiezaGenerica.cs" />
+    <Compile Include="Models\ViewModels\itemPiezaGenericaCampo.cs" />
+    <Compile Include="Models\ViewModels\ItemReporte.cs" />
+    <Compile Include="Models\ViewModels\Item_Ficha.cs" />
+    <Compile Include="Models\ViewModels\ItemObraReporte.cs" />
+    <Compile Include="Models\ViewModels\OpcionesImprimir.cs" />
+    <Compile Include="Models\ViewModels\itemPiezaMini.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\TipoMostrarArchivoController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap.css" />
+    <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\alertas.css" />
+    <Content Include="Content\animate.css" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap-subMenus.css" />
+    <Content Include="Content\bootstrap-switch.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\carusel.css" />
+    <Content Include="Content\Colores.css" />
+    <Content Include="Content\css\font-awesome.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.svg" />
+    <Content Include="Content\Homes.css" />
+    <Content Include="Content\img\home\carrusel\front_01.jpg" />
+    <Content Include="Content\img\home\carrusel\front_02.jpg" />
+    <Content Include="Content\img\home\carrusel\front_03.jpg" />
+    <Content Include="Content\img\home\carrusel\front_04.jpg" />
+    <Content Include="Content\img\home\carrusel\img-0.jpg" />
+    <Content Include="Content\img\home\carrusel\img-1.jpg" />
+    <Content Include="Content\img\home\carrusel\img-2.jpg" />
+    <Content Include="Content\img\home\carrusel\img-3.jpg" />
+    <Content Include="Content\img\home\carrusel\img-4.jpg" />
+    <Content Include="Content\img\home\carrusel\logo1.jpg" />
+    <Content Include="Content\img\home\carrusel\logoFundacionCarlosSlim.png" />
+    <Content Include="Content\img\home\carrusel\logoRecordFCS.png" />
+    <Content Include="Content\img\home\carrusel\logo_cehm.png" />
+    <Content Include="Content\img\home\carrusel\logo_fcs.png" />
+    <Content Include="Content\img\home\carrusel\logo_soumaya.png" />
+    <Content Include="Content\img\home\logoCEHMCS.png" />
+    <Content Include="Content\img\home\logoFCS.png" />
+    <Content Include="Content\img\home\logoSoumayaFCS.png" />
+    <Content Include="Content\img\listado\bgMS_color.png" />
+    <Content Include="Content\img\listado\bgMS_gris.png" />
+    <Content Include="Content\img\listado\headFCS_plano.png" />
+    <Content Include="Content\img\listado\headMS_plano.gif" />
+    <Content Include="Content\img\logoFundacionCarlosSlim.png" />
+    <Content Include="Content\img\pieza\thumb\fileDummy.txt" />
+    <Content Include="Content\img\recordFCSLogo.png" />
+    <Content Include="Content\img\recordFCSLogo2.png" />
+    <Content Include="Content\img\Site.css" />
+    <Content Include="Content\list_Etiqueta.css" />
+    <Content Include="Content\magnificent\css\mag.css" />
+    <Content Include="Content\magnificent\js\dependencias\gajs.js" />
+    <Content Include="Content\magnificent\js\dependencias\hammer.js" />
+    <Content Include="Content\magnificent\js\dependencias\jquery.bridget.js" />
+    <Content Include="Content\magnificent\js\dependencias\jquery.event.drag.js" />
+    <Content Include="Content\magnificent\js\dependencias\jquery.mousewheel.js" />
+    <Content Include="Content\magnificent\js\dependencias\PreventGhostClick.js" />
+    <Content Include="Content\magnificent\js\dependencias\screenfull.js" />
+    <Content Include="Content\magnificent\js\mag-analytics.js" />
+    <Content Include="Content\magnificent\js\mag-control.js" />
+    <Content Include="Content\magnificent\js\mag-jquery.js" />
+    <Content Include="Content\magnificent\js\mag.js" />
+    <Content Include="Content\magnificent\theme\default.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\piezaMini.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\theme.css" />
+    <Content Include="Content\bootstrap-switch.min.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\_bootstrap.min.css" />
+    <Content Include="Content\_Site.css" />
+    <Content Include="Content\theme.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Scripts\add.toolTip.js" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\fonts\presidenciafina-webfont.eot" />
+    <Content Include="Content\fonts\presidenciafina-webfont.woff" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.eot" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.otf" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.ttf" />
+    <Content Include="Content\fonts\presidenciafirme-webfont.woff" />
+    <Content Include="Areas\HelpPage\Views\Web.config" />
+    <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ModelDescriptionLink.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\KeyValuePairModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\EnumTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\DictionaryModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <None Include="Properties\PublishProfiles\Record_Alt.pubxml" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\atributoLista.js" />
+    <Content Include="Scripts\autorLista.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\bootstrap-switch.js" />
+    <Content Include="Scripts\bootstrap-switch.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\EditarObra_GenericoLista.js" />
+    <Content Include="Scripts\FuncionFiltradoLista.js" />
+    <Content Include="Scripts\holder.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-lazymouse.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\LetraFolioLista.js" />
+    <Content Include="Scripts\ListaValorLista.js" />
+    <Content Include="Scripts\load-proccessBar.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\mostrarAtributoLista.js" />
+    <Content Include="Scripts\openModalSimple.js" />
+    <Content Include="Scripts\reg.tipoPiezaSelect.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\TecnicaLista.js" />
+    <Content Include="Scripts\tipoAtributoLista.js" />
+    <Content Include="Scripts\TipoArchivo.js" />
+    <Content Include="Scripts\TipoMedidaLista.js" />
+    <Content Include="Scripts\TipoMovimientoLista.js" />
+    <Content Include="Scripts\tipoObraLista.js" />
+    <Content Include="Scripts\tipoPiezaLista.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\TipoTecnicaLista.js" />
+    <Content Include="Scripts\tipoTipoMostrarArchivoLista.js" />
+    <Content Include="Scripts\tipoTipoMostrarLista.js" />
+    <Content Include="Scripts\ubicacionLista.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layoutxxxxx.cshtml" />
+    <Content Include="Views\TipoObra\_Crear.cshtml" />
+    <Content Include="Views\TipoObra\_Eliminar.cshtml" />
+    <Content Include="Views\TipoObra\Detalles.cshtml" />
+    <Content Include="Views\TipoObra\_Editar.cshtml" />
+    <Content Include="Views\TipoObra\_Lista.cshtml" />
+    <Content Include="Views\TipoObra\Index.cshtml" />
+    <Content Include="Views\Base\_Alertas.cshtml" />
+    <Content Include="Views\TipoPieza\_Crear.cshtml" />
+    <Content Include="Views\TipoPieza\_Eliminar.cshtml" />
+    <Content Include="Views\TipoPieza\Detalles.cshtml" />
+    <Content Include="Views\TipoPieza\_Editar.cshtml" />
+    <Content Include="Views\TipoPieza\_Lista.cshtml" />
+    <Content Include="Views\TipoAtributo\Index.cshtml" />
+    <Content Include="Views\TipoAtributo\_Lista.cshtml" />
+    <Content Include="Views\TipoAtributo\_Crear.cshtml" />
+    <Content Include="Views\Atributo\_Crear.cshtml" />
+    <Content Include="Views\Atributo\_Eliminar.cshtml" />
+    <Content Include="Views\Atributo\_Editar.cshtml" />
+    <Content Include="Views\Atributo\_Lista.cshtml" />
+    <Content Include="Views\TipoAtributo\_Editar.cshtml" />
+    <Content Include="Views\TipoAtributo\_Eliminar.cshtml" />
+    <Content Include="Views\TipoMostrar\_Crear.cshtml" />
+    <Content Include="Views\TipoMostrar\_Eliminar.cshtml" />
+    <Content Include="Views\TipoMostrar\_Editar.cshtml" />
+    <Content Include="Views\TipoMostrar\_Lista.cshtml" />
+    <Content Include="Views\TipoMostrar\Index.cshtml" />
+    <Content Include="Views\MostrarAtributo\_Editar.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Boolean.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Boolean.cshtml" />
+    <Content Include="Views\Ubicacion\_Crear.cshtml" />
+    <Content Include="Views\Ubicacion\_Eliminar.cshtml" />
+    <Content Include="Views\Ubicacion\Index.cshtml" />
+    <Content Include="Views\Ubicacion\_Editar.cshtml" />
+    <Content Include="Views\Ubicacion\_Lista.cshtml" />
+    <Content Include="Views\Obra\Detalles.cshtml" />
+    <Content Include="Views\Obra\Registrar.cshtml" />
+    <Content Include="Scripts\reg.tipoObraSelect.js" />
+    <Content Include="Views\TipoPieza\_Registro_inputSelect.cshtml" />
+    <Content Include="Views\TipoMedida\_Eliminar.cshtml" />
+    <Content Include="Views\TipoMedida\Index.cshtml" />
+    <Content Include="Views\TipoMedida\_Editar.cshtml" />
+    <Content Include="Views\TipoMedida\_Lista.cshtml" />
+    <Content Include="Views\TipoTecnica\_Crear.cshtml" />
+    <Content Include="Views\TipoTecnica\_Eliminar.cshtml" />
+    <Content Include="Views\TipoTecnica\Index.cshtml" />
+    <Content Include="Views\TipoTecnica\_Editar.cshtml" />
+    <Content Include="Views\TipoTecnica\_Lista.cshtml" />
+    <Content Include="Views\Autor\_Crear.cshtml" />
+    <Content Include="Views\Autor\_Eliminar.cshtml" />
+    <Content Include="Views\Autor\Index.cshtml" />
+    <Content Include="Views\Autor\_Editar.cshtml" />
+    <Content Include="Views\Autor\_Lista.cshtml" />
+    <Content Include="Views\TipoMedida\_Crear.cshtml" />
+    <Content Include="Views\LetraFolio\_Crear.cshtml" />
+    <Content Include="Views\LetraFolio\_Eliminar.cshtml" />
+    <Content Include="Views\LetraFolio\Index.cshtml" />
+    <Content Include="Views\LetraFolio\_Editar.cshtml" />
+    <Content Include="Views\LetraFolio\_Lista.cshtml" />
+    <Content Include="Views\Tecnica\_Crear.cshtml" />
+    <Content Include="Views\Tecnica\_Eliminar.cshtml" />
+    <Content Include="Views\Tecnica\_Editar.cshtml" />
+    <Content Include="Views\Tecnica\_Lista.cshtml" />
+    <Content Include="Views\TipoTecnica\Detalles.cshtml" />
+    <Content Include="Views\ListaValor\_Crear.cshtml" />
+    <Content Include="Views\ListaValor\_Eliminar.cshtml" />
+    <Content Include="Views\ListaValor\_Editar.cshtml" />
+    <Content Include="Views\ListaValor\_Lista.cshtml" />
+    <Content Include="Views\TipoAtributo\Detalles.cshtml" />
+    <Content Include="Views\Atributo\_Registro_form.cshtml" />
+    <Content Include="Views\AutorPieza\_Crear.cshtml" />
+    <Content Include="Views\Atributo\_ErrorCampo.cshtml" />
+    <Content Include="Views\Atributo\_GenericoLista.cshtml" />
+    <Content Include="Views\Atributo\_GenericoCampo.cshtml" />
+    <Content Include="Views\ListaValor\_ListaSelect.cshtml" />
+    <Content Include="Views\ListaValor\_ListaSelectOption.cshtml" />
+    <Content Include="Views\AutorPieza\_CampoRegistro.cshtml" />
+    <Content Include="Views\Autor\_ListaSelect.cshtml" />
+    <Content Include="Views\Ubicacion\_CampoRegistro.cshtml" />
+    <Content Include="Views\Tecnica\_CampoRegistro.cshtml" />
+    <Content Include="Views\Tecnica\_ListaSelect.cshtml" />
+    <Content Include="Views\TipoMedida\_CampoRegistro.cshtml" />
+    <Content Include="Views\ImagenPieza\_Crear.cshtml" />
+    <Content Include="Views\ImagenPieza\_Eliminar.cshtml" />
+    <Content Include="Views\ImagenPieza\_Editar.cshtml" />
+    <Content Include="Views\ImagenPieza\_CampoRegistro.cshtml" />
+    <Content Include="Views\Pieza\_Ficha.cshtml" />
+    <Content Include="Views\Buscador\Index.cshtml" />
+    <Content Include="Views\Buscador\_MenuFiltros.cshtml" />
+    <Content Include="Views\Buscador\_AgregarFiltro.cshtml" />
+    <Content Include="Views\Buscador\_ListaCoincidencias.cshtml" />
+    <Content Include="Views\Buscador\_CampoMenuFiltro.cshtml" />
+    <Content Include="Views\Buscador\_RenderBuscarCampo.cshtml" />
+    <Content Include="Views\ListaValor\_CampoBuscador.cshtml" />
+    <Content Include="Views\Usuario\Detalles.cshtml" />
+    <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Usuario\_Crear.cshtml" />
+    <Content Include="Views\Usuario\_Editar.cshtml" />
+    <Content Include="Views\Usuario\_Eliminar.cshtml" />
+    <Content Include="Views\Usuario\_IniciarSesion.cshtml" />
+    <Content Include="Views\Usuario\_Lista.cshtml" />
+    <Content Include="Views\TipoPermiso\Index.cshtml" />
+    <Content Include="Views\TipoPermiso\_Crear.cshtml" />
+    <Content Include="Views\TipoPermiso\_Editar.cshtml" />
+    <Content Include="Views\TipoPermiso\_Eliminar.cshtml" />
+    <Content Include="Views\TipoPermiso\_Lista.cshtml" />
+    <Content Include="Views\Permiso\_CambiarStatus.cshtml" />
+    <Content Include="Views\Permiso\_Lista.cshtml" />
+    <Content Include="Views\Error\AccesoDenegado.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Error\ErrorGeneral.cshtml" />
+    <Content Include="Views\Error\NoEncontrado.cshtml" />
+    <Content Include="Views\Buscador\_ResultadosBusqueda.cshtml" />
+    <Content Include="Views\Buscador\_ResultadosBusqueda_Listado.cshtml" />
+    <Content Include="Views\Shared\_Alertas.cshtml" />
+    <Content Include="Views\Shared\_FormBuscar.cshtml" />
+    <Content Include="Views\Shared\_Layoutxx.cshtml" />
+    <Content Include="Views\Shared\_LayoutWord.cshtml" />
+    <Content Include="Views\Shared\_Layout_Html_PDF.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\ImagenPieza\_CarruselThumb.cshtml" />
+    <Content Include="Views\AtributoPieza\_CrearGenericoLista.cshtml" />
+    <Content Include="Views\AtributoPieza\_EditarGenericoLista.cshtml" />
+    <Content Include="Views\AtributoPieza\_EditarGenericoCampo.cshtml" />
+    <Content Include="Views\AutorPieza\_Editar.cshtml" />
+    <Content Include="Views\AtributoPieza\_CrearGenericoCampo.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Home\IndexUsuario.cshtml" />
+    <Content Include="Views\Home\_RedirectToLogin.cshtml" />
+    <Content Include="Views\TecnicaPieza\_Crear.cshtml" />
+    <Content Include="Views\TecnicaPieza\_Eliminar.cshtml" />
+    <Content Include="Views\TecnicaPieza\_Editar.cshtml" />
+    <Content Include="Views\AutorPieza\_Eliminar.cshtml" />
+    <Content Include="Views\MedidaPieza\_Crear.cshtml" />
+    <Content Include="Views\MedidaPieza\_Editar.cshtml" />
+    <Content Include="Views\MedidaPieza\_Eliminar.cshtml" />
+    <Content Include="Views\Pieza\_CrearUbicacion.cshtml" />
+    <Content Include="Views\Pieza\_EditarUbicacion.cshtml" />
+    <Content Include="Views\Reporte\Index.cshtml" />
+    <Content Include="Views\Reporte\_ReporteLista.cshtml" />
+    <Content Include="Views\TipoMovimiento\_Crear.cshtml" />
+    <Content Include="Views\TipoMovimiento\_Eliminar.cshtml" />
+    <Content Include="Views\TipoMovimiento\Index.cshtml" />
+    <Content Include="Views\TipoMovimiento\_Editar.cshtml" />
+    <Content Include="Views\TipoMovimiento\_Lista.cshtml" />
+    <Content Include="Views\Movimiento\_Crear.cshtml" />
+    <Content Include="Views\Movimiento\Delete.cshtml" />
+    <Content Include="Views\Movimiento\Details.cshtml" />
+    <Content Include="Views\Movimiento\Edit.cshtml" />
+    <Content Include="Views\Movimiento\Index.cshtml" />
+    <Content Include="Views\Movimiento\_Error.cshtml" />
+    <Content Include="Views\Movimiento\_CrearLista.cshtml" />
+    <Content Include="Views\Pieza\_Crear.cshtml" />
+    <Content Include="Views\ImagenPieza\_Detalles.cshtml" />
+    <Content Include="Views\Pieza\_Eliminar.cshtml" />
+    <Content Include="Views\Obra\_Eliminar.cshtml" />
+    <Content Include="Views\Movimiento\_ResultadosBusqueda.cshtml" />
+    <Content Include="Views\Movimiento\_FichaMini.cshtml" />
+    <Content Include="Views\Movimiento\_ListaPiezaTemporal.cshtml" />
+    <Content Include="Views\Home\_MensajeModal.cshtml" />
+    <Content Include="Views\Movimiento\_Lista.cshtml" />
+    <Content Include="Views\Movimiento\Detalles.cshtml" />
+    <Content Include="Views\TipoMostrarArchivo\_Crear.cshtml" />
+    <Content Include="Views\TipoMostrarArchivo\_Eliminar.cshtml" />
+    <Content Include="Views\TipoMostrarArchivo\Index.cshtml" />
+    <Content Include="Views\TipoMostrarArchivo\_Editar.cshtml" />
+    <Content Include="Views\TipoMostrarArchivo\_Lista.cshtml" />
+    <Content Include="Views\TipoArchivo\_Crear.cshtml" />
+    <Content Include="Views\TipoArchivo\_Eliminar.cshtml" />
+    <Content Include="Views\TipoArchivo\_Editar.cshtml" />
+    <Content Include="Views\TipoArchivo\_Lista.cshtml" />
+    <Content Include="Views\TipoArchivo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Content\docxPieza\" />
+    <Folder Include="Views\ListaPieza\" />
+    <Folder Include="Views\MigracionCEHM\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
@@ -181,9 +632,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>14656</DevelopmentServerPort>
+          <DevelopmentServerPort>12149</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:14656/</IISUrl>
+          <IISUrl>http://localhost:12149/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -9,7 +9,8 @@ namespace RecordFCS_Alt
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/add.toolTip.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -21,11 +22,23 @@ namespace RecordFCS_Alt
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/holder.js",
                       "~/Scripts/respond.js"));
 
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                     "~/Content/theme.css",
+                     "~/Content/site.css",
+                     "~/Content/alertas.css",
+                     "~/Content/css/font-awesome.css",
+                     "~/Content/bootstrap-subMenus.css",
+                     "~/Content/bootstrap-datetimepicker.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
+                "~/Scripts/moment*",
+                "~/Scripts/bootstrap-datetimepicker*"));
+
         }
     }
 }

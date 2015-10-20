@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - RecordFCS</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <link href="~/Content/Colores.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Nombre de aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="alertasDiv" class="notificacion clearfix">
+        @{ Html.RenderPartial("~/Views/Base/_Alertas.cshtml"); }
+    </div>
+
+
+    <div class="container body-content">
+        @RenderBody()
+
+
+        <!-- MODALES -->
+        <!-- modal placeholder-->
+        <div id='miModal' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id='miModalContenido'></div>
+                </div>
+            </div>
+        </div>
+        <div id='miModalLG' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content modal-lg">
+                    <div id='miModalContenidoLG'></div>
+                </div>
+            </div>
+        </div>
+        <div id='miModalSM' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content modal-sm">
+                    <div id='miModalContenidoSM'></div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - <b>Record</b> Fundación Carlos Slim</p>
+        </footer>
+
+
+
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>
