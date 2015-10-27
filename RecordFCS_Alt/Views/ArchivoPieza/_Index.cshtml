@@ -1,0 +1,42 @@
+﻿@using RecordFCS_Alt.Models
+@model RecordFCS_Alt.Models.TipoArchivo
+
+@{
+    ViewBag.PagName = "Multimedia";
+    ViewBag.CtrlName = Model.Nombre;
+
+    Guid id = ViewBag.id;
+    bool esCompleta = ViewBag.esCompleta;
+    Guid   TipoArchivoID = ViewBag.TipoArchivoID;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <span class="@Model.Icono"></span>
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+<div class="modal-body">
+
+    <!-- Campo que se reemplaza-->
+    <div id="render_listaArchivoPieza_@id">
+        @{ Html.RenderAction("Lista", "ArchivoPieza", new { id = id, TipoArchivoID = TipoArchivoID, esCompleta = esCompleta}); }
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <button id="btnCerrar_Index" class="btn" type="button" data-dismiss="modal">Cerrar</button>
+</div>
+
+
+<script>
+
+    $('#btnCerrar_Index').on('click', function (e) {
+
+        $('#renderPreview').html('');
+    });
+</script>

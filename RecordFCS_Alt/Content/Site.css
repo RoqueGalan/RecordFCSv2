@@ -84,7 +84,9 @@ input[type='submit'] {
 }*/
 
 
-
+td:hover a.link{
+    color:white !important;
+}
 /* -------------------------------------------------------------------- */
 
 .container.body-content {
@@ -254,24 +256,29 @@ a > .text-gray:hover {
     cursor: pointer;
 }
 
+
+.link.link-primary:hover {
+        color: #9d8255 !important;
+    }
+
     .link.link-danger:hover {
-        color: #bca57c !important;
+        color: #c9302c !important;
     }
 
     .link.link-warning:hover {
-        color: #bca57c !important;
+        color: #ec971f !important;
     }
 
     .link.link-success:hover {
-        color: #bca57c !important;
+        color: #449d44 !important;
     }
 
     .link.link-info:hover {
-        color: #bca57c !important;
+        color: #31b0d5 !important;
     }
 
     .link.link-inverse:hover {
-        color: #bca57c !important;
+        color: #000000 !important;
     }
 
 .link-top {

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<RecordFCS_Alt.Models.TipoArchivo>
+
+
+@*<link href="~/Content/bootstrap-tabsVertical.css" rel="stylesheet" />*@
+
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li><span class='@item.Icono' data-toggle="tooltip" title="@item.Nombre"></span></li>
+
+
+    }
+</ul>
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<ul class="nav nav-tabs">
+    @{ int i = 0;}
+    @foreach (var item in Model)
+    {
+        <li @(i== 0 ? "class='active'" : "")><a href="#tab_@item.TipoArchivoID" data-toggle="tab" data-toggle="tooltip" title="@item.Nombre"><span class='@item.Icono'></span></a></li>
+        i++;
+    }
+</ul>
+
+<div id="myTabContent" class="tab-content">
+    
+    @{ int j = 0;}
+    @foreach (var item in Model)
+    {
+        <div class="tab-pane @(i== 0 ? "active" : "")" id="tab_@item.TipoArchivoID">
+            <p>@item.Nombre</p>
+        </div>
+    }
+
+</div>
+
+
+
+@*<script src="~/Scripts/bootstrap-switch.min.js"></script>*@

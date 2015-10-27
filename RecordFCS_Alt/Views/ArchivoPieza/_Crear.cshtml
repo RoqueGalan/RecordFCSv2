@@ -1,0 +1,199 @@
+﻿@using RecordFCS_Alt.Models
+@model RecordFCS_Alt.Models.ArchivoPieza
+
+@{
+    ViewBag.PagName = "Crear";
+    ViewBag.CtrlName = Model.TipoArchivo.Nombre;
+}
+
+@Html.Hidden("NombreModal","")
+@Html.Hidden("NombreModalContenido", "")
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <span class="@Model.TipoArchivo.Icono"></span>
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+
+@using (Html.BeginForm("Crear", "ArchivoPieza", FormMethod.Post, new { id = "formCrearArchivo", enctype = "multipart/form-data" }))
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PiezaID)
+            @Html.HiddenFor(model => model.TipoArchivoID)
+            @Html.HiddenFor(model => model.NombreArchivo)
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.Extension)
+
+            <div class="form-group">
+                <label for="FileArchivo" class="control-label col-md-2">Archivo</label>
+
+                <div class="col-md-10">
+                    <input type="file" id="FileArchivo" name="FileArchivo" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Orden, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Orden, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Orden, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            @*@foreach (var itemModel in Model.MostrarArchivos)
+                {
+                    @Html.HiddenFor(modelItem => itemModel.TipoMostrarArchivoID, new { htmlAttributes = new { name= "mosArc_" +itemModel.TipoMostrarArchivoID + "_ID" }})
+                    <div class="form-group">
+                        @Html.LabelFor(modelItem => itemModel.Status, itemModel.TipoMostrarArchivo.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                @Html.EditorFor(modelItem => itemModel.Status, new { htmlAttributes = new { name = "mosArc_" + itemModel.TipoMostrarArchivoID + "_Status", @class = "form-control" } })
+                                @Html.ValidationMessageFor(modelItem => itemModel.Status, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                }*@
+
+            <h3 class="text-center">Mostrar en:</h3>
+            @foreach (var itemModel in Model.MostrarArchivos)
+            {
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-4">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBox("mosArc_" + itemModel.TipoMostrarArchivoID + "_Status", itemModel.Status)
+                                @itemModel.TipoMostrarArchivo.Nombre
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @*@for (int i = 0; i < Model.MostrarArchivos.Count; i++)
+                {
+                    @Html.HiddenFor(model => model.MostrarArchivos.ElementAt(i).TipoMostrarArchivoID)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MostrarArchivos.ElementAt(i).Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.MostrarArchivos.ElementAt(i).Status, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.MostrarArchivos.ElementAt(i).Status, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                }*@
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Agregar" />
+    </div>
+
+}
+
+
+
+
+
+<script type='text/javascript'>
+   
+    $('#formCrearArchivo').submit(function (event) {
+
+        $.ajaxSetup({ cache: false });
+
+        event.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+
+        var myurl = '@Url.Action("Crear", "ArchivoPieza", null)';
+
+
+        var modalNombre = $('#NombreModal').val();
+        var modalNombreContenido = $('#NombreModalContenido').val();
+
+
+        $.ajax({
+            url: myurl,
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result.success) {
+
+
+                    //alert("se registro archivo");
+                    var renderID = '';
+
+                    if (result.esImagen) {
+                        renderID = '#renderCarrusel_' + result.idPieza
+                    }
+                    else{
+                        renderID = '#render_listaArchivoPieza_' + result.idPieza
+                    }
+
+                    $(renderID).load(result.url); // campo que reemplazara + accion
+
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                    $("#alertasDiv").css("z-index", "2000");
+                    $('#' + modalNombre).modal('hide');
+                }
+                else {
+                    $('#' + modalNombreContenido).html(result);
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                    $("#alertasDiv").css("z-index", "2000");
+
+                }
+            },
+            error: function () {
+                alert("Ocurrio un error en el envio");
+            }
+        });
+
+        formData = null;
+
+        return false;
+    });
+
+</script>

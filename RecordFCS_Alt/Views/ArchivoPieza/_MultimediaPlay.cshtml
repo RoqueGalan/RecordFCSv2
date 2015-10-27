@@ -1,0 +1,89 @@
+﻿@model RecordFCS_Alt.Models.ArchivoPieza
+
+
+@{
+    var url = Model.Ruta;
+    var extension = Model.Extension.Replace(".", "");
+}
+
+<div class="row">
+
+    <div class="col-md-2 col-sm-3 col-xs-3">
+        <span class="@Model.TipoArchivo.Icono fa-8x"></span>
+    </div>
+
+    <div class="col-md-10 col-sm-9 col-xs-9">
+
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Titulo)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Descripcion)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+        </dl>
+    </div>
+
+</div>
+
+<br />
+
+
+@switch (Model.TipoArchivo.Temp)
+{
+    case "audio_clave":
+        <audio controls width="100%">
+            <source src="@url" type="audio/@extension">
+            Tu navegador no soporta este elemento.
+            <code>@Model.TipoArchivo.Nombre</code>
+        </audio>
+        break;
+    case "video_clave":
+        <video controls width="100%">
+            <source src="@url" type="video/@extension">
+            Tu navegador no soporta este elemento.
+            <code>@Model.TipoArchivo.Nombre</code>
+        </video>
+        break;
+    case "interactivo_clave":
+    <code>@Model.TipoArchivo.Nombre</code>
+        break;
+    default:
+        switch (extension)
+        {
+            case "pdf":
+            case "doc":
+            case "docx":
+                <iframe src="@url" frameborder="0" width="100%"></iframe>
+                break;
+
+            default:
+            <h2><a href="@url" target="_blank">Archivo</a></h2>
+                <h1>
+                    Sin visualizacion
+                    <code>@Model.TipoArchivo.Nombre</code>
+                </h1>
+                break;
+        }
+        break;
+}
+

@@ -1,0 +1,147 @@
+﻿@using RecordFCS_Alt.Models
+@model RecordFCS_Alt.Models.ArchivoPieza
+@using RecordFCS_Alt.Helpers
+
+@{
+    ViewBag.PagName = "Eliminar " + Model.TipoArchivo.Nombre;
+    ViewBag.CtrlName = Model.Titulo;
+
+    bool esImagen = ViewBag.esImagen;
+
+}
+
+@Html.Hidden("NombreModal", "")
+@Html.Hidden("NombreModalContenido", "")
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <span class="@Model.TipoArchivo.Icono"></span>
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal-body">
+        @if (esImagen)
+        {
+            <div class="text-center">
+                <img src="@Model.RutaThumb" class="thumbnail imagenMini" />
+            </div>
+        }
+
+
+        <div class="text-center">
+            <h3>
+                ¿Quieres
+                <b class="text-danger">
+                    ELIMINAR
+                </b>
+                el archivo?
+            </h3>
+
+            <p>
+                @Html.DisplayFor(model => model.Titulo)
+                <small class="text-muted">
+                    @Html.DisplayFor(model => model.Descripcion)
+                </small>
+            </p>
+            <p>---</p>
+            <p>Por favor confirma la acción a realizar:</p>
+            <label class="text-muted">
+                Deshabilitar
+            </label>
+            <input type="radio" name="accionx" value="deshabilitar" class="form-control" checked="checked" />
+
+            <label class="text-danger">
+                Eliminar
+            </label>
+            <input type="radio" name="accionx" value="eliminar" class="form-control" />
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-danger" type="submit" value="Confirmar" />
+
+    </div>
+
+}
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+
+
+<script type='text/javascript'>
+    $('form').submit(function (event) {
+
+        $.ajaxSetup({ cache: false });
+
+
+        event.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+
+        var myurl = '@Url.Action("Eliminar", "ArchivoPieza", null)';
+
+        var modalNombre = $('#NombreModal').val();
+        var modalNombreContenido = $('#NombreModalContenido').val();
+
+
+        $.ajax({
+            url: myurl,
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result.success) {
+
+                    var renderID = '';
+
+                    if (result.esImagen) {
+                        renderID = '#renderCarrusel_' + result.idPieza
+                    }
+                    else {
+                        renderID = '#render_listaArchivoPieza_' + result.idPieza
+                    }
+
+                    $(renderID).load(result.url); // campo que reemplazara + accion
+
+
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                    $("#alertasDiv").css("z-index", "2000");
+                    $('#' + modalNombre).modal('hide');
+
+
+                }
+                else {
+                    $('#' + modalNombreContenido).html(result);
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                    $("#alertasDiv").css("z-index", "2000");
+                }
+            },
+            error: function () {
+                alert("Ocurrio un error en el envio");
+            }
+        });
+
+        formData = null;
+
+        return false;
+    });
+
+</script>
+
+
+

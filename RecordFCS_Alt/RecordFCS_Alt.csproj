@@ -136,6 +136,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ApiControllers\PiezaApiController.cs" />
+    <Compile Include="Controllers\ArchivoPiezaController.cs" />
     <Compile Include="Controllers\AtributoController.cs" />
     <Compile Include="Controllers\AtributoPiezaController.cs" />
     <Compile Include="Controllers\AutorController.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Controllers\TipoArchivoController.cs" />
     <Compile Include="Controllers\TipoAtributoController.cs" />
     <Compile Include="Controllers\TipoMedidaController.cs" />
+    <Compile Include="Controllers\TipoMostrarArchivoController.cs" />
     <Compile Include="Controllers\TipoMostrarController.cs" />
     <Compile Include="Controllers\TipoMovimientoController.cs" />
     <Compile Include="Controllers\TipoObraController.cs" />
@@ -230,13 +232,13 @@
     <Compile Include="Models\ViewModels\OpcionesImprimir.cs" />
     <Compile Include="Models\ViewModels\itemPiezaMini.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\TipoMostrarArchivoController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\alertas.css" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap-tabsVertical.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap-subMenus.css" />
     <Content Include="Content\bootstrap-switch.css" />
@@ -246,6 +248,18 @@
     <Content Include="Content\Colores.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\docxPieza\image\1a2abde4-6f25-4f8c-94a6-33886b619be1.jpg" />
+    <Content Include="Content\docxPieza\image\36637ab4-f8f6-4ffc-8e99-3321f110df14.jpg" />
+    <Content Include="Content\docxPieza\image\3c2397dd-7e57-422b-95a9-3c37b7773a09.jpg" />
+    <Content Include="Content\docxPieza\image\a334bb0e-ecd0-4067-a9f1-8fe405a40d57.jpg" />
+    <Content Include="Content\docxPieza\image\a534f3d7-d1d4-4cbc-9321-b16c7e7c4196.jpg" />
+    <Content Include="Content\docxPieza\image\b83fc725-9452-47a2-afdd-76406ac611ae.jpg" />
+    <Content Include="Content\docxPieza\image\thumb\1a2abde4-6f25-4f8c-94a6-33886b619be1.jpg" />
+    <Content Include="Content\docxPieza\image\thumb\36637ab4-f8f6-4ffc-8e99-3321f110df14.jpg" />
+    <Content Include="Content\docxPieza\image\thumb\3c2397dd-7e57-422b-95a9-3c37b7773a09.jpg" />
+    <Content Include="Content\docxPieza\image\thumb\a334bb0e-ecd0-4067-a9f1-8fe405a40d57.jpg" />
+    <Content Include="Content\docxPieza\image\thumb\a534f3d7-d1d4-4cbc-9321-b16c7e7c4196.jpg" />
+    <Content Include="Content\docxPieza\image\thumb\b83fc725-9452-47a2-afdd-76406ac611ae.jpg" />
     <Content Include="Content\fonts\presidenciafirme-webfont.svg" />
     <Content Include="Content\Homes.css" />
     <Content Include="Content\img\home\carrusel\front_01.jpg" />
@@ -326,6 +340,7 @@
     <Content Include="Scripts\autorLista.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-tabVertical.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrap-switch.js" />
     <Content Include="Scripts\bootstrap-switch.min.js" />
@@ -356,7 +371,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\TecnicaLista.js" />
     <Content Include="Scripts\tipoAtributoLista.js" />
-    <Content Include="Scripts\TipoArchivo.js" />
+    <Content Include="Scripts\TipoArchivoLista.js" />
     <Content Include="Scripts\TipoMedidaLista.js" />
     <Content Include="Scripts\TipoMovimientoLista.js" />
     <Content Include="Scripts\tipoObraLista.js" />
@@ -555,10 +570,22 @@
     <Content Include="Views\TipoArchivo\_Editar.cshtml" />
     <Content Include="Views\TipoArchivo\_Lista.cshtml" />
     <Content Include="Views\TipoArchivo\Index.cshtml" />
+    <Content Include="Views\ArchivoPieza\_Crear.cshtml" />
+    <Content Include="Views\ArchivoPieza\_Eliminar.cshtml" />
+    <Content Include="Views\ArchivoPieza\Details.cshtml" />
+    <Content Include="Views\ArchivoPieza\_Editar.cshtml" />
+    <Content Include="Views\ArchivoPieza\_Index.cshtml" />
+    <Content Include="Views\ArchivoPieza\_ContenedorMedia.cshtml" />
+    <Content Include="Views\ArchivoPieza\_CarruselImagenes.cshtml" />
+    <Content Include="Views\ArchivoPieza\_Lista.cshtml" />
+    <Content Include="Views\ArchivoPieza\_MultimediaPlay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\docxPieza\" />
+    <Folder Include="Content\docxPieza\audio\thumb\" />
+    <Folder Include="Content\docxPieza\docx\thumb\" />
+    <Folder Include="Content\docxPieza\interactivo\thumb\" />
+    <Folder Include="Content\docxPieza\video\thumb\" />
     <Folder Include="Views\ListaPieza\" />
     <Folder Include="Views\MigracionCEHM\" />
   </ItemGroup>

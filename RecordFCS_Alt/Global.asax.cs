@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RecordFCS_Alt.Helpers.Seguridad;
+using RecordFCS_Alt.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,8 @@ namespace RecordFCS_Alt
 
             if (authCookie != null)
             {
+                //var db = new RecordFCSContext();
+
                 //Se extrae la cookie de autentication 
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
 
@@ -49,10 +52,10 @@ namespace RecordFCS_Alt
                 newUser.UsuarioID = serializeModel.UsuarioID;
                 newUser.Nombre = serializeModel.Nombre;
                 newUser.Apellido = serializeModel.Apellido;
-                newUser.ListaRoles = serializeModel.ListaRoles;
                 newUser.Tiempo = serializeModel.Tiempo;
-
+                //newUser.LlenarListaRolesSesion(serializeModel.UsuarioID,serializeModel.NombreListaRoles);
                 HttpContext.Current.User = newUser;
+                
             }
         }
 

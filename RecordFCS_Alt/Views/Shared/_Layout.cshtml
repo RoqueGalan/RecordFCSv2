@@ -96,7 +96,7 @@
     </div>
 
 
-    
+
 
 
 
@@ -117,6 +117,10 @@
             &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
         </p>
 
+        <p id="renderTime">
+
+        </p>
+        
         @if (IsAuthenticated)
         {
 
@@ -125,7 +129,7 @@
             <script type="text/javascript">
 
                 var IsAuthenticated = true;
-
+                var ratonActivo = true;
                 $(document).ready(function () {
                     $.LazyMouse({
                         delay: 900000 //15 minutos
@@ -138,9 +142,9 @@
                         //console.log("Mouse Active");
 
                     });
+
                     $("body").bind("mouse.inactive", function () {
                         //console.log("Mouse Inctive");
-
                         if (IsAuthenticated) {
                             CerrarSesion();
                         }
@@ -199,36 +203,35 @@
                     var myurl = '@Url.Action("MensajeModal", "Home")';
 
 
-                        $.ajax({
-                            url: myurl,
-                            type: 'GET',
-                            data: { mensaje: mensaje, esModal: esModal },
-                            //async: false,
-                            success: function (result) {
-                                if (result.success) {
+                    $.ajax({
+                        url: myurl,
+                        type: 'GET',
+                        data: { mensaje: mensaje, esModal: esModal },
+                        //async: false,
+                        success: function (result) {
+                            if (result.success) {
 
-                                    //alert("alerta");
+                                //alert("alerta");
 
-                                    $('#alertasDiv').load('/Base/_Alertas');
+                                $('#alertasDiv').load('/Base/_Alertas');
 
 
-                                }
-                                else
-                                {
-                                    //alert("modal");
-
-                                    $('#miModalAlertaContenido').html(result)
-                                    $('#miModalAlerta').modal({
-                                        backdrop: 'static',
-                                        keyboard: true
-                                    }, 'show');
-                                }
-                                    
                             }
-                        });
-                 
-                       
-                    
+                            else {
+                                //alert("modal");
+
+                                $('#miModalAlertaContenido').html(result)
+                                $('#miModalAlerta').modal({
+                                    backdrop: 'static',
+                                    keyboard: true
+                                }, 'show');
+                            }
+
+                        }
+                    });
+
+
+
                     return false;
                 }
 

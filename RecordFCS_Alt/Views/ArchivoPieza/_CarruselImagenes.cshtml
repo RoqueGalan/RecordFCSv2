@@ -1,0 +1,175 @@
+﻿@model ICollection<RecordFCS_Alt.Models.ArchivoPieza>
+@using RecordFCS_Alt.Helpers
+
+<link href="~/Content/carusel.css" rel="stylesheet" />
+
+@{
+    string CarruselID = "Carrusel_" + ViewBag.id;
+
+    bool esCompleta = ViewBag.esCompleta;
+
+    Guid piezaID = ViewBag.id;
+    Guid tipoMostrarArchivoID = ViewBag.tipoMostrarArchivoID;
+    Guid tipoArchivoID = ViewBag.tipoArchivoID;
+
+    string classZoom = esCompleta ? "ImagenZoom" : "";
+    string classModal = "ModalImagen_" + CarruselID;
+
+    string classTamano = "imagenMini";
+    string textSinImagen = "holder.js/250x200/text:404";
+
+    string active = "active";
+}
+
+
+
+<div id="@CarruselID" class="carousel slide">
+    <div class="carousel-inner">
+
+
+        @if (Model.Count == 0)
+        {
+            <div id="imagen_0" class="item @active">
+                <div class="thumbnail img-thumbnail">
+                    <img src="holder.js/@(textSinImagen)/text:404" alt="Sin Imagen" class="media-object @classTamano">
+
+                    @if (User.IsInRole("arcpNew") && esCompleta)
+                    {
+                        <div class="caption text-center">
+
+                            <span class="center-block"><b>Agregue una imagen</b></span>
+                            <span class="text-muted"></span>
+                            @if (User.IsInRole("arcNew"))
+                            {
+                                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs " + classModal })
+
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                string rutaImagenGrande = classZoom == "" ? "" : item.Ruta;
+                <div id="imagen_@item.ArchivoPiezaID" class="item @active">
+                    <div class="thumbnail img-thumbnail">
+
+                        @*<img src="@(item.RutaMini)" alt="@item.Titulo" class="imagenMini @classZoom" data-zoom-image="@(rutaImagenGrande)">*@
+
+                        @*<a href="@Url.Action("Detalles", "ImagenPieza", new { id = item.ImagenPiezaID})" data-modal="" class="LG@(classModal)">*@
+                        <img src="@(item.RutaThumb)" alt="@item.Titulo" class="@classTamano">
+                       
+                        @*</a>*@
+
+
+                        <div class=" caption text-center">
+                            <span class="center-block"><b>@item.Titulo</b></span>
+                            <small class="text-muted">@item.Descripcion</small>
+
+                            <span class="center-block">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </span>
+                            <div>
+
+                                @if (esCompleta)
+                                    {
+                                        if (User.IsInRole("arcNew"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
+                                        }
+                                        if (User.IsInRole("arcEdit"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
+                                        }
+                                        if (User.IsInRole("arcDel"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-danger btn-xs " + classModal })
+                                        }
+                                    }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                active = "";
+            }
+        }
+
+    </div>
+
+    @if (Model.Count > 1)
+    {
+
+        <a class="left carousel-control" href="#@CarruselID" data-slide="prev" data-toggle="tooltip" data-title="Anterior" data-container="body"><i class="fa fa-chevron-left"></i></a>
+        <a class="right carousel-control" href="#@CarruselID" data-slide="next" data-toggle="tooltip" data-title="Siguiente"><i class="fa fa-chevron-right"></i></a>
+
+    <!-- Indicators -->
+
+        <ol class="carousel-indicators">
+            @{active = "active";}
+
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <li data-target="#@CarruselID" data-slide-to="@i" class="@active"></li>
+
+                active = "";
+            }
+
+        </ol>
+    }
+
+
+</div>
+
+
+
+
+
+<script src="~/Scripts/holder.js"></script>
+<script src="~/Scripts/add.toolTip.js"></script>
+
+@*CREAR IMAGENES*@
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        // Abrir Modales en formulario PRE REGISTRO
+        $("a[data-modal].ModalImagen_@CarruselID").on("click", function (e) {
+            $('#miModalContenido').load(this.href, function () {
+                $('#miModal').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+
+                $('#NombreModal').val("miModal");
+                $('#NombreModalContenido').val("miModalContenido");
+            });
+            return false;
+        });
+
+
+
+        $("a[data-modal].LGModalImagen_@CarruselID").on("click", function (e) {
+            $('#miModalContenidoLG').load(this.href, function () {
+                $('#miModalLG').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+
+
+            });
+            return false;
+        });
+
+        $('.carousel').carousel({ interval: false });
+    });
+
+
+</script>
+
