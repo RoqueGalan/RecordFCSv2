@@ -18,9 +18,9 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         [CustomAuthorize(permiso = "")]
-        public ActionResult ContenedorImagen(Guid? id, Guid? tipoMostrarArchivoID, bool esCompleta = false)
+        public ActionResult ContenedorImagen(Guid? id, Guid? TipoMostrarArchivoID, bool esCompleta = false)
         {
-            if (id == null && tipoMostrarArchivoID == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (id == null && TipoMostrarArchivoID == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             Pieza pieza = db.Piezas.Find(id);
 
@@ -33,11 +33,11 @@ namespace RecordFCS_Alt.Controllers
             if (esCompleta)
                 lista = pieza.ArchivosPiezas.Where(a => a.TipoArchivoID == tipoArchivo.TipoArchivoID).OrderBy(a => a.Orden).ToList();
             else
-                lista = pieza.ArchivosPiezas.Where(a => a.Status && a.TipoArchivoID == tipoArchivo.TipoArchivoID && a.MostrarArchivos.Any(b => b.TipoMostrarArchivoID == tipoMostrarArchivoID.Value)).OrderBy(a => a.Orden).ToList();
+                lista = pieza.ArchivosPiezas.Where(a => a.Status && a.TipoArchivoID == tipoArchivo.TipoArchivoID && a.MostrarArchivos.Any(b => b.TipoMostrarArchivoID == TipoMostrarArchivoID.Value && b.Status)).OrderBy(a => a.Orden).ToList();
 
             ViewBag.esCompleta = esCompleta;
             ViewBag.id = id;
-            ViewBag.tipoMostrarArchivoID = tipoMostrarArchivoID;
+            ViewBag.tipoMostrarArchivoID = TipoMostrarArchivoID;
             ViewBag.tipoArchivoID = tipoArchivo.TipoArchivoID;
 
             return PartialView("_CarruselImagenes", lista);
@@ -45,26 +45,26 @@ namespace RecordFCS_Alt.Controllers
 
 
         // GET: ArchivoPieza
-        public ActionResult Index(Guid? id, Guid? TipoArchivoID, bool esCompleta = false)
+        public ActionResult Index(Guid? id, Guid? TipoArchivoID, Guid? TipoMostrarArchivoID, bool esCompleta = false)
         {
-            if (id == null || TipoArchivoID == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (id == null || TipoArchivoID == null || TipoMostrarArchivoID == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var tipoArchivo = db.TipoArchivos.Find(TipoArchivoID);
             if (tipoArchivo == null) return HttpNotFound();
 
-
-
             ViewBag.esCompleta = esCompleta;
             ViewBag.id = id;
             ViewBag.TipoArchivoID = TipoArchivoID;
+            ViewBag.TipoMostrarArchivoID = TipoMostrarArchivoID;
 
             return PartialView("_Index", tipoArchivo);
         }
 
 
-        public ActionResult Lista(Guid? id, Guid? TipoArchivoID, bool esCompleta = false)
+        public ActionResult Lista(Guid? id, Guid? TipoArchivoID, Guid? TipoMostrarArchivoID, bool esCompleta = false)
         {
             if (id == null || TipoArchivoID == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (TipoMostrarArchivoID == null && esCompleta == false) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var pieza = db.Piezas.Find(id);
             if (pieza == null) return HttpNotFound();
@@ -72,20 +72,20 @@ namespace RecordFCS_Alt.Controllers
             var tipoArchivo = db.TipoArchivos.Find(TipoArchivoID);
             if (tipoArchivo == null) return HttpNotFound();
 
-            var lista = pieza.ArchivosPiezas.Where(a => a.TipoArchivoID == tipoArchivo.TipoArchivoID).ToList();
+            var lista = pieza.ArchivosPiezas.Where(a => a.TipoArchivoID == tipoArchivo.TipoArchivoID).OrderBy(a=> a.Orden).ToList();
 
-            if (esCompleta)
-                lista = lista.Where(a => a.Status).ToList();
+            if (!esCompleta)
+                lista = lista.Where(a => a.Status && a.MostrarArchivos.Any(b=> b.TipoMostrarArchivoID == TipoMostrarArchivoID.Value && b.Status)).ToList();
 
             ViewBag.esCompleta = esCompleta;
             ViewBag.id = id;
             ViewBag.TipoArchivoID = TipoArchivoID;
-
+            ViewBag.TipoMostrarArchivoID = TipoMostrarArchivoID;
             return PartialView("_Lista", lista);
         }
 
         //// GET: ArchivoPieza/Details/5
-        public ActionResult Detalles(Guid? id)
+        public ActionResult Detalles(Guid? id , string tipo = "Magnificent")
         {
             if (id == null)
             {
@@ -109,7 +109,8 @@ namespace RecordFCS_Alt.Controllers
                 case "interactivo_clave":
                     return PartialView("_MultimediaPlay", archivoPieza);
                 case "imagen_clave":
-                    return PartialView("_ImagenPlay", archivoPieza);
+                    string vistaText = "_ImagenZoom_" + tipo;
+                    return PartialView(vistaText, archivoPieza);
                 default:
                     return PartialView("_OtrosPlay", archivoPieza);
             }

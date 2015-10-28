@@ -1,0 +1,52 @@
+﻿@using RecordFCS_Alt.Helpers
+
+@using RecordFCS_Alt.Models
+@{
+    bool EsMultipleValor = ViewBag.EsMultipleValor;
+    Guid AtributoID = ViewBag.AtributoID;
+    string ParametrosHTML = ViewBag.ParametrosHTML;
+    Guid TipoAtributoID = ViewBag.TipoAtributoID;
+    string TipoInput = ViewBag.TipoInput;
+    string NombreAtt = ViewBag.NombreAtt;
+
+}
+
+<div class="well well-sm">
+
+    <div class="input-group">
+        @Html.TextBox("id_" + AtributoID + "_Titulo", null, new { @class = "form-control", required = "required", placeholder = "Título" })
+        <span class="input-group-addon"></span>
+        @Html.TextBox("id_" + AtributoID + "_Descripcion", null, new { @class = "form-control", placeholder = "Descripción" })
+    </div>
+    <br />
+
+    <div class="input-group-btn">
+        <span class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-primary btn-file">
+                    Subir imagen <input type="file" id="id_@(AtributoID)_File" name="id_@(AtributoID)_File" required>
+                </span>
+            </span>
+            <input id="FileNameText" type="text" class="form-control" readonly="">
+        </span>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).on('change', '.btn-file :file', function () {
+        var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+    });
+
+
+    $(document).ready(function () {
+        $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+            $('#FileNameText').val(label);
+            //console.log(numFiles);
+            //console.log(label);
+        });
+    });
+</script>

@@ -572,13 +572,15 @@
     <Content Include="Views\TipoArchivo\Index.cshtml" />
     <Content Include="Views\ArchivoPieza\_Crear.cshtml" />
     <Content Include="Views\ArchivoPieza\_Eliminar.cshtml" />
-    <Content Include="Views\ArchivoPieza\Details.cshtml" />
     <Content Include="Views\ArchivoPieza\_Editar.cshtml" />
     <Content Include="Views\ArchivoPieza\_Index.cshtml" />
     <Content Include="Views\ArchivoPieza\_ContenedorMedia.cshtml" />
     <Content Include="Views\ArchivoPieza\_CarruselImagenes.cshtml" />
     <Content Include="Views\ArchivoPieza\_Lista.cshtml" />
     <Content Include="Views\ArchivoPieza\_MultimediaPlay.cshtml" />
+    <Content Include="Views\ArchivoPieza\_ImagenZoom_Magnificent.cshtml" />
+    <Content Include="Views\ArchivoPieza\_CampoRegistro.cshtml" />
+    <Content Include="Views\MigracionCEHM\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -586,8 +588,8 @@
     <Folder Include="Content\docxPieza\docx\thumb\" />
     <Folder Include="Content\docxPieza\interactivo\thumb\" />
     <Folder Include="Content\docxPieza\video\thumb\" />
+    <Folder Include="Models\DBModels\Historial\" />
     <Folder Include="Views\ListaPieza\" />
-    <Folder Include="Views\MigracionCEHM\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

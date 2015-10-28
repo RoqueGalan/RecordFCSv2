@@ -8,6 +8,8 @@
     Guid id = ViewBag.id;
     bool esCompleta = ViewBag.esCompleta;
     Guid   TipoArchivoID = ViewBag.TipoArchivoID;
+    Guid? TipoMostrarArchivoID = ViewBag.TipoMostrarArchivoID;
+
 }
 
 <div class="modal-header">
@@ -23,7 +25,7 @@
 
     <!-- Campo que se reemplaza-->
     <div id="render_listaArchivoPieza_@id">
-        @{ Html.RenderAction("Lista", "ArchivoPieza", new { id = id, TipoArchivoID = TipoArchivoID, esCompleta = esCompleta}); }
+        @{ Html.RenderAction("Lista", "ArchivoPieza", new { id = id, TipoArchivoID = TipoArchivoID, TipoMostrarArchivoID = TipoMostrarArchivoID, esCompleta = esCompleta }); }
     </div>
 
 </div>

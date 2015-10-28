@@ -1,0 +1,82 @@
+﻿@model RecordFCS_Alt.Models.ArchivoPieza
+@using RecordFCS_Alt.Helpers
+
+@{
+    ViewBag.PagName = "Imágen";
+    ViewBag.CtrlName = Model.Titulo;
+    ViewBag.PagDescription = Model.Descripcion;
+}
+
+
+
+<script src="~/Content/magnificent/js/dependencias/jquery.bridget.js"></script>
+<script src="~/Content/magnificent/js/dependencias/jquery.mousewheel.js"></script>
+<script src="~/Content/magnificent/js/dependencias/jquery.event.drag.js"></script>
+<script src="~/Content/magnificent/js/dependencias/screenfull.js"></script>
+<script src="~/Content/magnificent/js/dependencias/gajs.js"></script>
+<script src="~/Content/magnificent/js/dependencias/hammer.js"></script>
+<script src="~/Content/magnificent/js/dependencias/PreventGhostClick.js"></script>
+
+
+
+<script src="~/Content/magnificent/js/mag-analytics.js"></script>
+<script src="~/Content/magnificent/js/mag.js"></script>
+<script src="~/Content/magnificent/js/mag-jquery.js"></script>
+<script src="~/Content/magnificent/js/mag-control.js"></script>
+<link href="~/Content/magnificent/css/mag.css" rel="stylesheet" />
+<link href="~/Content/magnificent/theme/default.css" rel="stylesheet" />
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <span>@ViewBag.CtrlName</span>
+        <i class="text-muted">@ViewBag.PagDescription</i>
+    </h4>
+</div>
+
+
+
+<div class="modal-body">
+
+
+    <div id="zoomModalDiv">
+        <div mag-thumb="drag">
+            <img src="@Model.RutaThumb" id="imgMini">
+        </div>
+        <div mag-zoom="drag">
+            <img src="" id="imgReal" />
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <div class="text-center">
+
+        <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $('#imgReal').attr('src', '@Model.Ruta');
+
+        setupZoom();
+    });
+
+
+    function setupZoom() {
+
+        $host = $('[mag-thumb="drag"]');
+        $host.mag({
+            position: 'drag',
+            toggle: false
+        });
+
+    };
+
+</script>

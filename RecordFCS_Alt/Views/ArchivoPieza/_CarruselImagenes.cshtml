@@ -61,9 +61,11 @@
                         @*<img src="@(item.RutaMini)" alt="@item.Titulo" class="imagenMini @classZoom" data-zoom-image="@(rutaImagenGrande)">*@
 
                         @*<a href="@Url.Action("Detalles", "ImagenPieza", new { id = item.ImagenPiezaID})" data-modal="" class="LG@(classModal)">*@
-                        <img src="@(item.RutaThumb)" alt="@item.Titulo" class="@classTamano">
-                       
-                        @*</a>*@
+
+                        <a href="@Url.Action("Detalles", "ArchivoPieza", new { id = item.ArchivoPiezaID, vista = "Magnificent" })" data-modal="" class="Zoom@(classModal)">
+
+                            <img src="@(item.RutaThumb)" alt="@item.Titulo" class="@classTamano">
+                        </a>
 
 
                         <div class=" caption text-center">
@@ -76,27 +78,27 @@
                             <div>
 
                                 @if (esCompleta)
+                                {
+                                    if (User.IsInRole("arcNew"))
                                     {
-                                        if (User.IsInRole("arcNew"))
-                                        {
-                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
-                                        }
-                                        if (User.IsInRole("arcEdit"))
-                                        {
-                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
-                                        }
-                                        if (User.IsInRole("arcDel"))
-                                        {
-                                            @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-danger btn-xs " + classModal })
-                                        }
+                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
                                     }
+                                    if (User.IsInRole("arcEdit"))
+                                    {
+                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
+                                    }
+                                    if (User.IsInRole("arcDel"))
+                                    {
+                                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-danger btn-xs " + classModal })
+                                    }
+                                }
 
                             </div>
                         </div>
                     </div>
                 </div>
 
-                active = "";
+                                active = "";
             }
         }
 
@@ -155,14 +157,12 @@
 
 
 
-        $("a[data-modal].LGModalImagen_@CarruselID").on("click", function (e) {
+        $("a[data-modal].Zoom@(classModal)").on("click", function (e) {
             $('#miModalContenidoLG').load(this.href, function () {
                 $('#miModalLG').modal({
                     backdrop: 'static',
                     keyboard: true
                 }, 'show');
-
-
             });
             return false;
         });
