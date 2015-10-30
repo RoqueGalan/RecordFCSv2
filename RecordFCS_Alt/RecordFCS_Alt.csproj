@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -153,6 +154,7 @@
     <Compile Include="Controllers\MigracionCEHMController.cs" />
     <Compile Include="Controllers\MostrarAtributoController.cs" />
     <Compile Include="Controllers\MovimientoController.cs" />
+    <Compile Include="Controllers\MovimientoTempController.cs" />
     <Compile Include="Controllers\ObraController.cs" />
     <Compile Include="Controllers\PermisoController.cs" />
     <Compile Include="Controllers\PiezaController.cs" />
@@ -206,6 +208,8 @@
     <Compile Include="Models\DBModels\Movimientos\MovimientoResponsable.cs" />
     <Compile Include="Models\DBModels\Movimientos\MovimientoSeguro.cs" />
     <Compile Include="Models\DBModels\Movimientos\MovimientoSolicitante.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoTemp.cs" />
+    <Compile Include="Models\DBModels\Movimientos\MovimientoTempPieza.cs" />
     <Compile Include="Models\DBModels\Movimientos\MovimientoTransporte.cs" />
     <Compile Include="Models\DBModels\Movimientos\TipoMovimiento.cs" />
     <Compile Include="Models\DBModels\Seguridad\Permiso.cs" />
@@ -248,18 +252,6 @@
     <Content Include="Content\Colores.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
-    <Content Include="Content\docxPieza\image\1a2abde4-6f25-4f8c-94a6-33886b619be1.jpg" />
-    <Content Include="Content\docxPieza\image\36637ab4-f8f6-4ffc-8e99-3321f110df14.jpg" />
-    <Content Include="Content\docxPieza\image\3c2397dd-7e57-422b-95a9-3c37b7773a09.jpg" />
-    <Content Include="Content\docxPieza\image\a334bb0e-ecd0-4067-a9f1-8fe405a40d57.jpg" />
-    <Content Include="Content\docxPieza\image\a534f3d7-d1d4-4cbc-9321-b16c7e7c4196.jpg" />
-    <Content Include="Content\docxPieza\image\b83fc725-9452-47a2-afdd-76406ac611ae.jpg" />
-    <Content Include="Content\docxPieza\image\thumb\1a2abde4-6f25-4f8c-94a6-33886b619be1.jpg" />
-    <Content Include="Content\docxPieza\image\thumb\36637ab4-f8f6-4ffc-8e99-3321f110df14.jpg" />
-    <Content Include="Content\docxPieza\image\thumb\3c2397dd-7e57-422b-95a9-3c37b7773a09.jpg" />
-    <Content Include="Content\docxPieza\image\thumb\a334bb0e-ecd0-4067-a9f1-8fe405a40d57.jpg" />
-    <Content Include="Content\docxPieza\image\thumb\a534f3d7-d1d4-4cbc-9321-b16c7e7c4196.jpg" />
-    <Content Include="Content\docxPieza\image\thumb\b83fc725-9452-47a2-afdd-76406ac611ae.jpg" />
     <Content Include="Content\fonts\presidenciafirme-webfont.svg" />
     <Content Include="Content\Homes.css" />
     <Content Include="Content\img\home\carrusel\front_01.jpg" />
@@ -581,13 +573,15 @@
     <Content Include="Views\ArchivoPieza\_ImagenZoom_Magnificent.cshtml" />
     <Content Include="Views\ArchivoPieza\_CampoRegistro.cshtml" />
     <Content Include="Views\MigracionCEHM\Index.cshtml" />
+    <Content Include="Views\MovimientoTemp\Crear.cshtml" />
+    <Content Include="Views\MovimientoTemp\Delete.cshtml" />
+    <Content Include="Views\MovimientoTemp\Details.cshtml" />
+    <Content Include="Views\MovimientoTemp\Edit.cshtml" />
+    <Content Include="Views\MovimientoTemp\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\docxPieza\audio\thumb\" />
-    <Folder Include="Content\docxPieza\docx\thumb\" />
-    <Folder Include="Content\docxPieza\interactivo\thumb\" />
-    <Folder Include="Content\docxPieza\video\thumb\" />
+    <Folder Include="Content\docxPieza\" />
     <Folder Include="Models\DBModels\Historial\" />
     <Folder Include="Views\ListaPieza\" />
   </ItemGroup>

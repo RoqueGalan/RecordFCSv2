@@ -7,6 +7,13 @@
     color: #e6e6e6 !important;
 }
 
+.HeadFormMov{
+background-color: #e2e2e2;
+/*color: white !important;*/
+/*text-transform:uppercase;*/
+text-align:center;
+font-weight:bold;
+}
 
 .well-dark {
     background-color: #aeaeae !important;

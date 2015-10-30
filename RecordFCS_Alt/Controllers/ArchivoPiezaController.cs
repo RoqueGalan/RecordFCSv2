@@ -111,6 +111,8 @@ namespace RecordFCS_Alt.Controllers
                 case "imagen_clave":
                     string vistaText = "_ImagenZoom_" + tipo;
                     return PartialView(vistaText, archivoPieza);
+                case "documento_clave":
+                    return PartialView("_MultimediaPlay", archivoPieza);
                 default:
                     return PartialView("_OtrosPlay", archivoPieza);
             }

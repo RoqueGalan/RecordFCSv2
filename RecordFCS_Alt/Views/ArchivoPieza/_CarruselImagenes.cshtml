@@ -33,17 +33,15 @@
                 <div class="thumbnail img-thumbnail">
                     <img src="holder.js/@(textSinImagen)/text:404" alt="Sin Imagen" class="media-object @classTamano">
 
-                    @if (User.IsInRole("arcpNew") && esCompleta)
+                    @if (User.IsInRole("arcNew") && esCompleta)
                     {
                         <div class="caption text-center">
 
                             <span class="center-block"><b>Agregue una imagen</b></span>
                             <span class="text-muted"></span>
-                            @if (User.IsInRole("arcNew"))
-                            {
-                                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs " + classModal })
 
-                            }
+                                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs " + classModal })
+            
                         </div>
                     }
                 </div>
