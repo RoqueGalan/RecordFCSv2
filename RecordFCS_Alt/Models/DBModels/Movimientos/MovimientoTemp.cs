@@ -56,6 +56,12 @@ namespace RecordFCS_Alt.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime? FechaRegistro { get; set; }
 
+
+
+        [Display(Name = "Colección")]
+        public string ColeccionTexto { get; set; }
+
+
         [Display(Name = "Observaciones")]
         public string Observaciones { get; set; }
 
@@ -121,7 +127,7 @@ namespace RecordFCS_Alt.Models
 
         [Display(Name = "Cargo")]
         public string Solicitante_Cargo { get; set; }
-        
+
         [Display(Name = "Para la institución")]
         public string Solicitante_Institucion { get; set; }
 

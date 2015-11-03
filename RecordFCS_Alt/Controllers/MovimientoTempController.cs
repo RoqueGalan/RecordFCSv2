@@ -16,21 +16,29 @@ namespace RecordFCS_Alt.Controllers
         private RecordFCSContext db = new RecordFCSContext();
 
         // GET: MovimientoTemp
-        public ActionResult Index()
+        public ActionResult Index(MovimientoTemp MovTemp = null)
         {
-            ViewBag.TipoMovimientoID = new SelectList(db.TipoMovimientos.Where(a=> a.Status).OrderBy(a=> a.Nombre), "TipoMovimientoID", "Nombre");
-
-            var mov = new MovimientoTemp()
-            {
-                TieneExposicion = false
-            };
 
             var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).Select(a => new { a.Nombre, a.UbicacionID }).OrderBy(a => a.Nombre);
-            
+
             ViewBag.UbicacionDestinoID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");
             ViewBag.UbicacionOrigenID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");
 
-            return View(mov);
+            ViewBag.TipoMovimientoID = new SelectList(db.TipoMovimientos.Where(a => a.Status).OrderBy(a => a.Nombre), "TipoMovimientoID", "Nombre",MovTemp.TipoMovimientoID);
+
+            if (MovTemp == null)
+            {
+
+
+                var mov = new MovimientoTemp()
+                {
+                    TieneExposicion = false
+                };
+
+                return View(mov);
+            }
+
+            return View(MovTemp);
         }
 
         // GET: MovimientoTemp/Details/5
@@ -49,15 +57,33 @@ namespace RecordFCS_Alt.Controllers
         }
 
         // GET: MovimientoTemp/Create
-        public ActionResult Crear()
+        public ActionResult Crear(Guid? TipoMovimientoID, bool TieneExposicion)
         {
-            var mov = new MovimientoTemp();
+            var tipoMov = db.TipoMovimientos.Find(TipoMovimientoID);
 
-            
-            ViewBag.UbicacionDestinoID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre");
-            ViewBag.UbicacionOrigenID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre");
+            if (tipoMov != null)
+            {
 
-            return View(mov);
+                var mov = new MovimientoTemp()
+                {
+                    TieneExposicion = TieneExposicion,
+                    TipoMovimientoID = tipoMov.TipoMovimientoID,
+                    TipoMovimiento = tipoMov
+                };
+
+                ViewBag.UbicacionDestinoID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre");
+                ViewBag.UbicacionOrigenID = new SelectList(db.Ubicaciones, "UbicacionID", "Nombre");
+
+                return View(mov);
+            }
+
+            var movTemp = new MovimientoTemp()
+            {
+                TieneExposicion = TieneExposicion
+            };
+
+            return View("Index", movTemp);
+
         }
 
         // POST: MovimientoTemp/Create
