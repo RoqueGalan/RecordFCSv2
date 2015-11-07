@@ -1,0 +1,46 @@
+﻿@model List<RecordFCS_Alt.Models.ViewModels.Item_MovPieza>
+
+@{
+    string NombreLista = ViewBag.NombreLista;
+}
+@*id= renderListaPiezas*@
+
+@switch (NombreLista)
+{
+    case "listaError":
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.FolioPieza
+                </td>
+                <td>
+                    @item.Descripcion
+                </td>
+            </tr>
+        }
+        break;
+
+    default:
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.FolioPieza
+                </td>
+                <td>
+                    @item.Titulo
+                </td>
+                <td>
+                    @item.Autor
+                </td>
+            </tr>
+        }
+        break;
+}
+
+
+
+
+
+

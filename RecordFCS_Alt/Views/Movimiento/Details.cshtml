@@ -1,0 +1,170 @@
+﻿@model RecordFCS_Alt.Models.Movimiento
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Movimiento</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Autorizacion.FechaAutorizacion1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Autorizacion.FechaAutorizacion1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Exposicion.Titulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Exposicion.Titulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Responsable.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Responsable.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seguro.AseguradorNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seguro.AseguradorNombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Solicitante.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Solicitante.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoMovimiento.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoMovimiento.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Transporte.EmpresaNombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Transporte.EmpresaNombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UbicacionDestino.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UbicacionDestino.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UbicacionOrigen.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UbicacionOrigen.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FolioMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FolioMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstadoMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstadoMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaRegistro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaRegistro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaSalida)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaSalida)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaRet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaRet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HoraMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoraMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MinutoMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MinutoMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ColeccionTexto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ColeccionTexto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Observaciones)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Observaciones)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MovientoID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -21,8 +21,9 @@ namespace RecordFCS_Alt.Models
 
         public string Comentario { get; set; }
 
-        public bool Status { get; set; }
+        public bool SeMovio { get; set; } = false;
 
+        public bool EsPendiente { get; set; } = true;
         //Virtuales
         public virtual Pieza Pieza { get; set; }
         public virtual MovimientoTemp MovimientoTemp { get; set; }

@@ -280,10 +280,14 @@ namespace RecordFCS_Alt.Models
 
         public string Temp { get; set; }
 
+        [ForeignKey("Usuario")]
+        public Guid? UsuarioID { get; set; }
+
         //VIRUALES
         public virtual TipoMovimiento TipoMovimiento { get; set; }
         public virtual Ubicacion UbicacionOrigen { get; set; }
         public virtual Ubicacion UbicacionDestino { get; set; }
+        public virtual Usuario Usuario { get; set; }
 
         public virtual ICollection<MovimientoTempPieza> MovimientoTempPiezas { get; set; }
     }

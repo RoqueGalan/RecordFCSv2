@@ -1,9 +1,10 @@
 ﻿@model RecordFCS_Alt.Models.MovimientoTemp
 
 @{
-    ViewBag.PagName = "Crear";
-    ViewBag.CtrlName = "Movimiento";
-    ViewBag.Title = @ViewBag.PagName + " " + ViewBag.CtrlName;
+    ViewBag.PaginaTitulo = "Editar Movimiento";
+    ViewBag.PaginaSubtitulo = Model.Folio;
+
+    ViewBag.Title = @ViewBag.PaginaTitulo + " " + ViewBag.PaginaSubtitulo;
 
     string tipoMov = Model.TipoMovimiento.Nombre;
 
@@ -12,17 +13,17 @@
 
 
 <h3>
-    @ViewBag.PagName
-    <i class="text-muted">@ViewBag.CtrlName</i>
-    <span>@Model.TipoMovimiento.Nombre</span>
+    @ViewBag.PaginaTitulo
+    <i class="text-muted">@ViewBag.PaginaSubtitulo</i>
 </h3>
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink("Home", "Index", "Home")</li>
     <li>Obra</li>
     <li>@Html.ActionLink("Movimientos", "Index", "MovimientoTemp")</li>
-    <li class="active">@ViewBag.PagName</li>
-    <li class="active">@Model.TipoMovimiento.Nombre</li>
+    <li>@Html.ActionLink("Detalles", "Detalles", "MovimientoTemp", new { id = Model.MovimientoTempID},null)</li>
+    <li class="active">Editar</li>
+    <li class="active">@Model.Folio</li>
 </ol>
 
 <div class="row">
@@ -33,11 +34,13 @@
             <div class="col-lg-5 col-md-5 col-sm-5">
 
                 @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.MovimientoTempID)
                 @Html.HiddenFor(model => model.Folio)
                 @Html.HiddenFor(model => model.EstadoMovimiento)
                 @Html.HiddenFor(model => model.TipoMovimientoID)
-                @Html.HiddenFor(model => model.TieneExposicion)
+                @*@Html.HiddenFor(model => model.TieneExposicion)*@
                 @Html.HiddenFor(model => model.FechaRegistro)
+                @Html.HiddenFor(model => model.UbicacionOrigenID)
 
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -50,16 +53,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.UbicacionOrigenID, null, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            <div class="input-group">
-                                @Html.DropDownList("UbicacionOrigenID", null, "- Selecciona -", htmlAttributes: new { @class = "form-control input-sm", required = "" })
-                                <span class="input-group-addon"></span>
-                                <input id="buscar_UbicacionOrigenID" type="text" placeholder="Buscar ubicación" class="form-control input-sm" />
-                                <span id="btnAccion_UbicacionOrigenID" name="Buscar" class="input-group-addon btn btn-primary btn-sm">
-                                    <span class="fa fa-search"></span>
-                                </span>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.UbicacionOrigenID, "", new { @class = "text-danger" })
-                            <p class="help-block">NOTA: Al seleccionar la ubicación origen, solo se mostratan las Obras/Piezas que coincidan con la misma.</p>
+                           <span>@Model.UbicacionOrigen.Nombre</span>
                         </div>
                     </div>
 
@@ -298,7 +292,7 @@
                         @Html.LabelFor(model => model.FechaSalida, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <div class="input-group date" id="FechaSalidaDTP">
-                                @Html.EditorFor(model => model.FechaSalida, new { htmlAttributes = new { @class = "form-control input-sm", readOnly = "", required = "" } })
+                                @Html.TextBoxFor(model => model.FechaSalida, new { @class = "form-control input-sm", readOnly = "", required = "" })
                                 <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -309,6 +303,7 @@
                         <script type="text/javascript">
                             $(function () {
                                 $('#FechaSalidaDTP').datetimepicker({
+                                    //defaultDate: '@Html.DisplayFor(model => model.FechaSalida)',
                                     format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
                                     toolbarPlacement: 'top',
                                     showTodayButton: true,
@@ -718,7 +713,7 @@
                         @Html.LabelFor(model => model.Exposicion_FechaInicial, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <div class="input-group date" id="Exposicion_FechaInicialDTP">
-                                @Html.EditorFor(model => model.Exposicion_FechaInicial, new { htmlAttributes = new { @class = "form-control input-sm", readOnly = "", required = "" } })
+                                @Html.TextBoxFor(model => model.Exposicion_FechaInicial, new { @class = "form-control input-sm", readOnly = "", required = "" })
                                 <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -744,7 +739,7 @@
                         @Html.LabelFor(model => model.Exposicion_FechaFinal, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <div class="input-group date" id="Exposicion_FechaFinalDTP">
-                                @Html.EditorFor(model => model.Exposicion_FechaFinal, new { htmlAttributes = new { @class = "form-control input-sm", readOnly = "", required = "" } })
+                                @Html.TextBoxFor(model => model.Exposicion_FechaFinal, new { @class = "form-control input-sm", readOnly = "", required = "" })
                                 <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -802,7 +797,7 @@
                         @Html.LabelFor(model => model.Responsable_FechaSalida, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <div class="input-group date" id="Responsable_FechaSalidaDTP">
-                                @Html.EditorFor(model => model.Responsable_FechaSalida, new { htmlAttributes = new { @class = "form-control input-sm", readOnly = "", required = "" } })
+                                @Html.TextBoxFor(model => model.Responsable_FechaSalida, new { @class = "form-control input-sm", readOnly = "", required = "" })
                                 <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -865,7 +860,7 @@
                         @Html.LabelFor(model => model.Autorizacion_Fecha, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <div class="input-group date" id="Autorizacion_FechaDTP">
-                                @Html.EditorFor(model => model.Autorizacion_Fecha, new { htmlAttributes = new { @class = "form-control input-sm", readOnly = "", required = "" } })
+                                @Html.TextBoxFor(model => model.Autorizacion_Fecha, new { @class = "form-control input-sm", readOnly = "", required = "" })
                                 <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -970,7 +965,7 @@
                         @Html.LabelFor(model => model.Seguro_FechaInicial, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <div class="input-group date" id="Seguro_FechaInicialDTP">
-                                @Html.EditorFor(model => model.Seguro_FechaInicial, new { htmlAttributes = new { @class = "form-control input-sm", readOnly = "", required = "" } })
+                                @Html.TextBoxFor(model => model.Seguro_FechaInicial, new { @class = "form-control input-sm", readOnly = "", required = "" })
                                 <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -999,7 +994,7 @@
                         @Html.LabelFor(model => model.Seguro_FechaFinal, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <div class="input-group date" id="Seguro_FechaFinalDTP">
-                                @Html.EditorFor(model => model.Seguro_FechaFinal, new { htmlAttributes = new { @class = "form-control input-sm", readOnly = "", required = "" } })
+                                @Html.TextBoxFor(model => model.Seguro_FechaFinal, new { @class = "form-control input-sm", readOnly = "", required = "" })
                                 <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
                                     <span class="fa fa-calendar"></span>
                                 </div>
@@ -1076,7 +1071,7 @@
 
 
             <div class="col-lg-7 col-md-7 col-sm-7">
-                @{ Html.RenderAction("FormCrear", "MovimientoTempPieza", new { id = "listaTemp_" + Model.TipoMovimientoID }); }
+                @{ Html.RenderAction("FormCrear", "MovimientoTempPieza", new { id = Model.MovimientoTempID }); }
             </div>
         </div>
                     }

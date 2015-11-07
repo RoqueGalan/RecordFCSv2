@@ -155,6 +155,7 @@
     <Compile Include="Controllers\MostrarAtributoController.cs" />
     <Compile Include="Controllers\MovimientoController.cs" />
     <Compile Include="Controllers\MovimientoTempController.cs" />
+    <Compile Include="Controllers\MovimientoTempPiezaController.cs" />
     <Compile Include="Controllers\ObraController.cs" />
     <Compile Include="Controllers\PermisoController.cs" />
     <Compile Include="Controllers\PiezaController.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="Models\ViewModels\ItemReporte.cs" />
     <Compile Include="Models\ViewModels\Item_Ficha.cs" />
     <Compile Include="Models\ViewModels\ItemObraReporte.cs" />
+    <Compile Include="Models\ViewModels\Item_MovPieza.cs" />
     <Compile Include="Models\ViewModels\OpcionesImprimir.cs" />
     <Compile Include="Models\ViewModels\itemPiezaMini.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -575,9 +577,18 @@
     <Content Include="Views\MigracionCEHM\Index.cshtml" />
     <Content Include="Views\MovimientoTemp\Crear.cshtml" />
     <Content Include="Views\MovimientoTemp\Delete.cshtml" />
-    <Content Include="Views\MovimientoTemp\Details.cshtml" />
+    <Content Include="Views\MovimientoTemp\Detalles.cshtml" />
     <Content Include="Views\MovimientoTemp\Edit.cshtml" />
     <Content Include="Views\MovimientoTemp\Index.cshtml" />
+    <Content Include="Views\MovimientoTemp\_Lista.cshtml" />
+    <Content Include="Views\MovimientoTempPieza\_FormCrear.cshtml" />
+    <Content Include="Views\MovimientoTempPieza\Delete.cshtml" />
+    <Content Include="Views\MovimientoTempPieza\Details.cshtml" />
+    <Content Include="Views\MovimientoTempPieza\Index.cshtml" />
+    <Content Include="Views\MovimientoTempPieza\_ListaTableForm.cshtml" />
+    <Content Include="Views\MovimientoTemp\Editar.cshtml" />
+    <Content Include="Views\MovimientoTempPieza\_PiezasAdicionalesPregunta.cshtml" />
+    <Content Include="Views\MovimientoTempPieza\_ListaFormCrear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -14,7 +14,7 @@
 <ol class="breadcrumb">
     <li>@Html.ActionLink("Home", "Index", "Home")</li>
     <li>@ViewBag.CtrlName</li>
-    <li class="active">@ViewBag.PagName</li>
+    <li class="active">@Html.ActionLink("Movimientos", "Index", "MovimientoTemp")</li>
 </ol>
 
 <div id="renderMenuCrearMovimiento">
@@ -73,7 +73,7 @@
 
     <div class="col-md-offset-1">
         
-        @using (Html.BeginForm("BuscarMovimiento", "MovimientoTemp", FormMethod.Get, new { @Class = "formConsultar form-center" }))
+        @using (Html.BeginForm("BuscarMovimientos", "MovimientoTemp", FormMethod.Get, new { @Class = "formConsultar form-center" }))
         {
             @Html.AntiForgeryToken()
 
@@ -87,9 +87,9 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.Label("PiezaID", "Pieza N° Folio", htmlAttributes: new { @class = "control-label col-md-2 " })
+                    @Html.Label("FolioObraPieza", "Pieza N° Folio", htmlAttributes: new { @class = "control-label col-md-2 " })
                     <div class="col-md-7">
-                        @Html.TextBox("PiezaID", null, new { @Class = "form-control"})
+                        @Html.TextBox("FolioObraPieza", null, new { @Class = "form-control"})
                     </div>
                 </div>
 
@@ -113,7 +113,6 @@
                             <script type="text/javascript">
 
                                     $(function () {
-
                                         $('#FechaInicialDTP').datetimepicker({
                                             
                                             //minDate: fechaMin, //limitar que no se seleccione fechas pasadas a hoy
@@ -130,15 +129,6 @@
                                             ignoreReadonly: true,
                                             useCurrent: false //Important! See issue #1075
                                         });
-
-                                        $('#FechaInicialDTP').on("dp.change", function (e) {
-                                            $('#FechaInicial').trigger("input");
-                                        });
-
-                                        $('#FechaInicialDTP').on("dp.update", function (e) {
-                                            $('#FechaInicial').trigger("input");
-                                        });
-
                                     });
                             </script>
 
@@ -173,15 +163,6 @@
                                             ignoreReadonly: true,
                                             useCurrent: false //Important! See issue #1075
                                         });
-
-                                        $('#FechaFinalDTP').on("dp.change", function (e) {
-                                            $('#FechaFinal').trigger("input");
-                                        });
-
-                                        $('#FechaFinalDTP').on("dp.update", function (e) {
-                                            $('#FechaFinal').trigger("input");
-                                        });
-
 
                                         $("#FechaInicialDTP").on("dp.change", function (e) {
                                             $('#FechaFinalDTP').data("DateTimePicker").minDate(e.date);
@@ -224,12 +205,12 @@
 
 
 
-                <div class="form-group">
+                @*<div class="form-group">
                     @Html.LabelFor(model => model.EstadoMovimiento, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-7">
                         @Html.EnumDropDownListFor(model => model.EstadoMovimiento, htmlAttributes: new { @class = "form-control" })
                     </div>
-                </div>
+                </div>*@
 
 
                 <div class="form-group">
@@ -246,5 +227,25 @@
 
 </div>
 
-<div id="renderListaMovimientos"></div>
+<div id="renderListaMovimientos">
+</div>
 
+
+<script>
+    $('form.formConsultar').submit(function (e) {
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: $(this).serialize(),
+            success: function (result) {
+                $('#renderListaMovimientos').html(result);//  Campo que actualizara
+                $('#renderMenuCrearMovimiento').html('');
+                $('#alertasDiv').load('/Base/_Alertas');
+            }
+        });
+        return false;
+    });
+
+
+</script>

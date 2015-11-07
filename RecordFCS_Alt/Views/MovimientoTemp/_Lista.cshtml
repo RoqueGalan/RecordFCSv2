@@ -1,0 +1,111 @@
+﻿@model PagedList.IPagedList<RecordFCS_Alt.Models.MovimientoTemp>
+@using PagedList.Mvc;
+@using RecordFCS_Alt.Helpers
+
+<div class="text-center">
+    <h3 class="animated flipInX">Resultados</h3>
+    <div class="pull-right">
+        Total de Registros:
+        <span class="badge" data-toggle="tooltip" title="Total de registros">@Model.TotalItemCount</span>
+    </div>
+</div>
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th class="col-lg-1 col-md-1 col-sm-1">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Folio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().FechaSalida)
+        </th>
+        <th class="col-lg-2 col-md-2 col-sm-3">
+            Ubicación Origen
+        </th>
+        <th class="col-lg-2 col-md-2 col-sm-3">
+            Ubicación Destino
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1">
+            Movimiento
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().EstadoMovimiento)
+        </th>
+        <th class="col-lg-1 col-md-1 col-sm-1">
+            Piezas
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(Html.DisplayFor(modelItem => item.Folio).ToString(), "Detalles", new { id = item.MovimientoTempID })
+            </td>
+            <td>
+                @*@item.FechaSalida.Value.ToLongDateString() a las
+                @item.FechaSalida.Value.ToShortTimeString()*@
+                @Html.DisplayFor(modelItem => item.FechaSalida)
+
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UbicacionOrigen.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UbicacionDestino.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoMovimiento.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstadoMovimiento)
+            </td>
+            <td>
+                @item.MovimientoTempPiezas.Count
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div id="contentPager" class="text-center center-block">
+    @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina }), new PagedListRenderOptions { LinkToFirstPageFormat = "<< Inicio", LinkToPreviousPageFormat = "< Anterior", LinkToNextPageFormat = "Siguiente >", LinkToLastPageFormat = "Final >>", UlElementClasses = new[] { "pagination", "pagination-sm" } })
+</div>
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+
+<script type="text/javascript">
+
+    //Paginador cargar vista parcial en el div
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("#contentPager a").on("click", function (e) {
+
+            if ($(this).attr("href")) {
+
+                var liga = $(this).attr("href").split('?');
+                var pag = liga[1].split('=');
+
+                $('#pag').val(pag[1]);
+
+                var form = $('form.formConsultar');
+
+                $.ajax({
+                    url: liga[0],
+                    type: 'GET',
+                    data: form.serialize(),
+                    success: function (result) {
+
+                        $('#renderlistaMovimientos').html(result);//  Campo que actualizara
+                        $('#renderMenuCrearMovimiento').html('');
+                        $('#alertasDiv').load('/Base/_Alertas');
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>

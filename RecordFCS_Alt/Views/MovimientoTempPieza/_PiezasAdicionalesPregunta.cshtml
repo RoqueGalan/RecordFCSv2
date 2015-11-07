@@ -1,0 +1,25 @@
+﻿//@model RecordFCS_Alt.Models.Usuario
+
+@{
+    ViewBag.Titulo = "Pregunta";
+    ViewBag.Subtitulo = "";
+    ViewBag.Title = ViewBag.Titulo + " " + ViewBag.Subtitulo;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+        <b>@ViewBag.Titulo</b>
+        <i class="text-muted">@ViewBag.Subtitulo</i>
+    </h4>
+</div>
+
+
+<div class="modal-body">
+    <h1>PRegunta por tener la pieza mas piezas</h1>
+</div>
+
+
+<div class="modal-footer">
+    <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+</div>
