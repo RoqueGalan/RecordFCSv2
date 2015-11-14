@@ -228,6 +228,11 @@
     <Compile Include="Models\DBModels\Seguridad\Usuario.cs" />
     <Compile Include="Models\Migraciones\RowArchivo.cs" />
     <Compile Include="Models\Migraciones\RowUsuario.cs" />
+    <Compile Include="Models\Reportes\MovimientoTemp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MovimientoTemp.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Models\ViewModels\itemListaBasicaDefault.cs" />
     <Compile Include="Models\ViewModels\itemPiezaGenerica.cs" />
     <Compile Include="Models\ViewModels\itemPiezaGenericaCampo.cs" />
@@ -242,6 +247,7 @@
   <ItemGroup>
     <Content Include="Content\alertas.css" />
     <Content Include="Content\animate.css" />
+    <Content Include="Content\boosstrap-checkbox.css" />
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-tabsVertical.css" />
@@ -328,6 +334,17 @@
     <Content Include="Content\fonts\presidenciafirme-webfont.otf" />
     <Content Include="Content\fonts\presidenciafirme-webfont.ttf" />
     <Content Include="Content\fonts\presidenciafirme-webfont.woff" />
+    <Content Include="Models\Reportes\MovimientoTemp.xsc">
+      <DependentUpon>MovimientoTemp.xsd</DependentUpon>
+    </Content>
+    <None Include="Models\Reportes\MovimientoTemp.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MovimientoTemp.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Models\Reportes\MovimientoTemp.xss">
+      <DependentUpon>MovimientoTemp.xsd</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Record_Alt.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\atributoLista.js" />
@@ -594,6 +611,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\docxPieza\" />
     <Folder Include="Models\DBModels\Historial\" />
+    <Folder Include="ReportesCrystal\" />
     <Folder Include="Views\ListaPieza\" />
   </ItemGroup>
   <ItemGroup>

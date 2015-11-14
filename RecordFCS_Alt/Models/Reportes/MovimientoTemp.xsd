@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MovimientoTemp" targetNamespace="http://tempuri.org/MovimientoTemp.xsd" xmlns:mstns="http://tempuri.org/MovimientoTemp.xsd" xmlns="http://tempuri.org/MovimientoTemp.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="MovimientoTemp" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="MovimientoTemp" msprop:Generator_UserDSName="MovimientoTemp">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="MovimientoFormato" msprop:Generator_TableClassName="MovimientoFormatoDataTable" msprop:Generator_TableVarName="tableMovimientoFormato" msprop:Generator_TablePropName="MovimientoFormato" msprop:Generator_RowDeletingName="MovimientoFormatoRowDeleting" msprop:Generator_RowChangingName="MovimientoFormatoRowChanging" msprop:Generator_RowEvHandlerName="MovimientoFormatoRowChangeEventHandler" msprop:Generator_RowDeletedName="MovimientoFormatoRowDeleted" msprop:Generator_UserTableName="MovimientoFormato" msprop:Generator_RowChangedName="MovimientoFormatoRowChanged" msprop:Generator_RowEvArgName="MovimientoFormatoRowChangeEvent" msprop:Generator_RowClassName="MovimientoFormatoRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MovimientoID" msprop:Generator_ColumnVarNameInTable="columnMovimientoID" msprop:Generator_ColumnPropNameInRow="MovimientoID" msprop:Generator_ColumnPropNameInTable="MovimientoIDColumn" msprop:Generator_UserColumnName="MovimientoID" type="xs:string" />
+              <xs:element name="TipoMovimiento" msprop:Generator_ColumnVarNameInTable="columnTipoMovimiento" msprop:Generator_ColumnPropNameInRow="TipoMovimiento" msprop:Generator_ColumnPropNameInTable="TipoMovimientoColumn" msprop:Generator_UserColumnName="TipoMovimiento" type="xs:string" minOccurs="0" />
+              <xs:element name="Estado" msprop:Generator_ColumnVarNameInTable="columnEstado" msprop:Generator_ColumnPropNameInRow="Estado" msprop:Generator_ColumnPropNameInTable="EstadoColumn" msprop:Generator_UserColumnName="Estado" type="xs:string" minOccurs="0" />
+              <xs:element name="FechaRegistro" msprop:Generator_ColumnVarNameInTable="columnFechaRegistro" msprop:Generator_ColumnPropNameInRow="FechaRegistro" msprop:Generator_ColumnPropNameInTable="FechaRegistroColumn" msprop:Generator_UserColumnName="FechaRegistro" type="xs:string" minOccurs="0" />
+              <xs:element name="ImagenFondo" msprop:Generator_ColumnVarNameInTable="columnImagenFondo" msprop:Generator_ColumnPropNameInRow="ImagenFondo" msprop:Generator_ColumnPropNameInTable="ImagenFondoColumn" msprop:Generator_UserColumnName="ImagenFondo" type="xs:string" minOccurs="0" />
+              <xs:element name="ImagenLogo" msprop:Generator_ColumnVarNameInTable="columnImagenLogo" msprop:Generator_ColumnPropNameInRow="ImagenLogo" msprop:Generator_ColumnPropNameInTable="ImagenLogoColumn" msprop:Generator_UserColumnName="ImagenLogo" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PiezaFormato" msprop:Generator_TableClassName="PiezaFormatoDataTable" msprop:Generator_TableVarName="tablePiezaFormato" msprop:Generator_TablePropName="PiezaFormato" msprop:Generator_RowDeletingName="PiezaFormatoRowDeleting" msprop:Generator_RowChangingName="PiezaFormatoRowChanging" msprop:Generator_RowEvHandlerName="PiezaFormatoRowChangeEventHandler" msprop:Generator_RowDeletedName="PiezaFormatoRowDeleted" msprop:Generator_UserTableName="PiezaFormato" msprop:Generator_RowChangedName="PiezaFormatoRowChanged" msprop:Generator_RowEvArgName="PiezaFormatoRowChangeEvent" msprop:Generator_RowClassName="PiezaFormatoRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PiezaID" msprop:Generator_ColumnVarNameInTable="columnPiezaID" msprop:Generator_ColumnPropNameInRow="PiezaID" msprop:Generator_ColumnPropNameInTable="PiezaIDColumn" msprop:Generator_UserColumnName="PiezaID" type="xs:string" />
+              <xs:element name="Imagen" msprop:Generator_ColumnVarNameInTable="columnImagen" msprop:Generator_ColumnPropNameInRow="Imagen" msprop:Generator_ColumnPropNameInTable="ImagenColumn" msprop:Generator_UserColumnName="Imagen" type="xs:string" minOccurs="0" />
+              <xs:element name="FolioObra" msprop:Generator_ColumnVarNameInTable="columnFolioObra" msprop:Generator_ColumnPropNameInRow="FolioObra" msprop:Generator_ColumnPropNameInTable="FolioObraColumn" msprop:Generator_UserColumnName="FolioObra" type="xs:string" minOccurs="0" />
+              <xs:element name="FolioPieza" msprop:Generator_ColumnVarNameInTable="columnFolioPieza" msprop:Generator_ColumnPropNameInRow="FolioPieza" msprop:Generator_ColumnPropNameInTable="FolioPiezaColumn" msprop:Generator_UserColumnName="FolioPieza" type="xs:string" minOccurs="0" />
+              <xs:element name="ObraID" msprop:Generator_ColumnVarNameInTable="columnObraID" msprop:Generator_ColumnPropNameInRow="ObraID" msprop:Generator_ColumnPropNameInTable="ObraIDColumn" msprop:Generator_UserColumnName="ObraID" type="xs:string" minOccurs="0" />
+              <xs:element name="PiezasTotales" msprop:Generator_ColumnVarNameInTable="columnPiezasTotales" msprop:Generator_ColumnPropNameInRow="PiezasTotales" msprop:Generator_ColumnPropNameInTable="PiezasTotalesColumn" msprop:Generator_UserColumnName="PiezasTotales" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PiezaDetalleFormato" msprop:Generator_TableClassName="PiezaDetalleFormatoDataTable" msprop:Generator_TableVarName="tablePiezaDetalleFormato" msprop:Generator_TablePropName="PiezaDetalleFormato" msprop:Generator_RowDeletingName="PiezaDetalleFormatoRowDeleting" msprop:Generator_RowChangingName="PiezaDetalleFormatoRowChanging" msprop:Generator_RowEvHandlerName="PiezaDetalleFormatoRowChangeEventHandler" msprop:Generator_RowDeletedName="PiezaDetalleFormatoRowDeleted" msprop:Generator_UserTableName="PiezaDetalleFormato" msprop:Generator_RowChangedName="PiezaDetalleFormatoRowChanged" msprop:Generator_RowEvArgName="PiezaDetalleFormatoRowChangeEvent" msprop:Generator_RowClassName="PiezaDetalleFormatoRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PiezaID" msprop:Generator_ColumnVarNameInTable="columnPiezaID" msprop:Generator_ColumnPropNameInRow="PiezaID" msprop:Generator_ColumnPropNameInTable="PiezaIDColumn" msprop:Generator_UserColumnName="PiezaID" type="xs:string" minOccurs="0" />
+              <xs:element name="Orden" msprop:Generator_ColumnVarNameInTable="columnOrden" msprop:Generator_ColumnPropNameInRow="Orden" msprop:Generator_ColumnPropNameInTable="OrdenColumn" msprop:Generator_UserColumnName="Orden" type="xs:string" minOccurs="0" />
+              <xs:element name="NombreCampo" msprop:Generator_ColumnVarNameInTable="columnNombreCampo" msprop:Generator_ColumnPropNameInRow="NombreCampo" msprop:Generator_ColumnPropNameInTable="NombreCampoColumn" msprop:Generator_UserColumnName="NombreCampo" type="xs:string" minOccurs="0" />
+              <xs:element name="ValorCampo" msprop:Generator_ColumnVarNameInTable="columnValorCampo" msprop:Generator_ColumnPropNameInRow="ValorCampo" msprop:Generator_ColumnPropNameInTable="ValorCampoColumn" msprop:Generator_UserColumnName="ValorCampo" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:MovimientoFormato" />
+      <xs:field xpath="mstns:MovimientoID" />
+    </xs:unique>
+    <xs:unique name="PiezaFormatoKey1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:PiezaFormato" />
+      <xs:field xpath="mstns:PiezaID" />
+    </xs:unique>
+  </xs:element>
+  <xs:annotation>
+    <xs:appinfo>
+      <msdata:Relationship name="PiezaFormato_PiezaDetalleFormato" msdata:parent="PiezaFormato" msdata:child="PiezaDetalleFormato" msdata:parentkey="PiezaID" msdata:childkey="PiezaID" msprop:Generator_UserChildTable="PiezaDetalleFormato" msprop:Generator_ChildPropName="GetPiezaDetalleFormatoRows" msprop:Generator_UserRelationName="PiezaFormato_PiezaDetalleFormato" msprop:Generator_ParentPropName="PiezaFormatoRow" msprop:Generator_RelationVarName="relationPiezaFormato_PiezaDetalleFormato" msprop:Generator_UserParentTable="PiezaFormato" />
+    </xs:appinfo>
+  </xs:annotation>
+</xs:schema>

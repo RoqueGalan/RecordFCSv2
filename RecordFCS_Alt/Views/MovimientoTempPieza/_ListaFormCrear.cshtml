@@ -12,10 +12,36 @@
         {
             <tr>
                 <td>
+                    @if (item.ExisteEnMov && !item.EsPendiente && item.SeMovio)
+                    {
+                        <span class="fa fa-lock"></span>
+                    }
                     @item.FolioPieza
                 </td>
                 <td>
-                    @item.Descripcion
+                    @item.Comentario
+
+                    <div class="pull-right">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" class="check-error"  value="@item.PiezaID">
+                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            </label>
+                        </div>
+
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].PiezaID", item.PiezaID)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].EnError", item.EnError)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].EsPendiente", item.EsPendiente)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].SeMovio", item.SeMovio)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].Comentario", item.Comentario)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].FolioObra", item.FolioObra)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].FolioPieza", item.FolioPieza)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].Titulo", item.Titulo)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].ExisteEnMov", item.ExisteEnMov)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].EsUltimo", item.EsUltimo)
+
+
+                    </div>
                 </td>
             </tr>
         }
@@ -26,6 +52,20 @@
         {
             <tr>
                 <td>
+
+
+
+
+                    @*@if (!item.EsPendiente && item.SeMovio)
+                    {
+                        <span class="fa fa-lock"></span>
+                    }
+
+                    @if (!item.ExisteEnMov)
+                    {
+                        <span class="fa fa-plus"></span>
+                    }*@
+
                     @item.FolioPieza
                 </td>
                 <td>
@@ -33,6 +73,43 @@
                 </td>
                 <td>
                     @item.Autor
+
+                    <div class="pull-right">
+
+                        @if (item.EsUltimo)
+                        {
+                            //item.EsPendiente && !item.SeMovio && 
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" class="check-aceptar" value="@item.PiezaID">
+                                    <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                </label>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="fa fa-lock"></span>
+                        }
+
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].Comentario", item.Comentario)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].EnError", item.EnError)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].EsPendiente", item.EsPendiente)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].ExisteEnMov", item.ExisteEnMov)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].FolioObra", item.FolioObra)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].FolioPieza", item.FolioPieza)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].ObraID", item.ObraID)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].PiezaID", item.PiezaID)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].SeMovio", item.SeMovio)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].Titulo", item.Titulo)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].UbicacionID", item.UbicacionID)
+                        @Html.Hidden("ListaPiezas[" + item.Indice + "].EsUltimo", item.EsUltimo)
+
+
+
+
+
+
+                    </div>
                 </td>
             </tr>
         }
@@ -40,6 +117,12 @@
 }
 
 
+
+<script type="text/javascript">
+    $(function () {
+        $('#badge_@NombreLista').html('@Model.Count');
+    });
+</script>
 
 
 

@@ -1,27 +1,49 @@
 ﻿@model RecordFCS_Alt.Models.MovimientoTemp
+@using RecordFCS_Alt.Models
 
 @{
-    ViewBag.PaginaTitulo = "Editar Movimiento";
-    ViewBag.PaginaSubtitulo = Model.Folio;
+            ViewBag.PaginaTitulo = "Editar Movimiento";
+            ViewBag.PaginaSubtitulo = Model.Folio;
 
-    ViewBag.Title = @ViewBag.PaginaTitulo + " " + ViewBag.PaginaSubtitulo;
+            ViewBag.Title = @ViewBag.PaginaTitulo + " " + ViewBag.PaginaSubtitulo;
 
-    string tipoMov = Model.TipoMovimiento.Nombre;
+            string tipoMov = Model.TipoMovimiento.Nombre;
 
+            //revalidar piezas en movimiento
+            //foreach (var item in Model.MovimientoTempPiezas)
+            //{
+            //  @Url.Action("ValidarPieza", "MovimientoTempPieza", null);
 
+            //}
+            string claseMov = "";
+}
+
+@switch (Model.EstadoMovimiento)
+{
+    case EstadoMovimientoTemp.Concluido:
+        claseMov = "text-success";
+        break;
+    case EstadoMovimientoTemp.Cancelado:
+        claseMov = "text-danger";
+        break;
+    default:
+        claseMov = "text-muted";
+        break;
 }
 
 
+
 <h3>
-    @ViewBag.PaginaTitulo
-    <i class="text-muted">@ViewBag.PaginaSubtitulo</i>
+    <b>@ViewBag.PaginaTitulo</b>
+    <i class="@claseMov">@ViewBag.PaginaSubtitulo</i>
 </h3>
+
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink("Home", "Index", "Home")</li>
     <li>Obra</li>
     <li>@Html.ActionLink("Movimientos", "Index", "MovimientoTemp")</li>
-    <li>@Html.ActionLink("Detalles", "Detalles", "MovimientoTemp", new { id = Model.MovimientoTempID},null)</li>
+    <li>@Html.ActionLink("Detalles", "Detalles", "MovimientoTemp", new { id = Model.MovimientoTempID }, null)</li>
     <li class="active">Editar</li>
     <li class="active">@Model.Folio</li>
 </ol>
@@ -38,7 +60,7 @@
                 @Html.HiddenFor(model => model.Folio)
                 @Html.HiddenFor(model => model.EstadoMovimiento)
                 @Html.HiddenFor(model => model.TipoMovimientoID)
-                @*@Html.HiddenFor(model => model.TieneExposicion)*@
+                @Html.HiddenFor(model => model.TieneExposicion)
                 @Html.HiddenFor(model => model.FechaRegistro)
                 @Html.HiddenFor(model => model.UbicacionOrigenID)
 
@@ -53,7 +75,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.UbicacionOrigenID, null, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                           <span>@Model.UbicacionOrigen.Nombre</span>
+                            <span>@Model.UbicacionOrigen.Nombre</span>
                         </div>
                     </div>
 
@@ -66,9 +88,9 @@
                                 <input id="buscar_UbicacionDestinoID" type="text" placeholder="Buscar ubicación" class="form-control input-sm" />
                                 @if (User.IsInRole("ubiNew"))
                                 {
-                                <span class="input-group-addon">
-                                    <input type="checkbox" id="checkAdd_UbicacionDestinoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
-                                </span>
+                                    <span class="input-group-addon">
+                                        <input type="checkbox" id="checkAdd_UbicacionDestinoID" class="btnCheckAdd" data-toggle="tooltip" data-title="Buscar/Guardar">
+                                    </span>
                                 }
                                 <span id="btnAccion_UbicacionDestinoID" name="Buscar" class="input-group-addon btn btn-primary btn-sm">
                                     <span class="fa fa-search"></span>
@@ -358,78 +380,78 @@
 
                     @if (tipoMov != "Externo" && tipoMov != "Traslado")
                     {
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Solicitante_Institucion, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Solicitante_Institucion, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Solicitante_Institucion, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Solicitante_Institucion, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Solicitante_Institucion, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Solicitante_Institucion, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
                     }
                     else
                     {
-                    @Html.HiddenFor(model => model.Solicitante_Institucion)
+                        @Html.HiddenFor(model => model.Solicitante_Institucion)
                     }
 
                     @if (tipoMov != "Externo" && tipoMov != "Traslado")
                     {
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Solicitante_Representante, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Solicitante_Representante, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Solicitante_Representante, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Solicitante_Representante, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Solicitante_Representante, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Solicitante_Representante, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
                     }
                     else
                     {
-                    @Html.HiddenFor(model => model.Solicitante_Representante)
+                        @Html.HiddenFor(model => model.Solicitante_Representante)
                     }
 
 
                     @if (tipoMov != "Externo" && tipoMov != "Traslado")
                     {
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Solicitante_RepresentanteCargo, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Solicitante_RepresentanteCargo, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Solicitante_RepresentanteCargo, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Solicitante_RepresentanteCargo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Solicitante_RepresentanteCargo, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Solicitante_RepresentanteCargo, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
                     }
                     else
                     {
-                    @Html.HiddenFor(model => model.Solicitante_RepresentanteCargo)
+                        @Html.HiddenFor(model => model.Solicitante_RepresentanteCargo)
                     }
 
                     @if (tipoMov != "Externo" && tipoMov != "Traslado")
                     {
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Solicitante_Sede, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Solicitante_Sede, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Solicitante_Sede, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Solicitante_Sede, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Solicitante_Sede, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Solicitante_Sede, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
                     }
                     else
                     {
-                    @Html.HiddenFor(model => model.Solicitante_Sede)
+                        @Html.HiddenFor(model => model.Solicitante_Sede)
                     }
 
                     @if (tipoMov != "Externo" && tipoMov != "Traslado")
                     {
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Solicitante_PaisEstado, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Solicitante_PaisEstado, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Solicitante_PaisEstado, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Solicitante_PaisEstado, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Solicitante_PaisEstado, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Solicitante_PaisEstado, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
                     }
                     else
                     {
-                    @Html.HiddenFor(model => model.Solicitante_PaisEstado)
+                        @Html.HiddenFor(model => model.Solicitante_PaisEstado)
                     }
 
 
@@ -437,224 +459,224 @@
                     <div class="row">
                         @if (tipoMov != "Externo" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_DictamenCondicionEspacio, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_DictamenCondicionEspacio)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_DictamenCondicionEspacio, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_DictamenCondicionEspacio, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_DictamenCondicionEspacio)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_DictamenCondicionEspacio, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_DictamenCondicionEspacio)
+                            @Html.HiddenFor(model => model.Solicitante_DictamenCondicionEspacio)
                         }
 
                         @if (tipoMov != "Externo" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_DictamenSeguridad, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_DictamenSeguridad)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_DictamenSeguridad, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_DictamenSeguridad, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_DictamenSeguridad)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_DictamenSeguridad, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_DictamenSeguridad)
+                            @Html.HiddenFor(model => model.Solicitante_DictamenSeguridad)
                         }
 
 
                         @if (tipoMov != "Externo" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_PeticionRecibida, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_PeticionRecibida)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_PeticionRecibida, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_PeticionRecibida, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_PeticionRecibida)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_PeticionRecibida, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_PeticionRecibida)
+                            @Html.HiddenFor(model => model.Solicitante_PeticionRecibida)
                         }
 
                         @if (tipoMov != "Externo" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_FacilityReport, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_FacilityReport)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_FacilityReport, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_FacilityReport, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_FacilityReport)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_FacilityReport, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_FacilityReport)
+                            @Html.HiddenFor(model => model.Solicitante_FacilityReport)
                         }
 
                         @if (tipoMov != "Externo")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_RevisionGuion, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_RevisionGuion)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_RevisionGuion, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_RevisionGuion, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_RevisionGuion)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_RevisionGuion, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_RevisionGuion)
+                            @Html.HiddenFor(model => model.Solicitante_RevisionGuion)
                         }
 
                         @if (tipoMov != "Externo" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_CartaAceptacion, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_CartaAceptacion)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_CartaAceptacion, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_CartaAceptacion, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_CartaAceptacion)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_CartaAceptacion, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_CartaAceptacion)
+                            @Html.HiddenFor(model => model.Solicitante_CartaAceptacion)
                         }
 
                         @if (tipoMov != "Externo" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_ListaAvaluo, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_ListaAvaluo)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_ListaAvaluo, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_ListaAvaluo, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_ListaAvaluo)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_ListaAvaluo, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_ListaAvaluo)
+                            @Html.HiddenFor(model => model.Solicitante_ListaAvaluo)
                         }
 
                         @if (tipoMov != "Externo" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_ContratoComodato, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_ContratoComodato)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_ContratoComodato, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_ContratoComodato, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_ContratoComodato)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_ContratoComodato, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_ContratoComodato)
+                            @Html.HiddenFor(model => model.Solicitante_ContratoComodato)
                         }
 
                         @if (tipoMov != "Externo" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_TramitesFianza, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_TramitesFianza)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_TramitesFianza, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_TramitesFianza, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_TramitesFianza)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_TramitesFianza, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_TramitesFianza)
+                            @Html.HiddenFor(model => model.Solicitante_TramitesFianza)
                         }
 
                         @if (tipoMov != "Externo")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_PolizaSeguro, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_PolizaSeguro)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_PolizaSeguro, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_PolizaSeguro, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_PolizaSeguro)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_PolizaSeguro, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_PolizaSeguro)
+                            @Html.HiddenFor(model => model.Solicitante_PolizaSeguro)
                         }
 
                         @if (tipoMov != "Externo")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_CondicionConservacion, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_CondicionConservacion)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_CondicionConservacion, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_CondicionConservacion, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_CondicionConservacion)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_CondicionConservacion, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_CondicionConservacion)
+                            @Html.HiddenFor(model => model.Solicitante_CondicionConservacion)
                         }
 
                         @if (tipoMov != "Externo" && tipoMov != "Ingreso" && tipoMov != "Salida" && tipoMov != "Traslado")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_AvisoSeguridad, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_AvisoSeguridad)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_AvisoSeguridad, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_AvisoSeguridad, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_AvisoSeguridad)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_AvisoSeguridad, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_AvisoSeguridad)
+                            @Html.HiddenFor(model => model.Solicitante_AvisoSeguridad)
                         }
 
                         @if (tipoMov != "Externo")
                         {
-                        <div class="form-group col-md-6 col-lg-6 col-sm-6">
-                            @Html.LabelFor(model => model.Solicitante_CartasEntregaRecepcion, htmlAttributes: new { @class = "control-label col-md-7" })
-                            <div class="col-md-5">
-                                <div class="checkbox">
-                                    @Html.EditorFor(model => model.Solicitante_CartasEntregaRecepcion)
-                                    @Html.ValidationMessageFor(model => model.Solicitante_CartasEntregaRecepcion, "", new { @class = "text-danger" })
+                            <div class="form-group col-md-6 col-lg-6 col-sm-6">
+                                @Html.LabelFor(model => model.Solicitante_CartasEntregaRecepcion, htmlAttributes: new { @class = "control-label col-md-7" })
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.Solicitante_CartasEntregaRecepcion)
+                                        @Html.ValidationMessageFor(model => model.Solicitante_CartasEntregaRecepcion, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
                         else
                         {
-                        @Html.HiddenFor(model => model.Solicitante_CartasEntregaRecepcion)
+                            @Html.HiddenFor(model => model.Solicitante_CartasEntregaRecepcion)
                         }
 
 
@@ -669,59 +691,59 @@
                 <!-- -------------- E X P O S I C I O N ----------- -->
                 @if (Model.TieneExposicion)
                 {
-                <fieldset>
-                    <legend class="HeadFormMov"><i class="fa fa-object-group"></i> Exposición</legend>
+                    <fieldset>
+                        <legend class="HeadFormMov"><i class="fa fa-object-group"></i> Exposición</legend>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Exposicion_Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Exposicion_Titulo, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Exposicion_Titulo, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Exposicion_Curador, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Exposicion_Curador, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Exposicion_Curador, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    @*<div class="form-group">
-                            @Html.LabelFor(model => model.Exposicion_Sede, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Exposicion_Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.Exposicion_Sede, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
-                                @Html.ValidationMessageFor(model => model.Exposicion_Sede, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.Exposicion_Titulo, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Exposicion_Titulo, "", new { @class = "text-danger" })
                             </div>
-                        </div>*@
+                        </div>
 
-                    @Html.HiddenFor(model => model.Exposicion_Sede)
-
-                    @*<div class="form-group">
-                            @Html.LabelFor(model => model.Exposicion_Pais, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Exposicion_Curador, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.Exposicion_Pais, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
-                                @Html.ValidationMessageFor(model => model.Exposicion_Pais, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.Exposicion_Curador, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Exposicion_Curador, "", new { @class = "text-danger" })
                             </div>
-                        </div>*@
+                        </div>
 
-                    @Html.HiddenFor(model => model.Exposicion_Pais)
-
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Exposicion_FechaInicial, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="input-group date" id="Exposicion_FechaInicialDTP">
-                                @Html.TextBoxFor(model => model.Exposicion_FechaInicial, new { @class = "form-control input-sm", readOnly = "", required = "" })
-                                <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
-                                    <span class="fa fa-calendar"></span>
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.Exposicion_Sede, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Exposicion_Sede, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
+                                    @Html.ValidationMessageFor(model => model.Exposicion_Sede, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Exposicion_FechaInicial, "", new { @class = "text-danger" })
-                        </div>
+                            </div>*@
 
-                        <script type="text/javascript">
+                        @Html.HiddenFor(model => model.Exposicion_Sede)
+
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.Exposicion_Pais, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Exposicion_Pais, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
+                                    @Html.ValidationMessageFor(model => model.Exposicion_Pais, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+
+                        @Html.HiddenFor(model => model.Exposicion_Pais)
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Exposicion_FechaInicial, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group date" id="Exposicion_FechaInicialDTP">
+                                    @Html.TextBoxFor(model => model.Exposicion_FechaInicial, new { @class = "form-control input-sm", readOnly = "", required = "" })
+                                    <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Exposicion_FechaInicial, "", new { @class = "text-danger" })
+                            </div>
+
+                            <script type="text/javascript">
                                 $(function () {
                                     $('#Exposicion_FechaInicialDTP').datetimepicker({
                                         format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
@@ -732,22 +754,22 @@
                                         useCurrent: false //Important! See issue #1075
                                     });
                                 });
-                        </script>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Exposicion_FechaFinal, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="input-group date" id="Exposicion_FechaFinalDTP">
-                                @Html.TextBoxFor(model => model.Exposicion_FechaFinal, new { @class = "form-control input-sm", readOnly = "", required = "" })
-                                <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
-                                    <span class="fa fa-calendar"></span>
-                                </div>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Exposicion_FechaFinal, "", new { @class = "text-danger" })
+                            </script>
                         </div>
 
-                        <script type="text/javascript">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Exposicion_FechaFinal, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group date" id="Exposicion_FechaFinalDTP">
+                                    @Html.TextBoxFor(model => model.Exposicion_FechaFinal, new { @class = "form-control input-sm", readOnly = "", required = "" })
+                                    <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Exposicion_FechaFinal, "", new { @class = "text-danger" })
+                            </div>
+
+                            <script type="text/javascript">
                                 $(function () {
                                     $('#Exposicion_FechaFinalDTP').datetimepicker({
                                         format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
@@ -765,47 +787,47 @@
                                         $('#Exposicion_FechaInicialDTP').data("DateTimePicker").maxDate(e.date);
                                     });
                                 });
-                        </script>
-                    </div>
-                </fieldset>
+                            </script>
+                        </div>
+                    </fieldset>
                 }
 
                 <!-- -------------- R E S P O N S A B L E ----------- -->
 
                 @if (tipoMov != "Externo")
                 {
-                <fieldset>
-                    <legend class="HeadFormMov"><i class="fa fa-male"></i> Responsable</legend>
+                    <fieldset>
+                        <legend class="HeadFormMov"><i class="fa fa-male"></i> Responsable</legend>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Responsable_Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Responsable_Nombre, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Responsable_Nombre, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Responsable_Institucion, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Responsable_Institucion, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Responsable_Institucion, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Responsable_FechaSalida, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="input-group date" id="Responsable_FechaSalidaDTP">
-                                @Html.TextBoxFor(model => model.Responsable_FechaSalida, new { @class = "form-control input-sm", readOnly = "", required = "" })
-                                <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
-                                    <span class="fa fa-calendar"></span>
-                                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Responsable_Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Responsable_Nombre, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Responsable_Nombre, "", new { @class = "text-danger" })
                             </div>
-                            @Html.ValidationMessageFor(model => model.Responsable_FechaSalida, "", new { @class = "text-danger" })
                         </div>
 
-                        <script type="text/javascript">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Responsable_Institucion, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Responsable_Institucion, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Responsable_Institucion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Responsable_FechaSalida, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group date" id="Responsable_FechaSalidaDTP">
+                                    @Html.TextBoxFor(model => model.Responsable_FechaSalida, new { @class = "form-control input-sm", readOnly = "", required = "" })
+                                    <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Responsable_FechaSalida, "", new { @class = "text-danger" })
+                            </div>
+
+                            <script type="text/javascript">
                                 $(function () {
                                     $('#Responsable_FechaSalidaDTP').datetimepicker({
                                         format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
@@ -816,24 +838,24 @@
                                         useCurrent: false //Important! See issue #1075
                                     });
                                 });
-                        </script>
-                    </div>
+                            </script>
+                        </div>
 
 
 
 
-                    @*<div class="form-group">
-                            @Html.LabelFor(model => model.Responsable_FechaRetorno, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Responsable_FechaRetorno, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
-                                @Html.ValidationMessageFor(model => model.Responsable_FechaRetorno, "", new { @class = "text-danger" })
-                            </div>
-                        </div>*@
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.Responsable_FechaRetorno, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Responsable_FechaRetorno, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
+                                    @Html.ValidationMessageFor(model => model.Responsable_FechaRetorno, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
 
-                    @Html.HiddenFor(model => model.Responsable_FechaRetorno)
+                        @Html.HiddenFor(model => model.Responsable_FechaRetorno)
 
 
-                </fieldset>
+                    </fieldset>
                 }
 
                 <!-- -------------- A U T O R I Z A C I O N ----------- -->
@@ -890,90 +912,90 @@
                 <!-- -------------- T R A N S P O R T E ----------- -->
                 @if (tipoMov != "Externo")
                 {
-                <fieldset>
-                    <legend class="HeadFormMov"><i class="fa fa-truck"></i> Transporte</legend>
+                    <fieldset>
+                        <legend class="HeadFormMov"><i class="fa fa-truck"></i> Transporte</legend>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Transporte_Empresa, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Transporte_Empresa, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Transporte_Empresa, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    @*<div class="form-group">
-                            @Html.LabelFor(model => model.Transporte_Medio, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Transporte_Empresa, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.Transporte_Medio, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
-                                @Html.ValidationMessageFor(model => model.Transporte_Medio, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.Transporte_Empresa, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Transporte_Empresa, "", new { @class = "text-danger" })
                             </div>
-                        </div>*@
-
-                    @Html.HiddenFor(model => model.Transporte_Medio)
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Transporte_Recorrido, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Transporte_Recorrido, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Transporte_Recorrido, "", new { @class = "text-danger" })
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Transporte_Horarios, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Transporte_Horarios, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Transporte_Horarios, "", new { @class = "text-danger" })
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.Transporte_Medio, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Transporte_Medio, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
+                                    @Html.ValidationMessageFor(model => model.Transporte_Medio, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+
+                        @Html.HiddenFor(model => model.Transporte_Medio)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Transporte_Recorrido, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Transporte_Recorrido, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Transporte_Recorrido, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Transporte_Notas, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Transporte_Notas, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Transporte_Notas, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Transporte_Horarios, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Transporte_Horarios, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Transporte_Horarios, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                    </div>
 
-                </fieldset>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Transporte_Notas, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Transporte_Notas, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Transporte_Notas, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </fieldset>
                 }
 
                 <!-- -------------- S E G U R O ----------- -->
                 @if (tipoMov != "Externo" && tipoMov != "Traslado")
                 {
-                <fieldset>
-                    <legend class="HeadFormMov"><i class="fa fa-shield"></i> Seguro</legend>
+                    <fieldset>
+                        <legend class="HeadFormMov"><i class="fa fa-shield"></i> Seguro</legend>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Seguro_Asegurador, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Seguro_Asegurador, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Seguro_Asegurador, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Seguro_NoPoliza, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Seguro_NoPoliza, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
-                            @Html.ValidationMessageFor(model => model.Seguro_NoPoliza, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Seguro_FechaInicial, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="input-group date" id="Seguro_FechaInicialDTP">
-                                @Html.TextBoxFor(model => model.Seguro_FechaInicial, new { @class = "form-control input-sm", readOnly = "", required = "" })
-                                <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
-                                    <span class="fa fa-calendar"></span>
-                                </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Seguro_Asegurador, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Seguro_Asegurador, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Seguro_Asegurador, "", new { @class = "text-danger" })
                             </div>
-                            @Html.ValidationMessageFor(model => model.Seguro_FechaInicial, "", new { @class = "text-danger" })
                         </div>
 
-                        <script type="text/javascript">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Seguro_NoPoliza, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Seguro_NoPoliza, new { htmlAttributes = new { @class = "form-control input-sm", required = "" } })
+                                @Html.ValidationMessageFor(model => model.Seguro_NoPoliza, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Seguro_FechaInicial, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group date" id="Seguro_FechaInicialDTP">
+                                    @Html.TextBoxFor(model => model.Seguro_FechaInicial, new { @class = "form-control input-sm", readOnly = "", required = "" })
+                                    <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Seguro_FechaInicial, "", new { @class = "text-danger" })
+                            </div>
+
+                            <script type="text/javascript">
                                 $(function () {
                                     $('#Seguro_FechaInicialDTP').datetimepicker({
                                         format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
@@ -984,25 +1006,25 @@
                                         useCurrent: false //Important! See issue #1075
                                     });
                                 });
-                        </script>
-                    </div>
-
-
-
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Seguro_FechaFinal, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            <div class="input-group date" id="Seguro_FechaFinalDTP">
-                                @Html.TextBoxFor(model => model.Seguro_FechaFinal, new { @class = "form-control input-sm", readOnly = "", required = "" })
-                                <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
-                                    <span class="fa fa-calendar"></span>
-                                </div>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.Seguro_FechaFinal, "", new { @class = "text-danger" })
+                            </script>
                         </div>
 
-                        <script type="text/javascript">
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Seguro_FechaFinal, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group date" id="Seguro_FechaFinalDTP">
+                                    @Html.TextBoxFor(model => model.Seguro_FechaFinal, new { @class = "form-control input-sm", readOnly = "", required = "" })
+                                    <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Seguro_FechaFinal, "", new { @class = "text-danger" })
+                            </div>
+
+                            <script type="text/javascript">
                                 $(function () {
                                     $('#Seguro_FechaFinalDTP').datetimepicker({
                                         format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
@@ -1020,20 +1042,20 @@
                                         $('#Seguro_FechaInicialDTP').data("DateTimePicker").maxDate(e.date);
                                     });
                                 });
-                        </script>
-                    </div>
+                            </script>
+                        </div>
 
 
-                    @*<div class="form-group">
-                            @Html.LabelFor(model => model.Seguro_Notas, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Seguro_Notas, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
-                                @Html.ValidationMessageFor(model => model.Seguro_Notas, "", new { @class = "text-danger" })
-                            </div>
-                        </div>*@
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.Seguro_Notas, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Seguro_Notas, new { htmlAttributes = new { @class = "form-control input-sm", required = ""  } })
+                                    @Html.ValidationMessageFor(model => model.Seguro_Notas, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
 
-                    @Html.HiddenFor(model => model.Seguro_Notas)
-                </fieldset>
+                        @Html.HiddenFor(model => model.Seguro_Notas)
+                    </fieldset>
                 }
 
                 <!-- ------------------------- -->
@@ -1060,17 +1082,17 @@
                     @Html.HiddenFor(model => model.Temp)
                 </fieldset>
 
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Guardar Movimiento" class="btn btn-success" />
-                    </div>
-                </div>
             </div>
 
 
 
             <div class="col-lg-7 col-md-7 col-sm-7">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Guardar Movimiento" class="btn btn-success" />
+                    </div>
+                </div>
+
                 @{ Html.RenderAction("FormCrear", "MovimientoTempPieza", new { id = Model.MovimientoTempID }); }
             </div>
         </div>
@@ -1079,3 +1101,5 @@
 
 
 <script src="~/Scripts/add.toolTip.js"></script>
+
+

@@ -33,7 +33,9 @@ namespace RecordFCS_Alt
                      "~/Content/alertas.css",
                      "~/Content/css/font-awesome.css",
                      "~/Content/bootstrap-subMenus.css",
-                     "~/Content/bootstrap-datetimepicker.css"));
+                     "~/Content/bootstrap-datetimepicker.css",
+                     "~/Content/boosstrap-checkbox.css"
+                     ));
 
             bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
                 "~/Scripts/moment*",

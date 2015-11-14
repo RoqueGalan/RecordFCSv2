@@ -1066,17 +1066,18 @@
                 </fieldset>
 
 
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Guardar Movimiento" class="btn btn-success" />
-                    </div>
-                </div>
+                
             </div>
 
 
 
             <div class="col-lg-7 col-md-7 col-sm-7">
-                @{ Html.RenderAction("FormCrear", "MovimientoTempPieza", new { id = "listaTemp_" + Model.TipoMovimientoID }); }
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Crear Movimiento" class="btn btn-success" />
+                    </div>
+                </div>
+                @*@{ Html.RenderAction("FormCrear", "MovimientoTempPieza", new { id = "listaTemp_" + Model.TipoMovimientoID }); }*@
             </div>
         </div>
                     }
