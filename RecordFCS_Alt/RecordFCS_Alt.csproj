@@ -65,6 +65,10 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -284,6 +288,7 @@
     <Content Include="Content\img\listado\bgMS_gris.png" />
     <Content Include="Content\img\listado\headFCS_plano.png" />
     <Content Include="Content\img\listado\headMS_plano.gif" />
+    <Content Include="Content\img\listado\bgMS_colorLogo.jpg" />
     <Content Include="Content\img\logoFundacionCarlosSlim.png" />
     <Content Include="Content\img\pieza\thumb\fileDummy.txt" />
     <Content Include="Content\img\recordFCSLogo.png" />
@@ -305,6 +310,7 @@
     <Content Include="Content\magnificent\theme\default.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\piezaMini.css" />
+    <Content Include="Content\Print.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\theme.css" />
     <Content Include="Content\bootstrap-switch.min.css" />
@@ -321,6 +327,7 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\add.toolTip.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -337,6 +344,7 @@
     <Content Include="Models\Reportes\MovimientoTemp.xsc">
       <DependentUpon>MovimientoTemp.xsd</DependentUpon>
     </Content>
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Models\Reportes\MovimientoTemp.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -371,6 +379,8 @@
     <Content Include="Scripts\LetraFolioLista.js" />
     <Content Include="Scripts\ListaValorLista.js" />
     <Content Include="Scripts\load-proccessBar.js" />
+    <Content Include="Scripts\masonry.pkgd.js" />
+    <Content Include="Scripts\masonry.pkgd.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
@@ -606,6 +616,10 @@
     <Content Include="Views\MovimientoTemp\Editar.cshtml" />
     <Content Include="Views\MovimientoTempPieza\_PiezasAdicionalesPregunta.cshtml" />
     <Content Include="Views\MovimientoTempPieza\_ListaFormCrear.cshtml" />
+    <Content Include="Views\MovimientoTemp\BoletinPDF.cshtml" />
+    <Content Include="Views\Shared\_LayoutPrintPDF.cshtml" />
+    <Content Include="Views\MovimientoTemp\_FichaPrint.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

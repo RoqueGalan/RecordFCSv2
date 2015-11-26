@@ -1,0 +1,80 @@
+﻿body{
+    font-size: 15px !important;
+}
+
+tr, td {
+    page-break-inside: avoid !important;
+}
+
+
+td {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+hr {
+    margin: 3px !important;
+    padding: 3px !important;
+}
+
+.head-black {
+    background-color: black !important;
+    color: white !important;
+}
+
+.table {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+
+.saltoPagina {
+    page-break-after: always;
+}
+
+
+.print-content-pieza {
+        border: 1px solid #808080;
+    background-image: url('img/listado/bgMS_gris.png');
+}
+
+.print-imagen-pieza{
+    padding: 15px;
+
+     min-width: 130px !important;
+    max-width: 130px !important;
+}
+
+
+.print-noCortar{
+    page-break-inside: avoid !important;
+}
+
+.print-content-cuadro{
+        border: 1px solid #808080;       
+}
+
+
+
+.print-content-pieza-list{
+  
+
+}
+
+.print-content-pieza-list li {
+    margin-top:0;
+    margin-bottom:0;
+}
+
+
+
+
+
+.print-folio{
+    font-size:18px;
+}
+
+
+
+

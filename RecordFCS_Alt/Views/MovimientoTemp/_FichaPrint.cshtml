@@ -1,0 +1,43 @@
+﻿@model RecordFCS_Alt.Models.ViewsModel.itemPiezaMini
+
+
+<li class="media print-content-pieza print-noCortar col-xs-8 col-xs-offset-2">
+    <div class="media-left">
+
+        <div class="center-block">
+
+            @if (Model.ImagenID == null)
+            {
+                <img src="/Content/img/listado/bgMS_colorLogo.jpg" alt="Sin Imagen" class="media-object print-imagen-pieza">
+            }
+            else
+            {
+                <img src="@(Model.RutaImagenMini)" alt="@Model.FolioPieza" class="media-object print-imagen-pieza">
+            }
+        </div>
+    </div>
+
+    <div class="media-body media-middle">
+        <table class="table">
+            <tr>
+                <td><b>@Model.FolioPieza</b></td>
+
+            </tr>
+
+            @foreach (var att in Model.Atributos)
+            {
+                <tr>
+                    <td>
+                        @foreach (var valor in att.Valores)
+                        {
+
+                            <span class="center-block">@valor.Valor</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</li>
+
+<script src="~/Scripts/holder.js"></script>

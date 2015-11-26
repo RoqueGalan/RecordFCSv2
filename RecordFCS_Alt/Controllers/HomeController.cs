@@ -49,12 +49,11 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_MensajeModal", mensaje);
         }
 
-        //public ActionResult About()
-        //{
-        //    ViewBag.Message = "Your application description page.";
+        public ActionResult About()
+        {
 
-        //    return View();
-        //}
+            return View();
+        }
 
         //public ActionResult Contact()
         //{

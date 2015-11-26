@@ -1,0 +1,483 @@
+﻿@model RecordFCS_Alt.Models.MovimientoTemp
+
+@{
+    Layout = "~/Views/Shared/_LayoutPrintPDF.cshtml";
+}
+
+@{
+    string tipoMov = Model.TipoMovimiento.Nombre;
+    int i = 0;
+}
+
+<div class="row">
+    <div class="col-xs-4">
+        <span class="pull-left">
+            <img src="~/Content/img/home/carrusel/logo_soumaya.png" class="img-responsive" />
+        </span>
+    </div>
+
+
+    <div class="col-xs-8">
+
+        <span class="pull-right print-folio">
+            <span class="text-muted">Folio: </span><b>@Model.Folio</b>
+        </span>
+
+        <div class="text-center">
+            <h3>
+                <b>Boletín de Movimiento de Obra</b>
+            </h3>
+
+            <p>@tipoMov</p>
+        </div>
+    </div>
+
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-xs-6">
+        <table class="table table-striped">
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Origen:</b></td>
+                <td>@Model.UbicacionOrigen.Nombre</td>
+            </tr>
+
+            <tr>
+                <td><b class="pull-right">Tipo de Movimiento:</b></td>
+                <td>@Model.TipoMovimiento.Nombre</td>
+            </tr>
+
+            <tr>
+                <td><b class="pull-right">Solicitó:</b></td>
+                <td>@Model.Solicitante_Nombre</td>
+            </tr>
+
+            <tr>
+                <td><b class="pull-right">Autorizó:</b></td>
+                <td>@Model.Autorizacion_Nombre1</td>
+            </tr>
+
+            <tr>
+                <td><b class="pull-right">Ejecutor:</b></td>
+                <td>@Model.Solicitante_Nombre</td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="col-xs-6">
+        <table class="table table-striped">
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Destino:</b></td>
+                <td>@Model.UbicacionDestino.Nombre</td>
+            </tr>
+
+            <tr>
+                <td><b class="pull-right">Fecha Movimiento:</b></td>
+                <td>@Model.FechaSalida</td>
+            </tr>
+
+            <tr>
+                <td><b class="pull-right">Cargo:</b></td>
+                <td>@Model.Solicitante_Cargo</td>
+            </tr>
+
+            <tr>
+                <td><b class="pull-right">Fecha Autorización:</b></td>
+                <td>@Model.Autorizacion_Fecha</td>
+            </tr>
+
+            @*<tr>
+                    <td><b class="pull-right"></b></td>
+                    <td></td>
+                </tr>*@
+
+        </table>
+    </div>
+</div>
+
+
+
+
+<table class="table table-striped">
+    <tr>
+        <td class="col-xs-2">
+            <b class="">Revisión guión:</b>
+            @Html.DisplayFor(model => model.Solicitante_RevisionGuion)
+        </td>
+
+        <td class="col-xs-2">
+            <b class="">Póliza seguro:</b>
+            @Html.DisplayFor(model => model.Solicitante_PolizaSeguro)
+        </td>
+        @*</tr>
+            <tr>*@
+        <td class="col-xs-4">
+            <b class="">Reporte de condiciones de conservación:</b>
+            @Html.DisplayFor(model => model.Solicitante_CondicionConservacion)
+        </td>
+
+        <td class="col-xs-4">
+            <b class="">Cartas entrega y recepción:</b>
+            @Html.DisplayFor(model => model.Solicitante_CartasEntregaRecepcion)
+        </td>
+    </tr>
+</table>
+
+
+<p class="head-black text-center">Transporte</p>
+
+<div class="row">
+    <div class="col-xs-6">
+        <table class="table table-striped">
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Empresa:</b></td>
+                <td>@Model.Transporte_Empresa</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Horario:</b></td>
+                <td>@Model.Transporte_Horarios</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Recorrido:</b></td>
+                <td>@Model.Transporte_Recorrido</td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="col-xs-6">
+        <table class="table table-striped">
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Notas:</b></td>
+                <td>@Model.Transporte_Notas</td>
+            </tr>
+
+            @*<tr>
+                    <td class="col-xs-4"><b class="pull-right"></b></td>
+                    <td></td>
+                </tr>*@
+
+            @*<tr>
+                    <td class="col-xs-4"><b class="pull-right":</b></td>
+                    <td></td>
+                </tr>*@
+
+        </table>
+    </div>
+</div>
+
+
+<p class="head-black text-center">Exposición</p>
+
+<div class="row">
+    <div class="col-xs-6">
+        <table class="table table-striped">
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Fecha inicio:</b></td>
+                <td>@Model.Exposicion_FechaInicial</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Fecha final:</b></td>
+                <td>@Model.Exposicion_FechaFinal</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Curador:</b></td>
+                <td>@Model.Exposicion_Curador</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="col-xs-6">
+        <table class="table table-striped">
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Título:</b></td>
+                <td>@Model.Exposicion_Titulo</td>
+            </tr>
+            @*<tr>
+                    <td class="col-xs-4"><b class="pull-right"></b></td>
+                    <td></td>
+                </tr>*@
+
+            @*<tr>
+                    <td class="col-xs-4"><b class="pull-right":</b></td>
+                    <td></td>
+                </tr>*@
+
+        </table>
+    </div>
+</div>
+
+
+
+<p class="head-black text-center">Responsable</p>
+
+<div class="row">
+    <div class="col-xs-6">
+        <table class="table table-striped">
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Nombre:</b></td>
+                <td>@Model.Responsable_Nombre</td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="col-xs-6">
+        <table class="table table-striped">
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Institución:</b></td>
+                <td>@Model.Responsable_Institucion</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+
+
+
+<p class="head-black text-center">Solicitante</p>
+
+<div class="row">
+    <div class="col-xs-6">
+        <table class="table table-striped">
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Para la institución:</b></td>
+                <td>@Model.Solicitante_Institucion</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Representante:</b></td>
+                <td>@Model.Solicitante_Representante</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Sede:</b></td>
+                <td>@Model.Solicitante_Sede</td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="col-xs-6">
+        <table class="table table-striped">
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">&nbsp;</b></td>
+                <td>&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Cargo:</b></td>
+                <td>@Model.Solicitante_Cargo</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">País/Estado</b></td>
+                <td>@Model.Solicitante_PaisEstado</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+
+<p class="head-black text-center">Requisitos</p>
+
+<table class="table table-striped">
+    <tr>
+        <td class="col-xs-4">
+            <b>Petición recibida:</b>
+            @Html.DisplayFor(model => model.Solicitante_PeticionRecibida)
+        </td>
+
+        <td class="col-xs-4">
+            <b>Facility Report:</b>
+            @Html.DisplayFor(model => model.Solicitante_FacilityReport)
+        </td>
+
+        <td class="col-xs-4">
+            <b>Dictamen de condiciones especiales:</b>
+            @Html.DisplayFor(model => model.Solicitante_DictamenCondicionEspacio)
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <b>Dictamen de seguro:</b>
+            @Html.DisplayFor(model => model.Solicitante_DictamenSeguridad)
+        </td>
+
+        <td>
+            <b>Carta aceptación:</b>
+            @Html.DisplayFor(model => model.Solicitante_CartaAceptacion)
+        </td>
+
+        <td>
+            <b>Lista Avalúos:</b>
+            @Html.DisplayFor(model => model.Solicitante_ListaAvaluo)
+        </td>
+
+
+    </tr>
+
+    <tr>
+        <td>
+            <b>Contrato comodato:</b>
+            @Html.DisplayFor(model => model.Solicitante_ContratoComodato)
+        </td>
+
+        <td>
+            <b>Trámites Fianza:</b>
+            @Html.DisplayFor(model => model.Solicitante_TramitesFianza)
+        </td>
+
+        <td>
+            <b>&nbsp;</b>
+            &nbsp;
+        </td>
+    </tr>
+
+</table>
+
+
+<p class="head-black text-center">Seguro</p>
+
+<div class="row">
+    <div class="col-xs-6">
+        <table class="table table-striped">
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Aseguradora:</b></td>
+                <td>@Model.Seguro_Asegurador</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Fecha inicio:</b></td>
+                <td>@Model.Seguro_FechaInicial</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="col-xs-6">
+        <table class="table table-striped">
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">No. Póliza:</b></td>
+                <td>@Model.Seguro_NoPoliza</td>
+            </tr>
+
+            <tr>
+                <td class="col-xs-4"><b class="pull-right">Fecha final:</b></td>
+                <td>@Model.Seguro_FechaFinal</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+
+
+<p class="head-black text-center">Observaciones</p>
+
+<p class=" text-center">@Model.Observaciones</p>
+
+
+
+<p class="head-black text-center">Números de inventario:</p>
+
+<p class="text-center">
+    @foreach (var item in Model.MovimientoTempPiezas)
+    {
+        @item.Pieza.ImprimirFolio()
+
+        if (item != Model.MovimientoTempPiezas.LastOrDefault())
+        {
+            @(", ")
+        }
+    }
+</p>
+
+<hr />
+
+<div class="row clearfix print-noCortar">
+
+    <div class="col-xs-4 text-center">
+        <div class=" print-content-cuadro">
+            <p class="head-black">Solicitó</p>
+            <br />
+            <br />
+            <p>@Model.Solicitante_Nombre</p>
+        </div>
+    </div>
+
+    <div class="col-xs-4 text-center">
+        <div class=" print-content-cuadro">
+            <p class="head-black">Autorización</p>
+            <br />
+            <br />
+            <p>@Model.Autorizacion_Nombre1</p>
+        </div>
+    </div>
+
+
+    <div class="col-xs-4 text-center">
+        <div class=" print-content-cuadro">
+            <p class="head-black">Administración</p>
+            <br />
+            <br />
+            <p>@Model.Autorizacion_Nombre2</p>
+        </div>
+    </div>
+
+
+    <div class="col-xs-4 text-center">
+        <div class=" print-content-cuadro">
+            <p class="head-black">Responsable</p>
+            <br />
+            <br />
+            <p>@Model.Responsable_Nombre</p>
+        </div>
+    </div>
+
+
+    <div class="col-xs-4 text-center">
+        <div class=" print-content-cuadro">
+            <p class="head-black">Seguridad</p>
+            <br />
+            <br />
+            <p>Nombre y Firma</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- -------------------------- SALTO DE PAGINA ------------------------- -->
+
+<p class="saltoPagina">&nbsp;</p>
+
+<div class="center-block ">
+    <span class="pull-right">
+        <span class="text-muted">Folio: </span><b>@Model.Folio</b>
+    </span>
+</div>
+
+<br />
+<p class="head-black text-center">Anexo del Movimiento del Folio @Model.Folio</p>
+
+<ul class="media-list print-content-pieza-list">
+
+    @foreach (var item in Model.MovimientoTempPiezas)
+    {
+        Html.RenderAction("FichaPrint", "MovimientoTemp", new { id = item.PiezaID });
+    }
+</ul>
+
