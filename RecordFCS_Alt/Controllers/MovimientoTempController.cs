@@ -239,7 +239,7 @@ namespace RecordFCS_Alt.Controllers
                 db.MovimientosTemp.Add(movimientoTemp);
                 db.SaveChanges();
 
-                AlertaSuccess($"Se registro el movimiento: <b>{movimientoTemp.Folio}</b>", true);
+                AlertaSuccess("Se registro el movimiento: <b>" + movimientoTemp.Folio + "</b>", true);
 
                 return RedirectToAction("Detalles", new { id = movimientoTemp.MovimientoTempID });
             }
@@ -360,7 +360,7 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-                AlertaSuccess($"Se edito el movimiento: <b>{movimientoTemp.Folio}</b>", true);
+                AlertaSuccess("Se edito el movimiento: <b>"+movimientoTemp.Folio+"</b>", true);
 
 
                 //Agregar, Editar y Eliminar las piezas
@@ -391,7 +391,7 @@ namespace RecordFCS_Alt.Controllers
                     db.SaveChanges();
 
                     var temp = ListaPiezas.FirstOrDefault(a => a.PiezaID == item.PiezaID);
-                    AlertaSuccess($"Se agrego la pieza [<b>{temp.FolioPieza}</b>]", true);
+                    AlertaSuccess("Se agrego la pieza [<b>"+temp.FolioPieza+"</b>]", true);
                 }
 
                 //Editar
@@ -461,7 +461,7 @@ namespace RecordFCS_Alt.Controllers
                                 item.Comentario = "";
 
                                 var temp = ListaPiezas.FirstOrDefault(a => a.PiezaID == item.PiezaID);
-                                AlertaInfo($"{temp.FolioObra}. Se edito la pieza [<b>{temp.FolioPieza}</b>]", true);
+                                AlertaInfo(temp.FolioObra + ". Se edito la pieza [<b>"+temp.FolioPieza+"</b>]", true);
                             }
                         }
                     }
@@ -518,7 +518,7 @@ namespace RecordFCS_Alt.Controllers
                     {
                         db.MovimientoTempPiezas.Remove(item);
                         db.SaveChanges();
-                        AlertaDanger($"Se elimino la pieza [<b>{Folio}</b>]", true);
+                        AlertaDanger("Se elimino la pieza [<b>" + Folio + "</b>]", true);
 
 
                         //Regresar el estado de la pieza

@@ -46,7 +46,7 @@ namespace RecordFCS_Alt.Controllers
             Session["listaError_" + id] = new List<Item_MovPieza>();
 
             var tipoAttGuion = db.TipoAtributos.FirstOrDefault(a => a.Temp == "guion_clave");
-            var listaGuiones = tipoAttGuion.ListaValores.Where(a => a.Status && a.AtributoPiezas.Count > 0).Select(a => new { Nombre = $"{a.Valor} ({a.AtributoPiezas.Count})", GuionID = a.ListaValorID }).OrderBy(a => a.Nombre);
+            var listaGuiones = tipoAttGuion.ListaValores.Where(a => a.Status && a.AtributoPiezas.Count > 0).Select(a => new { Nombre = a.Valor + " (" + a.AtributoPiezas.Count +")", GuionID = a.ListaValorID }).OrderBy(a => a.Nombre);
             ViewBag.GuionID = new SelectList(listaGuiones, "GuionID", "Nombre");
 
             var listaLetras = db.LetraFolios.Select(a => new { a.LetraFolioID, Nombre = a.Nombre, a.Status }).Where(a => a.Status).OrderBy(a => a.Nombre);
@@ -322,7 +322,7 @@ namespace RecordFCS_Alt.Controllers
                 piezaTemp.Comentario = "Asignada en movimiento(s): ";
 
                 foreach (var item in listaPiezaMov)
-                    piezaTemp.Comentario += $" [{item}]";
+                    piezaTemp.Comentario += "[" + item + "]";
 
                 piezaTemp.Comentario += ". ";
                 enError = true;

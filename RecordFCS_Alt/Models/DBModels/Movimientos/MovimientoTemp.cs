@@ -143,43 +143,43 @@ namespace RecordFCS_Alt.Models
         public string Solicitante_Sede { get; set; }
 
         [Display(Name = "Dict. cond. espacio")]
-        public bool Solicitante_DictamenCondicionEspacio { get; set; } = false;
+        public bool Solicitante_DictamenCondicionEspacio { get; set; } //= false;
 
         [Display(Name = "Dict. de seguridad")]
-        public bool Solicitante_DictamenSeguridad { get; set; } = false;
+        public bool Solicitante_DictamenSeguridad { get; set; } //= false;
 
         [Display(Name = "Petición recibida")]
-        public bool Solicitante_PeticionRecibida { get; set; } = false;
+        public bool Solicitante_PeticionRecibida { get; set; } //= false;
 
         [Display(Name = "Facility Report")]
-        public bool Solicitante_FacilityReport { get; set; } = false;
+        public bool Solicitante_FacilityReport { get; set; } //= false;
 
         [Display(Name = "Revisión Guión")]
-        public bool Solicitante_RevisionGuion { get; set; } = false;
+        public bool Solicitante_RevisionGuion { get; set; } //= false;
 
         [Display(Name = "Carta aceptación")]
-        public bool Solicitante_CartaAceptacion { get; set; } = false;
+        public bool Solicitante_CartaAceptacion { get; set; } //= false;
 
         [Display(Name = "Lista de avalúo")]
-        public bool Solicitante_ListaAvaluo { get; set; } = false;
+        public bool Solicitante_ListaAvaluo { get; set; } //= false;
 
         [Display(Name = "Contrato comodato")]
-        public bool Solicitante_ContratoComodato { get; set; } = false;
+        public bool Solicitante_ContratoComodato { get; set; } //= false;
 
         [Display(Name = "Trámites de fianza")]
-        public bool Solicitante_TramitesFianza { get; set; } = false;
+        public bool Solicitante_TramitesFianza { get; set; } //= false;
 
         [Display(Name = "Póliza de seguro")]
-        public bool Solicitante_PolizaSeguro { get; set; } = false;
+        public bool Solicitante_PolizaSeguro { get; set; } //= false;
 
         [Display(Name = "Condición conservación")]
-        public bool Solicitante_CondicionConservacion { get; set; } = false;
+        public bool Solicitante_CondicionConservacion { get; set; } //= false;
 
         [Display(Name = "Aviso Seguridad")]
-        public bool Solicitante_AvisoSeguridad { get; set; } = false;
+        public bool Solicitante_AvisoSeguridad { get; set; } //= false;
 
         [Display(Name = "Cartas entr. y recep.")]
-        public bool Solicitante_CartasEntregaRecepcion { get; set; } = false;
+        public bool Solicitante_CartasEntregaRecepcion { get; set; } //= false;
 
 
 

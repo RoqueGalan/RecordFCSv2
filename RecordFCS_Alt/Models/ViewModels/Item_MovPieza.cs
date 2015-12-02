@@ -28,11 +28,11 @@ namespace RecordFCS_Alt.Models.ViewModels
         //
         public string Comentario { get; set; }
         //public int TotalPiezas{ get; set; }
-        public bool EnError { get; set; } = true;
-        public bool SeMovio { get; set; } = false;
-        public bool EsPendiente { get; set; } = true;
-        public bool ExisteEnMov { get; set; } = false;
-        public bool EsUltimo { get; set; } = false;
+        public bool EnError { get; set; }// = true;
+        public bool SeMovio { get; set; }// = false;
+        public bool EsPendiente { get; set; }// = true;
+        public bool ExisteEnMov { get; set; }// = false;
+        public bool EsUltimo { get; set; }// = false;
 
     }
 }

@@ -19,14 +19,14 @@ namespace RecordFCS_Alt.Models
         [ForeignKey("Pieza")]
         public Guid PiezaID { get; set; }
 
-        public int Orden { get; set; } = 0;
+        public int Orden { get; set; }// = 0;
 
         public string Comentario { get; set; }
 
-        public bool SeMovio { get; set; } = false;
+        public bool SeMovio { get; set; }// = false;
 
-        public bool EsPendiente { get; set; } = true;
-        public bool EnError { get; set; } = true;
+        public bool EsPendiente { get; set; }// = true;
+        public bool EnError { get; set; }// = true;
         //Virtuales
         public virtual Pieza Pieza { get; set; }
         public virtual MovimientoTemp MovimientoTemp { get; set; }
