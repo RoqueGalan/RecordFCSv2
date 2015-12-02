@@ -4,6 +4,8 @@
     ViewBag.PagName = "Movimiento";
     ViewBag.CtrlName = "Obra";
     ViewBag.Title = @ViewBag.PagName + ViewBag.CtrlName;
+
+    SelectList LetraFolioID = (SelectList)ViewBag.LetraFolioID;
 }
 
 <h3>
@@ -86,12 +88,25 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
+                    @Html.Label("NoInventario", "No. Inventario", htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            @Html.DropDownList("LetraFolioID", LetraFolioID, null, htmlAttributes: new { @class = "form-control" })
+                            <span class="input-group-addon"></span>
+                            <input type="text" id="NoInventario" name="NoInventario" value="" class="form-control input-sm" />
+                        </div>
+                    </div>
+                </div>
+
+
+                @*<div class="form-group">
                     @Html.Label("FolioObraPieza", "Pieza N° Folio", htmlAttributes: new { @class = "control-label col-md-2 " })
                     <div class="col-md-7">
                         @Html.TextBox("FolioObraPieza", null, new { @Class = "form-control"})
                     </div>
-                </div>
+                </div>*@
 
                 <span class="col-md-11 text-center"><b>Rango de fechas:</b></span>
                 <div class="row">

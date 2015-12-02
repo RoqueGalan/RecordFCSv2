@@ -105,168 +105,188 @@
 
 <table class="table table-striped">
     <tr>
-        <td class="col-xs-2">
-            <b class="">Revisión guión:</b>
-            @Html.DisplayFor(model => model.Solicitante_RevisionGuion)
-        </td>
-
-        <td class="col-xs-2">
-            <b class="">Póliza seguro:</b>
-            @Html.DisplayFor(model => model.Solicitante_PolizaSeguro)
-        </td>
+        @if (tipoMov != "Externo")
+        {
+            <td class="col-xs-2">
+                <b class="">Revisión guión:</b>
+                @Html.DisplayFor(model => model.Solicitante_RevisionGuion)
+            </td>
+        }
+        @if (tipoMov != "Externo")
+        {
+            <td class="col-xs-2">
+                <b class="">Póliza seguro:</b>
+                @Html.DisplayFor(model => model.Solicitante_PolizaSeguro)
+            </td>
+        }
         @*</tr>
             <tr>*@
-        <td class="col-xs-4">
-            <b class="">Reporte de condiciones de conservación:</b>
-            @Html.DisplayFor(model => model.Solicitante_CondicionConservacion)
-        </td>
-
-        <td class="col-xs-4">
-            <b class="">Cartas entrega y recepción:</b>
-            @Html.DisplayFor(model => model.Solicitante_CartasEntregaRecepcion)
-        </td>
+        @if (tipoMov != "Externo")
+        {
+            <td class="col-xs-4">
+                <b class="">Reporte de condiciones de conservación:</b>
+                @Html.DisplayFor(model => model.Solicitante_CondicionConservacion)
+            </td>
+        }
+        @if (tipoMov != "Externo")
+        {
+            <td class="col-xs-4">
+                <b class="">Cartas entrega y recepción:</b>
+                @Html.DisplayFor(model => model.Solicitante_CartasEntregaRecepcion)
+            </td>
+        }
     </tr>
 </table>
 
+@if (tipoMov != "Externo")
+{
+    <p class="head-black text-center">Transporte</p>
 
-<p class="head-black text-center">Transporte</p>
+    <div class="row">
+        <div class="col-xs-6">
+            <table class="table table-striped">
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Empresa:</b></td>
+                    <td>@Model.Transporte_Empresa</td>
+                </tr>
 
-<div class="row">
-    <div class="col-xs-6">
-        <table class="table table-striped">
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Empresa:</b></td>
-                <td>@Model.Transporte_Empresa</td>
-            </tr>
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Horario:</b></td>
+                    <td>@Model.Transporte_Horarios</td>
+                </tr>
 
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Horario:</b></td>
-                <td>@Model.Transporte_Horarios</td>
-            </tr>
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Recorrido:</b></td>
+                    <td>@Model.Transporte_Recorrido</td>
+                </tr>
 
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Recorrido:</b></td>
-                <td>@Model.Transporte_Recorrido</td>
-            </tr>
+            </table>
+        </div>
 
-        </table>
+        <div class="col-xs-6">
+            <table class="table table-striped">
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Notas:</b></td>
+                    <td>@Model.Transporte_Notas</td>
+                </tr>
+
+                @*<tr>
+                        <td class="col-xs-4"><b class="pull-right"></b></td>
+                        <td></td>
+                    </tr>*@
+
+                @*<tr>
+                        <td class="col-xs-4"><b class="pull-right":</b></td>
+                        <td></td>
+                    </tr>*@
+
+            </table>
+        </div>
     </div>
+}
 
-    <div class="col-xs-6">
-        <table class="table table-striped">
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Notas:</b></td>
-                <td>@Model.Transporte_Notas</td>
-            </tr>
+@if (Model.TieneExposicion)
+{
+    <p class="head-black text-center">Exposición</p>
 
-            @*<tr>
-                    <td class="col-xs-4"><b class="pull-right"></b></td>
-                    <td></td>
-                </tr>*@
+    <div class="row">
+        <div class="col-xs-6">
+            <table class="table table-striped">
 
-            @*<tr>
-                    <td class="col-xs-4"><b class="pull-right":</b></td>
-                    <td></td>
-                </tr>*@
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Fecha inicio:</b></td>
+                    <td>@Model.Exposicion_FechaInicial</td>
+                </tr>
 
-        </table>
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Fecha final:</b></td>
+                    <td>@Model.Exposicion_FechaFinal</td>
+                </tr>
+
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Curador:</b></td>
+                    <td>@Model.Exposicion_Curador</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-xs-6">
+            <table class="table table-striped">
+
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Título:</b></td>
+                    <td>@Model.Exposicion_Titulo</td>
+                </tr>
+                @*<tr>
+                        <td class="col-xs-4"><b class="pull-right"></b></td>
+                        <td></td>
+                    </tr>*@
+
+                @*<tr>
+                        <td class="col-xs-4"><b class="pull-right":</b></td>
+                        <td></td>
+                    </tr>*@
+
+            </table>
+        </div>
     </div>
-</div>
+}
 
+@if (tipoMov != "Externo")
+{
+    <p class="head-black text-center">Responsable</p>
 
-<p class="head-black text-center">Exposición</p>
+    <div class="row">
+        <div class="col-xs-6">
+            <table class="table table-striped">
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Nombre:</b></td>
+                    <td>@Model.Responsable_Nombre</td>
+                </tr>
 
-<div class="row">
-    <div class="col-xs-6">
-        <table class="table table-striped">
+            </table>
+        </div>
 
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Fecha inicio:</b></td>
-                <td>@Model.Exposicion_FechaInicial</td>
-            </tr>
+        <div class="col-xs-6">
+            <table class="table table-striped">
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Institución:</b></td>
+                    <td>@Model.Responsable_Institucion</td>
+                </tr>
 
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Fecha final:</b></td>
-                <td>@Model.Exposicion_FechaFinal</td>
-            </tr>
-
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Curador:</b></td>
-                <td>@Model.Exposicion_Curador</td>
-            </tr>
-        </table>
+            </table>
+        </div>
     </div>
-
-    <div class="col-xs-6">
-        <table class="table table-striped">
-
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Título:</b></td>
-                <td>@Model.Exposicion_Titulo</td>
-            </tr>
-            @*<tr>
-                    <td class="col-xs-4"><b class="pull-right"></b></td>
-                    <td></td>
-                </tr>*@
-
-            @*<tr>
-                    <td class="col-xs-4"><b class="pull-right":</b></td>
-                    <td></td>
-                </tr>*@
-
-        </table>
-    </div>
-</div>
-
-
-
-<p class="head-black text-center">Responsable</p>
-
-<div class="row">
-    <div class="col-xs-6">
-        <table class="table table-striped">
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Nombre:</b></td>
-                <td>@Model.Responsable_Nombre</td>
-            </tr>
-
-        </table>
-    </div>
-
-    <div class="col-xs-6">
-        <table class="table table-striped">
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Institución:</b></td>
-                <td>@Model.Responsable_Institucion</td>
-            </tr>
-
-        </table>
-    </div>
-</div>
-
-
-
+}
 
 <p class="head-black text-center">Solicitante</p>
 
 <div class="row">
     <div class="col-xs-6">
         <table class="table table-striped">
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Para la institución:</b></td>
-                <td>@Model.Solicitante_Institucion</td>
-            </tr>
 
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Representante:</b></td>
-                <td>@Model.Solicitante_Representante</td>
-            </tr>
+            @if (tipoMov != "Externo" && tipoMov != "Traslado")
+            {
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Para la institución:</b></td>
+                    <td>@Model.Solicitante_Institucion</td>
+                </tr>
+            }
 
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Sede:</b></td>
-                <td>@Model.Solicitante_Sede</td>
-            </tr>
-
+            @if (tipoMov != "Externo" && tipoMov != "Traslado")
+            {
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Representante:</b></td>
+                    <td>@Model.Solicitante_Representante</td>
+                </tr>
+            }
+            @if (tipoMov != "Externo" && tipoMov != "Traslado")
+            {
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Sede:</b></td>
+                    <td>@Model.Solicitante_Sede</td>
+                </tr>
+            }
         </table>
     </div>
 
@@ -276,17 +296,20 @@
                 <td class="col-xs-4"><b class="pull-right">&nbsp;</b></td>
                 <td>&nbsp;</td>
             </tr>
-
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Cargo:</b></td>
-                <td>@Model.Solicitante_Cargo</td>
-            </tr>
-
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">País/Estado</b></td>
-                <td>@Model.Solicitante_PaisEstado</td>
-            </tr>
-
+            @if (tipoMov != "Externo" && tipoMov != "Traslado")
+            {
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Cargo:</b></td>
+                    <td>@Model.Solicitante_RepresentanteCargo</td>
+                </tr>
+            }
+            @if (tipoMov != "Externo" && tipoMov != "Traslado")
+            {
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">País/Estado</b></td>
+                    <td>@Model.Solicitante_PaisEstado</td>
+                </tr>
+            }
         </table>
     </div>
 </div>
@@ -296,53 +319,69 @@
 
 <table class="table table-striped">
     <tr>
-        <td class="col-xs-4">
-            <b>Petición recibida:</b>
-            @Html.DisplayFor(model => model.Solicitante_PeticionRecibida)
-        </td>
+        @if (tipoMov != "Externo" && tipoMov != "Traslado")
+        {
+            <td class="col-xs-4">
+                <b>Petición recibida:</b>
+                @Html.DisplayFor(model => model.Solicitante_PeticionRecibida)
+            </td>
+        }
+        @if (tipoMov != "Externo" && tipoMov != "Traslado")
+        {
+            <td class="col-xs-4">
+                <b>Facility Report:</b>
+                @Html.DisplayFor(model => model.Solicitante_FacilityReport)
+            </td>
+        }
+        @if (tipoMov != "Externo" && tipoMov != "Traslado")
+        {
+            <td class="col-xs-4">
+                <b>Dictamen de condiciones especiales:</b>
+                @Html.DisplayFor(model => model.Solicitante_DictamenCondicionEspacio)
+            </td>
+        }
+    </tr>
 
-        <td class="col-xs-4">
-            <b>Facility Report:</b>
-            @Html.DisplayFor(model => model.Solicitante_FacilityReport)
-        </td>
-
-        <td class="col-xs-4">
-            <b>Dictamen de condiciones especiales:</b>
-            @Html.DisplayFor(model => model.Solicitante_DictamenCondicionEspacio)
-        </td>
+    <tr>
+        @if (tipoMov != "Externo" && tipoMov != "Traslado")
+        {
+            <td>
+                <b>Dictamen de seguro:</b>
+                @Html.DisplayFor(model => model.Solicitante_DictamenSeguridad)
+            </td>
+        }
+        @if (tipoMov != "Externo" && tipoMov != "Traslado")
+        {
+            <td>
+                <b>Carta aceptación:</b>
+                @Html.DisplayFor(model => model.Solicitante_CartaAceptacion)
+            </td>
+        }
+        @if (tipoMov != "Externo" && tipoMov != "Traslado")
+        {
+            <td>
+                <b>Lista Avalúos:</b>
+                @Html.DisplayFor(model => model.Solicitante_ListaAvaluo)
+            </td>
+        }
 
     </tr>
 
     <tr>
-        <td>
-            <b>Dictamen de seguro:</b>
-            @Html.DisplayFor(model => model.Solicitante_DictamenSeguridad)
-        </td>
-
-        <td>
-            <b>Carta aceptación:</b>
-            @Html.DisplayFor(model => model.Solicitante_CartaAceptacion)
-        </td>
-
-        <td>
-            <b>Lista Avalúos:</b>
-            @Html.DisplayFor(model => model.Solicitante_ListaAvaluo)
-        </td>
-
-
-    </tr>
-
-    <tr>
-        <td>
-            <b>Contrato comodato:</b>
-            @Html.DisplayFor(model => model.Solicitante_ContratoComodato)
-        </td>
-
-        <td>
-            <b>Trámites Fianza:</b>
-            @Html.DisplayFor(model => model.Solicitante_TramitesFianza)
-        </td>
-
+        @if (tipoMov != "Externo" && tipoMov != "Traslado")
+        {
+            <td>
+                <b>Contrato comodato:</b>
+                @Html.DisplayFor(model => model.Solicitante_ContratoComodato)
+            </td>
+        }
+        @if (tipoMov != "Externo" && tipoMov != "Traslado")
+        {
+            <td>
+                <b>Trámites Fianza:</b>
+                @Html.DisplayFor(model => model.Solicitante_TramitesFianza)
+            </td>
+        }
         <td>
             <b>&nbsp;</b>
             &nbsp;
@@ -352,39 +391,41 @@
 </table>
 
 
-<p class="head-black text-center">Seguro</p>
+@if (tipoMov != "Externo" && tipoMov != "Traslado")
+{
+    <p class="head-black text-center">Seguro</p>
 
-<div class="row">
-    <div class="col-xs-6">
-        <table class="table table-striped">
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Aseguradora:</b></td>
-                <td>@Model.Seguro_Asegurador</td>
-            </tr>
+    <div class="row">
+        <div class="col-xs-6">
+            <table class="table table-striped">
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Aseguradora:</b></td>
+                    <td>@Model.Seguro_Asegurador</td>
+                </tr>
 
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Fecha inicio:</b></td>
-                <td>@Model.Seguro_FechaInicial</td>
-            </tr>
-        </table>
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Fecha inicio:</b></td>
+                    <td>@Model.Seguro_FechaInicial</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-xs-6">
+            <table class="table table-striped">
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">No. Póliza:</b></td>
+                    <td>@Model.Seguro_NoPoliza</td>
+                </tr>
+
+                <tr>
+                    <td class="col-xs-4"><b class="pull-right">Fecha final:</b></td>
+                    <td>@Model.Seguro_FechaFinal</td>
+                </tr>
+
+            </table>
+        </div>
     </div>
-
-    <div class="col-xs-6">
-        <table class="table table-striped">
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">No. Póliza:</b></td>
-                <td>@Model.Seguro_NoPoliza</td>
-            </tr>
-
-            <tr>
-                <td class="col-xs-4"><b class="pull-right">Fecha final:</b></td>
-                <td>@Model.Seguro_FechaFinal</td>
-            </tr>
-
-        </table>
-    </div>
-</div>
-
+}
 
 <p class="head-black text-center">Observaciones</p>
 
@@ -411,7 +452,7 @@
 <div class="row clearfix print-noCortar">
 
     <div class="col-xs-4 text-center">
-        <div class=" print-content-cuadro">
+        <div class=" print-cuadro">
             <p class="head-black">Solicitó</p>
             <br />
             <br />
@@ -420,7 +461,7 @@
     </div>
 
     <div class="col-xs-4 text-center">
-        <div class=" print-content-cuadro">
+        <div class=" print-cuadro">
             <p class="head-black">Autorización</p>
             <br />
             <br />
@@ -430,7 +471,7 @@
 
 
     <div class="col-xs-4 text-center">
-        <div class=" print-content-cuadro">
+        <div class=" print-cuadro">
             <p class="head-black">Administración</p>
             <br />
             <br />
@@ -438,19 +479,20 @@
         </div>
     </div>
 
-
-    <div class="col-xs-4 text-center">
-        <div class=" print-content-cuadro">
-            <p class="head-black">Responsable</p>
-            <br />
-            <br />
-            <p>@Model.Responsable_Nombre</p>
+    @if (tipoMov != "Externo")
+    {
+        <div class="col-xs-4 text-center">
+            <div class=" print-cuadro">
+                <p class="head-black">Responsable</p>
+                <br />
+                <br />
+                <p>@Model.Responsable_Nombre</p>
+            </div>
         </div>
-    </div>
-
+    }
 
     <div class="col-xs-4 text-center">
-        <div class=" print-content-cuadro">
+        <div class=" print-cuadro">
             <p class="head-black">Seguridad</p>
             <br />
             <br />
@@ -464,20 +506,39 @@
 
 <p class="saltoPagina">&nbsp;</p>
 
-<div class="center-block ">
-    <span class="pull-right">
-        <span class="text-muted">Folio: </span><b>@Model.Folio</b>
-    </span>
-</div>
 
-<br />
-<p class="head-black text-center">Anexo del Movimiento del Folio @Model.Folio</p>
-
-<ul class="media-list print-content-pieza-list">
-
+<table class="table" border="1">
     @foreach (var item in Model.MovimientoTempPiezas)
     {
-        Html.RenderAction("FichaPrint", "MovimientoTemp", new { id = item.PiezaID });
-    }
-</ul>
+        if ((i % 10) == 0)
+        {
+            @Html.Raw("<tr><td colspan='2'><span class='head-black text-center center-block'>Anexo del Movimiento del Folio " + Model.Folio + "</span></td></tr>");
+        }
 
+        if ((i % 2) == 0)
+        {
+            @Html.Raw("<tr class''>");
+                }
+
+        @Html.Raw("<td class='print-borde-todos'>");
+
+                Html.RenderAction("FichaPrint", "MovimientoTemp", new { id = item.PiezaID, i = i });
+
+        @Html.Raw("</td>");
+
+
+                if ((i % 2) != 0)
+                {
+            @Html.Raw("</tr>");
+                }
+
+                i++;
+            }
+
+    @if ((i % 2) != 0)
+    {
+        @Html.Raw("<td class='print-borde-todos'>&nbsp;</td></tr>");
+
+            }
+
+</table>

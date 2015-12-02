@@ -151,6 +151,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenPiezaController.cs" />
+    <Compile Include="Controllers\ImprimirController.cs" />
     <Compile Include="Controllers\LetraFolioController.cs" />
     <Compile Include="Controllers\ListaPiezaController.cs" />
     <Compile Include="Controllers\ListaValorController.cs" />
@@ -237,6 +238,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MovimientoTemp.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\itemImprimir.cs" />
     <Compile Include="Models\ViewModels\itemListaBasicaDefault.cs" />
     <Compile Include="Models\ViewModels\itemPiezaGenerica.cs" />
     <Compile Include="Models\ViewModels\itemPiezaGenericaCampo.cs" />
@@ -620,6 +622,8 @@
     <Content Include="Views\Shared\_LayoutPrintPDF.cshtml" />
     <Content Include="Views\MovimientoTemp\_FichaPrint.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Imprimir\_Menu.cshtml" />
+    <Content Include="Views\Imprimir\_FormatoBasicoPDF.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

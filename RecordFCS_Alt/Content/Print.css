@@ -1,4 +1,4 @@
-﻿body{
+﻿body {
     font-size: 15px !important;
 }
 
@@ -35,44 +35,123 @@ hr {
 
 
 .print-content-pieza {
-        border: 1px solid #808080;
+    border: 1px solid #808080;
     background-image: url('img/listado/bgMS_gris.png');
 }
 
-.print-imagen-pieza{
+.print-imagen-pieza {
     padding: 15px;
-
-     min-width: 130px !important;
+    min-width: 130px !important;
     max-width: 130px !important;
 }
 
 
-.print-noCortar{
+.print-noCortar {
     page-break-inside: avoid !important;
 }
 
-.print-content-cuadro{
-        border: 1px solid #808080;       
+.print-cuadro {
+    border: 1px solid #808080;
 }
 
 
-
-.print-content-pieza-list{
-  
-
-}
-
-.print-content-pieza-list li {
-    margin-top:0;
-    margin-bottom:0;
+.print-folio {
+    font-size: 18px;
 }
 
 
+/*.print-media-list {
+    display: -webkit-flex !important;
+    display: flex !important;
+    -webkit-justify-content: center !important;
+    justify-content: center !important;
+    -webkit-flex-direction: row !important;
+    flex-direction: row !important;
+    -webkit-flex-wrap: wrap !important;
+    flex-wrap: wrap !important;
+    -webkit-flex-flow: row wrap !important;
+    flex-flow: row wrap !important;
+}
+
+.print-media {
+    border: 1px solid;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+            min-height: 100% !important;
+
+}
 
 
+    .print-media.col-xs-6 {
+        padding: 10px !important;
+        min-height: 100% !important;
+        width: 50% !important;
+    }*/
 
-.print-folio{
-    font-size:18px;
+
+.print-columna-left {
+    clear: left;
+}
+
+.print-columna-right {
+    clear: right;
+}
+
+
+.print-media {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    vertical-align: central;
+}
+
+.print-linea-x {
+    border-bottom: 1px solid #808080;
+    /*width: 50%;*/
+}
+
+
+/*.x {
+    border: 1px solid #808080;
+}*/
+
+
+td.x {
+    /*background-color:red;*/
+    border: 1px solid blue;
+}
+
+.y {
+    height: 100%;
+    border: 1px solid red;
+}
+
+
+table .table-bordered {
+    border: 1px solid black !important;
+}
+
+
+.print-borde-derecha {
+    border-right: 1px solid #808080 !important;
+}
+
+.print-borde-izquierda {
+    border-left: 1px solid #808080 !important;
+}
+
+.print-borde-abajo {
+    border-bottom: 1px solid #808080 !important;
+}
+
+.print-borde-arriba {
+    border-top: 1px solid #808080 !important;
+}
+
+.print-borde-todos {
+    border-right: 1px solid #808080 !important;
+    border-left: 1px solid #808080 !important;
+    border-bottom: 1px solid #808080 !important;
+    border-top: 1px solid #808080 !important;
 }
 
 

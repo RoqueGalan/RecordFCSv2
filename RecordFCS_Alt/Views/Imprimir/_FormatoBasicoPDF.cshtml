@@ -1,0 +1,57 @@
+﻿@model RecordFCS_Alt.Models.ViewModels.itemImprimir
+
+@{
+    Layout = "~/Views/Shared/_LayoutPrintPDF.cshtml";
+    int i = 0;
+}
+
+<div class="row">
+    <div class="col-xs-4">
+        <span class="pull-left">
+            <img src="~/Content/img/home/carrusel/logo_soumaya.png" class="img-responsive" />
+        </span>
+    </div>
+
+    <div class="col-xs-8">&nbsp;</div>
+</div>
+
+<hr />
+
+
+<p class="head-black text-center">Reporte de @Model.TipoImprimir</p>
+
+<table class="table" border="1">
+    @foreach (var item in Model.ListaPiezas)
+    {
+        if ((i % 10) == 0)
+        {
+            @Html.Raw("<tr><td colspan='2'><span class='head-black text-center center-block'>Reporte de " + Model.TipoImprimir + "</span></td></tr>");
+        }
+
+        if ((i % 2) == 0)
+        {
+            @Html.Raw("<tr class''>");
+                }
+
+        @Html.Raw("<td class='print-borde-todos'>");
+
+                Html.RenderAction("FichaPrint", "Imprimir", new { id = item, Tipo = Model.TipoImprimir, DatosCompletos = Model.DatosCompletos });
+
+        @Html.Raw("</td>");
+
+
+                if ((i % 2) != 0)
+                {
+            @Html.Raw("</tr>");
+                }
+
+                i++;
+            }
+
+    @if ((i % 2) != 0)
+    {
+        @Html.Raw("<td class='print-borde-todos'>&nbsp;</td></tr>");
+
+            }
+
+</table>

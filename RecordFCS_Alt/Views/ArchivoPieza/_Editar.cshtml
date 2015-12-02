@@ -104,12 +104,9 @@
             {
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-4">
-                        <div class="checkbox">
-                            <label>
-                                @Html.CheckBox("mosArc_" + itemModel.TipoMostrarArchivoID + "_Status", itemModel.Status)
-                                @itemModel.TipoMostrarArchivo.Nombre
-                            </label>
-                        </div>
+                            @Html.CheckBox("mosArc_" + itemModel.TipoMostrarArchivoID + "_Status", itemModel.Status)
+                        <label for="@(string.Format("mosArc_{0}_Status",itemModel.TipoMostrarArchivoID))">@itemModel.TipoMostrarArchivo.Nombre</label>
+
                     </div>
                 </div>
             }

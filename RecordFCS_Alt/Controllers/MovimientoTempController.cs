@@ -26,6 +26,10 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult Index(MovimientoTemp MovTemp = null)
         {
 
+            var listaLetras = db.LetraFolios.Select(a => new { a.LetraFolioID, Nombre = a.Nombre, a.Status }).Where(a => a.Status).OrderBy(a => a.Nombre);
+            ViewBag.LetraFolioID = new SelectList(listaLetras, "LetraFolioID", "Nombre", listaLetras.FirstOrDefault().LetraFolioID);
+
+
             var listaUbicaciones = db.Ubicaciones.Where(a => a.Status).Select(a => new { a.Nombre, a.UbicacionID }).OrderBy(a => a.Nombre);
 
             ViewBag.UbicacionDestinoID = new SelectList(listaUbicaciones, "UbicacionID", "Nombre");
@@ -115,10 +119,10 @@ namespace RecordFCS_Alt.Controllers
             // 1 2 3 4 5 6 7 8 9 9 [10]
 
             MovimientoTemp movTemp = null;
-            movTemp = db.MovimientosTemp.FirstOrDefault(a => a.Folio == mov.Folio - 1);
+            movTemp = db.MovimientosTemp.Where(a => a.Folio < mov.Folio).OrderByDescending(a=> a.Folio).FirstOrDefault();
             ViewBag.MovAnterior = movTemp == null ? Guid.Empty : movTemp.MovimientoTempID;
 
-            movTemp = db.MovimientosTemp.FirstOrDefault(a => a.Folio == mov.Folio + 1);
+            movTemp = db.MovimientosTemp.Where(a => a.Folio > mov.Folio).OrderBy(a => a.Folio).FirstOrDefault();
             ViewBag.MovSiguiente = movTemp == null ? Guid.Empty : movTemp.MovimientoTempID;
 
 
@@ -178,12 +182,11 @@ namespace RecordFCS_Alt.Controllers
 
             //return View("BoletinPDF",mov);
             return new ViewAsPdf("BoletinPDF", mov);
-            return new ActionAsPdf("~/Views/MovimientoTemp/BoletinPDF.cshtml", mov)
-            {
-                FileName = NombreArchivo + ".pdf",
-                PageSize = Rotativa.Options.Size.Letter,
-                CustomSwitches = "--viewport-size 1000x1000"
-            };
+            //return new ActionAsPdf("~/Views/MovimientoTemp/BoletinPDF.cshtml", mov)
+            //{
+            //    FileName = NombreArchivo + ".pdf",
+            //    PageSize = Rotativa.Options.Size.Letter
+            //};
 
         }
 
@@ -583,7 +586,7 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-        public ActionResult FichaPrint(Guid? id)
+        public ActionResult FichaPrint(Guid? id, int i)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -806,7 +809,7 @@ namespace RecordFCS_Alt.Controllers
             //var imagen = pieza.ImagenPiezas.OrderBy(a => a.Orden).FirstOrDefault(a => a.Status && a.EsPrincipal);
             TipoArchivo tipoArchivo = db.TipoArchivos.FirstOrDefault(a => a.Temp == "imagen_clave");
 
-            var imagen = pieza.ArchivosPiezas.Where(a => a.Status && a.TipoArchivoID == tipoArchivo.TipoArchivoID && a.MostrarArchivos.Any(b =>b.TipoMostrarArchivo.Nombre == "Guion" && b.Status)).OrderBy(a => a.Orden).FirstOrDefault();
+            var imagen = pieza.ArchivosPiezas.Where(a => a.Status && a.TipoArchivoID == tipoArchivo.TipoArchivoID && a.MostrarArchivos.Any(b => b.TipoMostrarArchivo.Nombre == "Guion" && b.Status)).OrderBy(a => a.Orden).FirstOrDefault();
 
 
             if (imagen != null)
@@ -818,8 +821,14 @@ namespace RecordFCS_Alt.Controllers
             //pieza.TipoPieza.TipoPiezasHijas = pieza.TipoPieza.TipoPiezasHijas.Where(a => a.Status).OrderBy(a => a.Orden).ToList();
 
             //ViewBag.listaAttributosFichaCompleta = listaAttributosFicha;
+            string lado = "";
 
+            if (i % 2 == 0)
+                lado = "left";
+            else
+                lado = "right";
 
+            ViewBag.lado = lado;
 
             return PartialView("_FichaPrint", piezaMini);
         }

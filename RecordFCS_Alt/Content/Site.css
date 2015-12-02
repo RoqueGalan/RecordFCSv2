@@ -1,5 +1,8 @@
 ﻿/*img { -ms-interpolation-mode: bicubic; }*/
-
+.col-center{
+    float: none;
+    margin: 0 auto;
+}
 
 .day.disabled,
 .month.disabled,

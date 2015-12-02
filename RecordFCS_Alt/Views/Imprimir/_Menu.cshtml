@@ -1,0 +1,93 @@
+﻿@model RecordFCS_Alt.Models.ViewModels.itemImprimir
+
+@{
+
+    ViewBag.PagName = "Menú";
+    ViewBag.CtrlName = "Imprimir";
+
+
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+@using (Html.BeginForm("Imprimir", "Imprimir", FormMethod.Post, new { @Class = "formImprimir form-center", target = "_blank" }))
+{
+    <div class="modal-body">
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal ">
+
+
+            <div class="text-center">
+                <span class="fa fa-print fa-5x text-muted"></span>
+            </div>
+
+
+            <div class="form-group text-center">
+
+                @Html.LabelFor(model => model.TipoImprimir, "Formato", htmlAttributes: new { @class = "control-label" })
+                <br />
+                <div class="btn-group" data-toggle="buttons">
+
+                    <label class="btn btn-default">
+                        @Html.RadioButtonFor(model => model.TipoImprimir, "Busqueda")
+                        <i class="fa fa-search"></i> Búsqueda
+                    </label>
+
+                    <label class="btn btn-default">
+                        @Html.RadioButtonFor(model => model.TipoImprimir, "Etiqueta")
+                        <i class="fa fa-tag"></i> Etiqueta
+                    </label>
+
+                    <label class="btn btn-default">
+                        @Html.RadioButtonFor(model => model.TipoImprimir, "DictamenConserv")
+                        <i class="fa fa-qrcode"></i> Dict. Consev.
+                    </label>
+
+                    <label class="btn btn-default">
+                        @Html.RadioButtonFor(model => model.TipoImprimir, "ListadoPlano")
+                        <i class="fa fa-file-text"></i> List. Plano
+                    </label>
+
+                </div>
+
+                @*@Html.EditorFor(model => model.TipoImprimir, new { htmlAttributes = new { @class = "form-control" } })*@
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DatosCompletos, "Datos Completos", htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.DatosCompletos)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ConPiezasAdicionales, "Piezas Adicionales", htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.ConPiezasAdicionales)
+                    </div>
+                </div>
+            </div>
+
+            @Html.Hidden("ListaPiezasID")
+
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Imprimir" />
+
+    </div>
+}
+
+<script src="~/Scripts/add.toolTip.js"></script>
