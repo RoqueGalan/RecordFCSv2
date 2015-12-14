@@ -1,4 +1,31 @@
 ﻿/*img { -ms-interpolation-mode: bicubic; }*/
+
+/*
+    colores:
+        primary     #b39b72
+        success     #5cb85c
+        muted       #999999
+        danger      #d9534f
+        warning     #f0ad4e
+        info        #5bc0de
+
+*/
+
+
+.colorStatusMov-Concluido{
+    color: #5cb85c;
+}
+
+.colorStatusMov-Procesando{
+}
+
+.colorStatusMov-Cancelado{
+    color: #d9534f;
+}
+
+
+
+
 .col-center{
     float: none;
     margin: 0 auto;
@@ -12,7 +39,7 @@
 }
 
 .HeadFormMov{
-background-color: #bca57c;
+background-color: #999999;
 color: white !important;
 /*text-transform:uppercase;*/
 text-align:center;
@@ -27,13 +54,21 @@ font-weight:bold;
     background-color: #5cb85c !important;
 }
 
+.HeadFormMov-Primary{
+    background-color: #bca57c !important;
+}
+
+.HeadFormMov-Danger{
+    background-color: #d9534d !important;
+}
+
 .well-dark {
     background-color: #aeaeae !important;
 }
 
 #zoomModalDiv {
     background-color: red;
-    min-height: 28em;
+    /*min-height: 28em;*/
 }
 
 body {
@@ -338,7 +373,11 @@ table {
 
 
 
-
+.img-full{
+    width:100%;
+    height:auto;
+    /*height:100%;*/
+}
 
 .table-anidada {
     margin-bottom: 0;

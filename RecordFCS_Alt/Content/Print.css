@@ -36,8 +36,14 @@ hr {
 
 .print-content-pieza {
     border: 1px solid #808080;
+    
+}
+
+
+.print-logoFondo {
     background-image: url('img/listado/bgMS_gris.png');
 }
+
 
 .print-imagen-pieza {
     padding: 15px;

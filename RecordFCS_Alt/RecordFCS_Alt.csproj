@@ -257,10 +257,11 @@
     <Content Include="Content\bootstrap-datetimepicker.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-tabsVertical.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap-subMenus.css" />
     <Content Include="Content\bootstrap-switch.css" />
-    <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\carusel.css" />
     <Content Include="Content\Colores.css" />
@@ -316,7 +317,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\theme.css" />
     <Content Include="Content\bootstrap-switch.min.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\_bootstrap.min.css" />
     <Content Include="Content\_Site.css" />
     <Content Include="Content\theme.min.css" />
@@ -331,12 +331,6 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\add.toolTip.js" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\fonts\presidenciafina-webfont.eot" />
     <Content Include="Content\fonts\presidenciafina-webfont.woff" />
     <Content Include="Content\fonts\presidenciafirme-webfont.eot" />
@@ -347,6 +341,14 @@
       <DependentUpon>MovimientoTemp.xsd</DependentUpon>
     </Content>
     <Content Include="App_Browsers\qt.browser" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
     <None Include="Models\Reportes\MovimientoTemp.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -355,6 +357,7 @@
     <Content Include="Models\Reportes\MovimientoTemp.xss">
       <DependentUpon>MovimientoTemp.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\RecordFCS.pubxml" />
     <None Include="Properties\PublishProfiles\Record_Alt.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\atributoLista.js" />
@@ -362,10 +365,10 @@
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap-tabVertical.js" />
+    <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrap-switch.js" />
     <Content Include="Scripts\bootstrap-switch.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\EditarObra_GenericoLista.js" />
     <Content Include="Scripts\FuncionFiltradoLista.js" />
     <Content Include="Scripts\holder.js" />
@@ -624,6 +627,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Imprimir\_Menu.cshtml" />
     <Content Include="Views\Imprimir\_FormatoBasicoPDF.cshtml" />
+    <Content Include="Views\Imprimir\_PiezaImprimir.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -635,6 +639,9 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

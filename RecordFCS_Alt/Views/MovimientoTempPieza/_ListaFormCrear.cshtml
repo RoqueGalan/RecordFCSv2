@@ -24,7 +24,7 @@
                     <div class="pull-right">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" class="check-error"  value="@item.PiezaID">
+                                <input type="checkbox" class="check-error" value="@item.PiezaID">
                                 <span class="cr"><i class="cr-icon fa fa-check"></i></span>
                             </label>
                         </div>
@@ -57,14 +57,14 @@
 
 
                     @*@if (!item.EsPendiente && item.SeMovio)
-                    {
-                        <span class="fa fa-lock"></span>
-                    }
+                        {
+                            <span class="fa fa-lock"></span>
+                        }
 
-                    @if (!item.ExisteEnMov)
-                    {
-                        <span class="fa fa-plus"></span>
-                    }*@
+                        @if (!item.ExisteEnMov)
+                        {
+                            <span class="fa fa-plus"></span>
+                        }*@
 
                     @item.FolioPieza
                 </td>
@@ -78,7 +78,7 @@
 
                         @if (item.EsUltimo)
                         {
-                            //item.EsPendiente && !item.SeMovio && 
+                            //item.EsPendiente && !item.SeMovio &&
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" class="check-aceptar" value="@item.PiezaID">
@@ -105,10 +105,6 @@
                         @Html.Hidden("ListaPiezas[" + item.Indice + "].EsUltimo", item.EsUltimo)
 
 
-
-
-
-
                     </div>
                 </td>
             </tr>
@@ -120,7 +116,32 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#badge_@NombreLista').html('@Model.Count');
+
+        var total = @Model.Count;
+        var listaNombre = '@NombreLista';
+
+
+        $('#badge_' + listaNombre).html(total);
+
+        if (total == 0) {
+            //alert("ocultar: " + listaNombre);
+            $('#fiel' + listaNombre).hide();
+            if (listaNombre == "listaAceptar") {
+                $('#btnSubmitEditar').prop('disabled', true);
+                
+            }
+        }
+        else{
+            $('#fiel' + listaNombre).show();
+            if (listaNombre == "listaAceptar") {
+                $('#btnSubmitEditar').prop('disabled', false);
+            }
+        }
+
+
+        
+
+
     });
 </script>
 

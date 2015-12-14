@@ -7,8 +7,6 @@
     ViewBag.PagDescription = Model.Descripcion;
 }
 
-
-
 <script src="~/Content/magnificent/js/dependencias/jquery.bridget.js"></script>
 <script src="~/Content/magnificent/js/dependencias/jquery.mousewheel.js"></script>
 <script src="~/Content/magnificent/js/dependencias/jquery.event.drag.js"></script>
@@ -39,21 +37,28 @@
 
 <div class="modal-body">
 
+    @*<img src="@Model.RutaThumb" class="img-responsive" />*@
 
-    <div id="zoomModalDiv">
+    @*<div mag-thumb="drag">
+            <img src="@Model.RutaThumb" id="imgMini" class="">
+        </div>*@
+
+    <div>
+        <img src="@Model.RutaThumb" class="img-full" />
+
         <div mag-thumb="drag">
-            <img src="@Model.RutaThumb" id="imgMini">
+            <img src="@Model.RutaThumb" class="img-full" />
         </div>
-        <div mag-zoom="drag">
-            <img src="" id="imgReal" />
-        </div>
-    </div>
 
+        <div mag-zoom="drag">
+            <img src="" class="img-full gigante" />
+        </div>
+
+    </div>
 </div>
 
 <div class="modal-footer">
     <div class="text-center">
-
         <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
     </div>
 </div>
@@ -63,13 +68,19 @@
 
     $(document).ready(function () {
 
-        $('#imgReal').attr('src', '@Model.Ruta');
+        $('.gigante').attr('src', '@Model.Ruta');
 
         setupZoom();
     });
 
 
     function setupZoom() {
+
+        //$host = $('[mag-thumb="drag"]');
+        //$host.mag({
+        //    position: 'drag',
+        //    toggle: true
+        //});
 
         $host = $('[mag-thumb="drag"]');
         $host.mag({

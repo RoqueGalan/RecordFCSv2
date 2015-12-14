@@ -24,10 +24,10 @@
     <li class="active">@ViewBag.PagName</li>
     <li class="active">@Model.TipoMovimiento.Nombre</li>
 </ol>
-
-<div class="row">
-    @using (Html.BeginForm())
+@using (Html.BeginForm())
     {
+<div class="row">
+   
         <div class="form-horizontal">
 
             <div class="col-lg-5 col-md-5 col-sm-5">
@@ -1072,16 +1072,20 @@
 
 
             <div class="col-lg-7 col-md-7 col-sm-7">
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Crear Movimiento" class="btn btn-success" />
                     </div>
-                </div>
+                </div>*@
                 @*@{ Html.RenderAction("FormCrear", "MovimientoTempPieza", new { id = "listaTemp_" + Model.TipoMovimientoID }); }*@
             </div>
         </div>
-                    }
+                    
 </div>
 
-
+    <div class="text-center">
+        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Crear Movimiento</button>
+    </div>
+    
+    }
 <script src="~/Scripts/add.toolTip.js"></script>

@@ -2,20 +2,20 @@
 @using RecordFCS_Alt.Models
 
 @{
-            ViewBag.PaginaTitulo = "Editar Movimiento";
-            ViewBag.PaginaSubtitulo = Model.Folio;
+    ViewBag.PaginaTitulo = "Editar Movimiento";
+    ViewBag.PaginaSubtitulo = Model.Folio;
 
-            ViewBag.Title = @ViewBag.PaginaTitulo + " " + ViewBag.PaginaSubtitulo;
+    ViewBag.Title = @ViewBag.PaginaTitulo + " " + ViewBag.PaginaSubtitulo;
 
-            string tipoMov = Model.TipoMovimiento.Nombre;
+    string tipoMov = Model.TipoMovimiento.Nombre;
 
-            //revalidar piezas en movimiento
-            //foreach (var item in Model.MovimientoTempPiezas)
-            //{
-            //  @Url.Action("ValidarPieza", "MovimientoTempPieza", null);
+    //revalidar piezas en movimiento
+    //foreach (var item in Model.MovimientoTempPiezas)
+    //{
+    //  @Url.Action("ValidarPieza", "MovimientoTempPieza", null);
 
-            //}
-            string claseMov = "";
+    //}
+    string claseMov = "";
 }
 
 @switch (Model.EstadoMovimiento)
@@ -47,10 +47,10 @@
     <li class="active">Editar</li>
     <li class="active">@Model.Folio</li>
 </ol>
+@using (Html.BeginForm())
+{
+    <div class="row">
 
-<div class="row">
-    @using (Html.BeginForm())
-    {
         <div class="form-horizontal">
 
             <div class="col-lg-5 col-md-5 col-sm-5">
@@ -793,7 +793,6 @@
                 }
 
                 <!-- -------------- R E S P O N S A B L E ----------- -->
-
                 @if (tipoMov != "Externo")
                 {
                     <fieldset>
@@ -1084,22 +1083,40 @@
 
             </div>
 
-
-
             <div class="col-lg-7 col-md-7 col-sm-7">
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Guardar Movimiento" class="btn btn-success" />
-                    </div>
-                </div>
+                @*<div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Guardar Movimiento" class="btn btn-success" />
+                        </div>
+                    </div>*@
 
                 @{ Html.RenderAction("FormCrear", "MovimientoTempPieza", new { id = Model.MovimientoTempID }); }
             </div>
         </div>
-                    }
-</div>
 
+
+    </div>
+
+    <div class="text-center">
+        <button id="btnSubmitEditar" type="submit" class="btn btn-info navbar-btn"><i class="fa fa-save"></i> Guardar Movimiento</button>
+    </div>
+
+    @*<nav class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container text-center">
+
+                <button type="submit" class="btn btn-success navbar-btn"><i class="fa fa-save"></i> Guardar Movimiento</button>
+
+            </div>
+        </nav>*@
+
+}
 
 <script src="~/Scripts/add.toolTip.js"></script>
 
-
+<script>
+    $('form').keypress(function (event) {
+        if (event.keyCode == 13 || event.which == 13) {
+            event.preventDefault();
+        }
+    });
+</script>

@@ -3,6 +3,11 @@
 @{
     Layout = "~/Views/Shared/_LayoutPrintPDF.cshtml";
     int i = 0;
+
+
+    string tipo = ViewBag.tipo;
+    
+    
 }
 
 <div class="row">
@@ -18,7 +23,7 @@
 <hr />
 
 
-<p class="head-black text-center">Reporte de @Model.TipoImprimir</p>
+
 
 <table class="table" border="1">
     @foreach (var item in Model.ListaPiezas)
@@ -31,27 +36,29 @@
         if ((i % 2) == 0)
         {
             @Html.Raw("<tr class''>");
-                }
+        }
 
-        @Html.Raw("<td class='print-borde-todos'>");
+        @Html.Raw("<td class='print-borde-todos " + tipo + "'>");
 
-                Html.RenderAction("FichaPrint", "Imprimir", new { id = item, Tipo = Model.TipoImprimir, DatosCompletos = Model.DatosCompletos });
+                                                   //Html.RenderAction("FichaPrint", "Imprimir", new { id = item, Tipo = Model.TipoImprimir, DatosCompletos = Model.DatosCompletos });
+                                                   Html.RenderPartial("~/Views/Imprimir/_PiezaImprimir.cshtml", item);
+                                                @Html.Raw("</td>");
 
-        @Html.Raw("</td>");
 
+                                                                  if ((i % 2) != 0)
+                                                                  {
+                                                                    @Html.Raw("</tr>");
+                                                                  }
 
-                if ((i % 2) != 0)
-                {
-            @Html.Raw("</tr>");
-                }
-
-                i++;
-            }
+                                                                  i++;
+    }
 
     @if ((i % 2) != 0)
     {
         @Html.Raw("<td class='print-borde-todos'>&nbsp;</td></tr>");
 
-            }
+    }
 
 </table>
+
+

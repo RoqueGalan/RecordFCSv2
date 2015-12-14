@@ -260,7 +260,7 @@ namespace RecordFCS_Alt.Controllers
 
                 bool esImagen = tipoArchivo.Temp == "imagen_clave" ? true : false;
 
-                var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Ficha completa");
+                var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Completos");
 
 
                 if (esImagen)
@@ -432,7 +432,7 @@ namespace RecordFCS_Alt.Controllers
 
                 bool esImagen = tipoArchivo.Temp == "imagen_clave" ? true : false;
 
-                var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Ficha completa");
+                var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Completos");
 
 
                 if (esImagen)
@@ -478,7 +478,7 @@ namespace RecordFCS_Alt.Controllers
             ArchivoPieza archivoPieza = db.ArchivoPiezas.Find(id);
 
             bool esImagen = archivoPieza.TipoArchivo.Temp == "imagen_clave" ? true : false;
-            var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Ficha completa");
+            var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Completos");
 
             var url = "";
             if (esImagen)

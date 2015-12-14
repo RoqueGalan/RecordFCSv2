@@ -2,7 +2,8 @@
 @using PagedList.Mvc;
 @using RecordFCS_Alt.Helpers
 
-<div class="text-center">
+
+<div class="col-md-11 text-center">
     <h3 class="animated flipInX">Resultados</h3>
     <div class="pull-right">
         Total de Registros:
@@ -31,7 +32,7 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().EstadoMovimiento)
         </th>
         <th class="col-lg-1 col-md-1 col-sm-1">
-            Piezas
+            No.Piezas
         </th>
     </tr>
 
@@ -39,7 +40,7 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(Html.DisplayFor(modelItem => item.Folio).ToString(), "Detalles", new { id = item.MovimientoTempID })
+                @Html.ActionLink(Html.DisplayFor(modelItem => item.Folio).ToString(), "Detalles", new { id = item.MovimientoTempID }, new { target = "_blank" })
             </td>
             <td>
                 @*@item.FechaSalida.Value.ToLongDateString() a las
@@ -58,7 +59,9 @@
                 @Html.DisplayFor(modelItem => item.TipoMovimiento.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EstadoMovimiento)
+                <span class="colorStatusMov-@item.EstadoMovimiento">
+                    @Html.DisplayFor(modelItem => item.EstadoMovimiento)
+                </span>
             </td>
             <td>
                 @item.MovimientoTempPiezas.Count

@@ -307,7 +307,28 @@ namespace RecordFCS_Alt.Controllers
 
             MovimientoTemp mov = db.MovimientosTemp.Find(MovimientoID);
 
-            Item_MovPieza piezaTemp = listaBuscar.FirstOrDefault(a => a.PiezaID == PiezaID);
+            Item_MovPieza piezaTemp = null;
+
+            switch (Tipo)
+            {
+                case "recargaError":
+                    piezaTemp = listaError.FirstOrDefault(a => a.PiezaID == PiezaID);
+                    break;
+
+                case "recargaAceptar":
+                    piezaTemp = listaAceptar.FirstOrDefault(a => a.PiezaID == PiezaID);
+                    break;
+
+                case "busqueda":
+                default:
+                    piezaTemp = listaBuscar.FirstOrDefault(a => a.PiezaID == PiezaID);
+                    break;
+            }
+            
+
+
+
+            
             piezaTemp.Comentario = "";
 
             bool enError = false;

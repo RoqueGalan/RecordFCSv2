@@ -5,6 +5,7 @@
     ViewBag.PagName = "Menú";
     ViewBag.CtrlName = "Imprimir";
 
+    string TipoVista = ViewBag.TipoVista;
 
 }
 
@@ -33,25 +34,37 @@
                 <br />
                 <div class="btn-group" data-toggle="buttons">
 
-                    <label class="btn btn-default">
-                        @Html.RadioButtonFor(model => model.TipoImprimir, "Busqueda")
-                        <i class="fa fa-search"></i> Búsqueda
-                    </label>
-
-                    <label class="btn btn-default">
-                        @Html.RadioButtonFor(model => model.TipoImprimir, "Etiqueta")
-                        <i class="fa fa-tag"></i> Etiqueta
-                    </label>
-
-                    <label class="btn btn-default">
-                        @Html.RadioButtonFor(model => model.TipoImprimir, "DictamenConserv")
-                        <i class="fa fa-qrcode"></i> Dict. Consev.
-                    </label>
-
-                    <label class="btn btn-default">
-                        @Html.RadioButtonFor(model => model.TipoImprimir, "ListadoPlano")
-                        <i class="fa fa-file-text"></i> List. Plano
-                    </label>
+                    @if (TipoVista == "busqueda")
+                    {
+                        <label class="btn btn-default active">
+                            @Html.RadioButtonFor(model => model.TipoImprimir, "Busqueda")
+                            <i class="fa fa-search"></i> Búsqueda
+                        </label>
+                    }
+                    
+                    @if (TipoVista == "detalles" || TipoVista == "busqueda")
+                    {
+                        <label class="btn btn-default">
+                            @Html.RadioButtonFor(model => model.TipoImprimir, "Etiqueta")
+                            <i class="fa fa-tag"></i> Etiqueta
+                        </label>
+                    }
+                    
+                    @if (TipoVista == "detalles")
+                    {
+                        <label class="btn btn-default">
+                            @Html.RadioButtonFor(model => model.TipoImprimir, "Conservacion")
+                            <i class="fa fa-qrcode"></i> Dict. Consev.
+                        </label>
+                    }
+                    
+                    @if (TipoVista == "busqueda")
+                    {
+                        <label class="btn btn-default">
+                            @Html.RadioButtonFor(model => model.TipoImprimir, "Plano")
+                            <i class="fa fa-file-text"></i> List. Plano
+                        </label>
+                    }
 
                 </div>
 
@@ -91,3 +104,21 @@
 }
 
 <script src="~/Scripts/add.toolTip.js"></script>
+
+
+
+<script type="text/javascript">
+
+    $('#formImprimir').submit(function (e) {
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: $(this).serialize(),
+            success: function (result) {
+                $('#miModal').modal('hide');
+            }
+        });
+    });
+
+</script>

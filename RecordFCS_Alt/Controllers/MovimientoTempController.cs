@@ -14,6 +14,7 @@ using RecordFCS_Alt.Models.ViewModels;
 using Rotativa;
 using RecordFCS_Alt.Models.ViewsModel;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -39,8 +40,6 @@ namespace RecordFCS_Alt.Controllers
 
             if (MovTemp == null)
             {
-
-
                 var mov = new MovimientoTemp()
                 {
                     TieneExposicion = false
@@ -100,7 +99,7 @@ namespace RecordFCS_Alt.Controllers
                 }
             }
 
-            listaMovimientosEnPagina = listaMovimientos.OrderBy(a => a.FechaSalida).Select(x => x).ToList().ToPagedList(pagIndex, pagTamano);
+            listaMovimientosEnPagina = listaMovimientos.OrderByDescending(a => a.FechaSalida).Select(x => x).ToList().ToPagedList(pagIndex, pagTamano);
 
             return PartialView("_Lista", listaMovimientosEnPagina);
         }
@@ -119,7 +118,7 @@ namespace RecordFCS_Alt.Controllers
             // 1 2 3 4 5 6 7 8 9 9 [10]
 
             MovimientoTemp movTemp = null;
-            movTemp = db.MovimientosTemp.Where(a => a.Folio < mov.Folio).OrderByDescending(a=> a.Folio).FirstOrDefault();
+            movTemp = db.MovimientosTemp.Where(a => a.Folio < mov.Folio).OrderByDescending(a => a.Folio).FirstOrDefault();
             ViewBag.MovAnterior = movTemp == null ? Guid.Empty : movTemp.MovimientoTempID;
 
             movTemp = db.MovimientosTemp.Where(a => a.Folio > mov.Folio).OrderBy(a => a.Folio).FirstOrDefault();
@@ -360,7 +359,7 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-                AlertaSuccess("Se edito el movimiento: <b>"+movimientoTemp.Folio+"</b>", true);
+                AlertaSuccess("Se edito el movimiento: <b>" + movimientoTemp.Folio + "</b>", true);
 
 
                 //Agregar, Editar y Eliminar las piezas
@@ -391,7 +390,7 @@ namespace RecordFCS_Alt.Controllers
                     db.SaveChanges();
 
                     var temp = ListaPiezas.FirstOrDefault(a => a.PiezaID == item.PiezaID);
-                    AlertaSuccess("Se agrego la pieza [<b>"+temp.FolioPieza+"</b>]", true);
+                    AlertaSuccess("Se agrego la pieza [<b>" + temp.FolioPieza + "</b>]", true);
                 }
 
                 //Editar
@@ -461,7 +460,7 @@ namespace RecordFCS_Alt.Controllers
                                 item.Comentario = "";
 
                                 var temp = ListaPiezas.FirstOrDefault(a => a.PiezaID == item.PiezaID);
-                                AlertaInfo(temp.FolioObra + ". Se edito la pieza [<b>"+temp.FolioPieza+"</b>]", true);
+                                AlertaInfo(temp.FolioObra + ". Se edito la pieza [<b>" + temp.FolioPieza + "</b>]", true);
                             }
                         }
                     }
@@ -612,7 +611,7 @@ namespace RecordFCS_Alt.Controllers
             };
 
             //extraer la lista de att de la pieza en guion
-            var listaAttMovFicha = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrar.Nombre == "Guion" && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
+            var listaAttMovFicha = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrar.Nombre == "Basicos" && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
 
             //llenar los attFicha
             foreach (var att in listaAttMovFicha)
@@ -809,13 +808,20 @@ namespace RecordFCS_Alt.Controllers
             //var imagen = pieza.ImagenPiezas.OrderBy(a => a.Orden).FirstOrDefault(a => a.Status && a.EsPrincipal);
             TipoArchivo tipoArchivo = db.TipoArchivos.FirstOrDefault(a => a.Temp == "imagen_clave");
 
-            var imagen = pieza.ArchivosPiezas.Where(a => a.Status && a.TipoArchivoID == tipoArchivo.TipoArchivoID && a.MostrarArchivos.Any(b => b.TipoMostrarArchivo.Nombre == "Guion" && b.Status)).OrderBy(a => a.Orden).FirstOrDefault();
+            //Solo imagen que sea basica y sea la primera
+            var imagen = pieza.ArchivosPiezas.Where(a => a.Status && a.TipoArchivoID == tipoArchivo.TipoArchivoID && a.MostrarArchivos.Any(b => b.TipoMostrarArchivo.Nombre == "Basicos" && b.Status)).OrderBy(a => a.Orden).FirstOrDefault();
 
 
             if (imagen != null)
             {
-                piezaMini.ImagenID = imagen.ArchivoPiezaID;
-                piezaMini.RutaImagenMini = imagen.RutaThumb;
+                //Comprobar que el archivo exista
+                FileInfo infoThumb = new FileInfo(Server.MapPath("~" + imagen.Ruta));
+
+                if (infoThumb.Exists)
+                {
+                    piezaMini.ImagenID = imagen.ArchivoPiezaID;
+                    piezaMini.RutaImagenMini = imagen.RutaThumb;
+                }
             }
 
             //pieza.TipoPieza.TipoPiezasHijas = pieza.TipoPieza.TipoPiezasHijas.Where(a => a.Status).OrderBy(a => a.Orden).ToList();

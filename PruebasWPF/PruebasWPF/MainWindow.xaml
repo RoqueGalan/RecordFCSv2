@@ -1,0 +1,9 @@
+﻿<Window x:Class="PruebasWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="24,29,0,0" TextWrapping="Wrap" Text="Hola Mundo!" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
