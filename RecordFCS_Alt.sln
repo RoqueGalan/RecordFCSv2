@@ -1,9 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordFCS_Alt", "RecordFCS_Alt\RecordFCS_Alt.csproj", "{5DB96AC0-6470-428F-97DC-9A33486C2C95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordFCS_Alt.Models", "RecordFCS_Alt.Models\RecordFCS_Alt.Models.csproj", "{E6B5E653-1E92-4809-AF38-73A2CAC8310D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordFCS_Alt.WebService", "RecordFCS_Alt.WebService\RecordFCS_Alt.WebService.csproj", "{794CFB43-9D22-4285-960E-653E9DD1BD4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RecordFCS_Alt.WindowsService", "RecordFCS_Alt.WindowsService", "{6570D4F4-CB32-4ACB-BCE2-DB55AE183295}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MonitorMovimientos", "MonitorMovimientos", "{DFF7C0F5-5252-4214-B580-E82E3BEF3366}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordFCS_Alt.WindowsService.MonitorMovimientos", "RecordFCS_Alt.WindowsService.MonitorMovimientos\RecordFCS_Alt.WindowsService.MonitorMovimientos.csproj", "{1D8E809E-21A7-4AD3-94B8-0B2E3B32B49C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +25,24 @@ Global
 		{5DB96AC0-6470-428F-97DC-9A33486C2C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DB96AC0-6470-428F-97DC-9A33486C2C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DB96AC0-6470-428F-97DC-9A33486C2C95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6B5E653-1E92-4809-AF38-73A2CAC8310D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6B5E653-1E92-4809-AF38-73A2CAC8310D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6B5E653-1E92-4809-AF38-73A2CAC8310D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6B5E653-1E92-4809-AF38-73A2CAC8310D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{794CFB43-9D22-4285-960E-653E9DD1BD4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{794CFB43-9D22-4285-960E-653E9DD1BD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{794CFB43-9D22-4285-960E-653E9DD1BD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{794CFB43-9D22-4285-960E-653E9DD1BD4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D8E809E-21A7-4AD3-94B8-0B2E3B32B49C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D8E809E-21A7-4AD3-94B8-0B2E3B32B49C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D8E809E-21A7-4AD3-94B8-0B2E3B32B49C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D8E809E-21A7-4AD3-94B8-0B2E3B32B49C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DFF7C0F5-5252-4214-B580-E82E3BEF3366} = {6570D4F4-CB32-4ACB-BCE2-DB55AE183295}
+		{1D8E809E-21A7-4AD3-94B8-0B2E3B32B49C} = {DFF7C0F5-5252-4214-B580-E82E3BEF3366}
 	EndGlobalSection
 EndGlobal

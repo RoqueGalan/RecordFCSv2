@@ -10,6 +10,8 @@ using RecordFCS_Alt.Models;
 using RecordFCS_Alt.Helpers.Seguridad;
 using System.IO;
 using RecordFCS_Alt.Helpers;
+using System.Text.RegularExpressions;
+using RecordFCS_Alt.Helpers.Historial;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -72,10 +74,10 @@ namespace RecordFCS_Alt.Controllers
             var tipoArchivo = db.TipoArchivos.Find(TipoArchivoID);
             if (tipoArchivo == null) return HttpNotFound();
 
-            var lista = pieza.ArchivosPiezas.Where(a => a.TipoArchivoID == tipoArchivo.TipoArchivoID).OrderBy(a=> a.Orden).ToList();
+            var lista = pieza.ArchivosPiezas.Where(a => a.TipoArchivoID == tipoArchivo.TipoArchivoID).OrderBy(a => a.Orden).ToList();
 
             if (!esCompleta)
-                lista = lista.Where(a => a.Status && a.MostrarArchivos.Any(b=> b.TipoMostrarArchivoID == TipoMostrarArchivoID.Value && b.Status)).ToList();
+                lista = lista.Where(a => a.Status && a.MostrarArchivos.Any(b => b.TipoMostrarArchivoID == TipoMostrarArchivoID.Value && b.Status)).ToList();
 
             ViewBag.esCompleta = esCompleta;
             ViewBag.id = id;
@@ -85,7 +87,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
         //// GET: ArchivoPieza/Details/5
-        public ActionResult Detalles(Guid? id , string tipo = "Magnificent")
+        public ActionResult Detalles(Guid? id, string tipo = "Magnificent")
         {
             if (id == null)
             {
@@ -100,7 +102,7 @@ namespace RecordFCS_Alt.Controllers
             }
 
             FileInfo infoThumb = new FileInfo(Server.MapPath(archivoPieza.Ruta));
-          
+
 
             switch (archivoPieza.TipoArchivo.Temp)
             {
@@ -169,6 +171,11 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "arcNew")]
         public ActionResult Crear(ArchivoPieza archivoPieza, HttpPostedFileBase FileArchivo)
         {
+
+            #region Inicio de crear
+
+            //mostrar los archivos no se guardara en el historial, por que su implementacion es muy costosa
+
             var listaMostrarArchivos = new List<MostrarArchivo>();
 
             foreach (var item in db.TipoMostrarArchivos.Where(a => a.Status).ToList())
@@ -185,91 +192,159 @@ namespace RecordFCS_Alt.Controllers
                 listaMostrarArchivos.Add(tempMostrarArchivo);
             }
 
-            //comprobar las extensiones validas
-            var tipoArchivo = db.TipoArchivos.Find(archivoPieza.TipoArchivoID);
+            #endregion
 
-            archivoPieza.Extension = Path.GetExtension(FileArchivo.FileName);
-
-            if (!tipoArchivo.ExtensionesAceptadas.Replace(" ", "").Split(',').Any(a => "." + a == archivoPieza.Extension))
-                ModelState.AddModelError("", "Archivo no compatible.");
-
-            if (FileArchivo == null)
-                ModelState.AddModelError("", "Seleccione un archivo");
-
-
-
-
-            if (ModelState.IsValid)
+            try
             {
-                if (!Directory.Exists(Server.MapPath(tipoArchivo.Ruta)))
-                    Directory.CreateDirectory(Server.MapPath(tipoArchivo.Ruta));
 
-                if (!Directory.Exists(Server.MapPath(tipoArchivo.Ruta + "thumb/")))
-                    Directory.CreateDirectory(Server.MapPath(tipoArchivo.Ruta + "thumb/"));
+                #region Validaciones previas
 
-                archivoPieza.ArchivoPiezaID = Guid.NewGuid();
+                //comprobar las extensiones validas
+                var tipoArchivo = db.TipoArchivos.Find(archivoPieza.TipoArchivoID);
 
-                archivoPieza.NombreArchivo = Guid.NewGuid().ToString();
+                archivoPieza.Extension = Path.GetExtension(FileArchivo.FileName);
 
-                archivoPieza.Orden = db.ArchivoPiezas.Where(a => a.TipoArchivoID == archivoPieza.TipoArchivoID && a.PiezaID == archivoPieza.PiezaID).Count() + 1;
+                if (!tipoArchivo.ExtensionesAceptadas.Replace(" ", "").Split(',').Any(a => "." + a == archivoPieza.Extension))
+                    ModelState.AddModelError("", "Archivo no compatible.");
 
-                archivoPieza.TipoArchivo = tipoArchivo;
+                if (FileArchivo == null)
+                    ModelState.AddModelError("", "Seleccione un archivo");
 
-                string rutaGuardar = Server.MapPath(archivoPieza.Ruta);
 
-                FileArchivo.SaveAs(rutaGuardar);
+                #endregion
 
-                FileArchivo.InputStream.Dispose();
-                FileArchivo.InputStream.Close();
-                GC.Collect();
 
-                //generar la mini
-                switch (archivoPieza.Extension)
+                if (ModelState.IsValid)
                 {
-                    //imagenes
-                    case ".jpg":
-                    case ".png":
-                    case ".tiff":
-                        Thumbnail mini = new Thumbnail()
-                        {
-                            OrigenSrc = rutaGuardar,
-                            DestinoSrc = Server.MapPath(archivoPieza.RutaThumb),
-                            LimiteAnchoAlto = 220
-                        };
-                        mini.GuardarThumbnail();
-                        break;
-                    //videos
-                    case ".mp4":
-                    case ".avi":
-                        break;
+                    //Crear la entidad
+
+                    #region pre-creacion de la entidad
+
+                    //validar que la carpeta del tipo de archivo exista
+
+                    if (!Directory.Exists(Server.MapPath(tipoArchivo.Ruta)))
+                        Directory.CreateDirectory(Server.MapPath(tipoArchivo.Ruta));
+
+                    if (!Directory.Exists(Server.MapPath(tipoArchivo.Ruta + "thumb/")))
+                        Directory.CreateDirectory(Server.MapPath(tipoArchivo.Ruta + "thumb/"));
+
+                    //Agregando valores que faltan
+                    archivoPieza.ArchivoPiezaID = Guid.NewGuid();
+
+                    archivoPieza.NombreArchivo = Guid.NewGuid().ToString();
+
+                    archivoPieza.Orden = db.ArchivoPiezas.Where(a => a.TipoArchivoID == archivoPieza.TipoArchivoID && a.PiezaID == archivoPieza.PiezaID).Count() + 1;
+
+                    archivoPieza.TipoArchivo = tipoArchivo;
+
+                    string rutaGuardar = Server.MapPath(archivoPieza.Ruta);
+
+                    FileArchivo.SaveAs(rutaGuardar);
+
+                    FileArchivo.InputStream.Dispose();
+                    FileArchivo.InputStream.Close();
+                    GC.Collect();
+
+                    #region Creacion de la miniatura
+
+                    //generar la mini
+                    switch (archivoPieza.Extension)
+                    {
+                        //imagenes
+                        case ".jpg":
+                        case ".png":
+                        case ".tiff":
+                            Thumbnail mini = new Thumbnail()
+                            {
+                                OrigenSrc = rutaGuardar,
+                                DestinoSrc = Server.MapPath(archivoPieza.RutaThumb),
+                                LimiteAnchoAlto = 220
+                            };
+                            mini.GuardarThumbnail();
+                            break;
+                        //videos
+                        case ".mp4":
+                        case ".avi":
+                            break;
+                    }
+
+                    #endregion
+
+                    #endregion
+
+                    db.ArchivoPiezas.Add(archivoPieza);
+                    db.SaveChanges();
+
+                    //------ Logica HISTORIAL
+
+                    #region Generar el historial
+
+                    // Generar el historial
+                    var historialLog =
+                        HistorialLogica.CrearEntidad(
+                        archivoPieza,
+                        archivoPieza.GetType().Name,
+                        archivoPieza.ArchivoPiezaID.ToString(),
+                        User.UsuarioID,
+                        db);
+
+                    #endregion
+
+                    #region Guardar el historial
+
+                    //Guardar cambios si todo salio correcto
+                    if (historialLog != null)
+                    {
+                        //Guardar la entidad
+                        db.SaveChanges();
+
+                        //Guardar el historial
+                        db.HistorialLogs.Add(historialLog);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                    #endregion
+
+                    //------
+
+                    foreach (var item in listaMostrarArchivos)
+                    {
+                        item.ArchivoPiezaID = archivoPieza.ArchivoPiezaID;
+
+                        db.MostrarArchivos.Add(item);
+                        db.SaveChanges();
+                    }
+
+                    
+
+                    //Logica para terminar la instruccion
+                    #region logica finalizar
+
+                    AlertaSuccess(string.Format("Se guardo archivo {0} <b>{1}</b>", tipoArchivo.Nombre, archivoPieza.Titulo), true);
+
+                    string url = "";
+                    bool esImagen = tipoArchivo.Temp == "imagen_clave" ? true : false;
+                    var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Completos");
+                    if (esImagen)
+                        url = Url.Action("ContenedorImagen", "ArchivoPieza", new { id = archivoPieza.PiezaID, tipoMostrarArchivoID = tipoMostrarArchivo.TipoMostrarArchivoID, esCompleta = true });
+                    else
+                        url = Url.Action("Lista", "ArchivoPieza", new { id = archivoPieza.PiezaID, TipoArchivoID = tipoArchivo.TipoArchivoID, esCompleta = true });
+
+                    #endregion
+
+                    return Json(new { success = true, url = url, idPieza = archivoPieza.PiezaID, esImagen = esImagen });
                 }
-                //validar que la carpeta del tipo de archivo exista
-                db.ArchivoPiezas.Add(archivoPieza);
-                db.SaveChanges();
-
-                AlertaSuccess(string.Format("Se guardo archivo {0} <b>{1}</b>", tipoArchivo.Nombre, archivoPieza.Titulo), true);
-
-                foreach (var item in listaMostrarArchivos)
-                {
-                    item.ArchivoPiezaID = archivoPieza.ArchivoPiezaID;
-                }
-                db.MostrarArchivos.AddRange(listaMostrarArchivos);
-                db.SaveChanges();
-
-                string url = "";
-
-                bool esImagen = tipoArchivo.Temp == "imagen_clave" ? true : false;
-
-                var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Completos");
-
-
-                if (esImagen)
-                    url = Url.Action("ContenedorImagen", "ArchivoPieza", new { id = archivoPieza.PiezaID, tipoMostrarArchivoID = tipoMostrarArchivo.TipoMostrarArchivoID, esCompleta = true });
-                else
-                    url = Url.Action("Lista", "ArchivoPieza", new { id = archivoPieza.PiezaID, TipoArchivoID = tipoArchivo.TipoArchivoID, esCompleta = true });
-
-                return Json(new { success = true, url = url, idPieza = archivoPieza.PiezaID, esImagen = esImagen });
             }
+            catch (Exception)
+            {
+
+                ModelState.AddModelError("", "Error desconocido.");
+            }
+
 
             archivoPieza.MostrarArchivos = listaMostrarArchivos;
 
@@ -330,14 +405,20 @@ namespace RecordFCS_Alt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "arcEdit")]
-        public ActionResult Editar(ArchivoPieza archivoPieza, HttpPostedFileBase FileArchivo)
+        public ActionResult Editar(ArchivoPieza archivoPieza, HttpPostedFileBase FileArchivo, string Motivo)
         {
 
-            bool eliminarArchivo = false;
-            string rutaThumb = "";
-            string rutaOriginal = "";
+            #region inicio de editar
 
             var listaMostrarArchivos = new List<MostrarArchivo>();
+
+            //comprobar las extensiones validas
+            var tipoArchivo = db.TipoArchivos.Find(archivoPieza.TipoArchivoID);
+            archivoPieza.TipoArchivo = tipoArchivo;
+
+            bool esImagen = tipoArchivo.Temp == "imagen_clave" ? true : false;
+
+            ViewBag.esImagen = esImagen;
 
             foreach (var item in db.TipoMostrarArchivos.Where(a => a.Status).ToList())
             {
@@ -349,98 +430,162 @@ namespace RecordFCS_Alt.Controllers
                 tempMostrarArchivo.Status = valorStatus;
 
                 db.Entry(tempMostrarArchivo).State = EntityState.Modified;
-                //db.SaveChanges();
             }
 
+            #endregion
 
-            //comprobar las extensiones validas
-            var tipoArchivo = db.TipoArchivos.Find(archivoPieza.TipoArchivoID);
-            archivoPieza.TipoArchivo = tipoArchivo;
-
-
-            if (FileArchivo != null)
+            try
             {
-                eliminarArchivo = true;
-                archivoPieza.Extension = Path.GetExtension(FileArchivo.FileName);
+                #region Validaciones previas
 
-                if (!tipoArchivo.ExtensionesAceptadas.Replace(" ", "").Split(',').Any(a => "." + a == archivoPieza.Extension))
+                bool eliminarArchivo = false;
+                string rutaThumb = "";
+                string rutaOriginal = "";
+
+
+                if (FileArchivo != null)
                 {
-                    ModelState.AddModelError("", "Archivo no compatible.");
-                    eliminarArchivo = false;
-                }
+                    eliminarArchivo = true;
+                    archivoPieza.Extension = Path.GetExtension(FileArchivo.FileName);
 
-                rutaThumb = "~" + archivoPieza.RutaThumb;
-                rutaOriginal = "~" + archivoPieza.Ruta;
-            }
-
-
-            if (ModelState.IsValid)
-            {
-
-                if (eliminarArchivo)
-                {
-                    if (!Directory.Exists(Server.MapPath(tipoArchivo.Ruta)))
-                        Directory.CreateDirectory(Server.MapPath(tipoArchivo.Ruta));
-
-                    if (!Directory.Exists(Server.MapPath(tipoArchivo.Ruta + "thumb/")))
-                        Directory.CreateDirectory(Server.MapPath(tipoArchivo.Ruta + "thumb/"));
-
-                    archivoPieza.NombreArchivo = Guid.NewGuid().ToString();
-
-                    string rutaGuardar = Server.MapPath(archivoPieza.Ruta);
-
-                    FileArchivo.SaveAs(rutaGuardar);
-
-                    FileArchivo.InputStream.Dispose();
-                    FileArchivo.InputStream.Close();
-                    GC.Collect();
-
-                    //generar la mini
-                    switch (archivoPieza.Extension)
+                    if (!tipoArchivo.ExtensionesAceptadas.Replace(" ", "").Split(',').Any(a => "." + a == archivoPieza.Extension))
                     {
-                        //imagenes
-                        case ".jpg":
-                        case ".png":
-                        case ".tiff":
-                            Thumbnail mini = new Thumbnail()
-                            {
-                                OrigenSrc = rutaGuardar,
-                                DestinoSrc = Server.MapPath(archivoPieza.RutaThumb),
-                                LimiteAnchoAlto = 220
-                            };
-                            mini.GuardarThumbnail();
-                            break;
-                        //videos
-                        case ".mp4":
-                        case ".avi":
-                            break;
+                        ModelState.AddModelError("", "Archivo no compatible.");
+                        eliminarArchivo = false;
                     }
 
-                    //Eliminar las imagenes
-                    FileInfo infoThumb = new FileInfo(Server.MapPath(rutaThumb));
-                    if (infoThumb.Exists) infoThumb.Delete();
-                    FileInfo infoOriginal = new FileInfo(Server.MapPath(rutaOriginal));
-                    if (infoOriginal.Exists) infoOriginal.Delete();
+                    rutaThumb = "~" + archivoPieza.RutaThumb;
+                    rutaOriginal = "~" + archivoPieza.Ruta;
                 }
 
-                db.Entry(archivoPieza).State = EntityState.Modified;
-                db.SaveChanges();
 
-                AlertaInfo(string.Format("Se edito archivo {0} <b>{1}</b>", tipoArchivo.Nombre, archivoPieza.Titulo), true);
+                if (string.IsNullOrWhiteSpace(Motivo))
+                    ModelState.AddModelError("Motivo", "Motivo vacio.");
 
-                string url = "";
+                #endregion
 
-                bool esImagen = tipoArchivo.Temp == "imagen_clave" ? true : false;
+                if (ModelState.IsValid)
+                {
+                    //Guardar el mostrar archivo
+                    db.SaveChanges();
 
-                var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Completos");
+                    #region preparar la eliminacion
+                    
+                    if (eliminarArchivo)
+                    {
+                        if (!Directory.Exists(Server.MapPath(tipoArchivo.Ruta)))
+                            Directory.CreateDirectory(Server.MapPath(tipoArchivo.Ruta));
+
+                        if (!Directory.Exists(Server.MapPath(tipoArchivo.Ruta + "thumb/")))
+                            Directory.CreateDirectory(Server.MapPath(tipoArchivo.Ruta + "thumb/"));
+
+                        archivoPieza.NombreArchivo = Guid.NewGuid().ToString();
+
+                        string rutaGuardar = Server.MapPath(archivoPieza.Ruta);
+
+                        FileArchivo.SaveAs(rutaGuardar);
+
+                        FileArchivo.InputStream.Dispose();
+                        FileArchivo.InputStream.Close();
+                        GC.Collect();
+
+                        //generar la mini
+                        switch (archivoPieza.Extension)
+                        {
+                            //imagenes
+                            case ".jpg":
+                            case ".png":
+                            case ".tiff":
+                                Thumbnail mini = new Thumbnail()
+                                {
+                                    OrigenSrc = rutaGuardar,
+                                    DestinoSrc = Server.MapPath(archivoPieza.RutaThumb),
+                                    LimiteAnchoAlto = 220
+                                };
+                                mini.GuardarThumbnail();
+                                break;
+                            //videos
+                            case ".mp4":
+                            case ".avi":
+                                break;
+                        }
+
+                        //Eliminar los archivos
+                        FileInfo infoThumb = new FileInfo(Server.MapPath(rutaThumb));
+                        if (infoThumb.Exists) infoThumb.Delete();
+                        FileInfo infoOriginal = new FileInfo(Server.MapPath(rutaOriginal));
+                        if (infoOriginal.Exists) infoOriginal.Delete();
+                    }
+
+                    #endregion
+
+                    //------ Logica HISTORIAL
+
+                    #region Generar el historial
+
+                    //objeto del formulario
+                    var objeto = archivoPieza;
+                    //Objeto de la base de datos
+                    var objetoDB = db.ArchivoPiezas.Find(archivoPieza.ArchivoPiezaID);
+                    //tabla o clase a la que pertenece
+                    var tablaNombre = objeto.GetType().Name;
+                    //llave primaria del objeto
+                    var llavePrimaria = objetoDB.ArchivoPiezaID.ToString();
+
+                    //generar el historial
+                    var historialLog = HistorialLogica.EditarEntidad(
+                        objeto,
+                        objetoDB,
+                        tablaNombre,
+                        llavePrimaria,
+                        User.UsuarioID,
+                        db,
+                        Motivo
+                        );
+
+                    #endregion
+
+                    #region Guardar el historial
+
+                    if (historialLog != null)
+                    {
+                        //Cambiar el estado a la entidad a modificada
+                        db.Entry(objetoDB).State = EntityState.Modified;
+                        //Guardamos la entidad modificada
+                        db.SaveChanges();
+
+                        //Guardar el historial
+                        db.HistorialLogs.Add(historialLog);
+                        db.SaveChanges();
+                    }
+
+                    #endregion
+
+                    //------
+
+                    //Logica para terminar la instruccion
+                    #region logica finalizar
+
+                    AlertaInfo(string.Format("Se edito archivo {0} <b>{1}</b>", tipoArchivo.Nombre, archivoPieza.Titulo), true);
+
+                    string url = "";
+                    var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Completos");
 
 
-                if (esImagen)
-                    url = Url.Action("ContenedorImagen", "ArchivoPieza", new { id = archivoPieza.PiezaID, tipoMostrarArchivoID = tipoMostrarArchivo.TipoMostrarArchivoID, esCompleta = true });
-                else
-                    url = Url.Action("Lista", "ArchivoPieza", new { id = archivoPieza.PiezaID, TipoArchivoID = tipoArchivo.TipoArchivoID, esCompleta = true });
+                    if (esImagen)
+                        url = Url.Action("ContenedorImagen", "ArchivoPieza", new { id = archivoPieza.PiezaID, tipoMostrarArchivoID = tipoMostrarArchivo.TipoMostrarArchivoID, esCompleta = true });
+                    else
+                        url = Url.Action("Lista", "ArchivoPieza", new { id = archivoPieza.PiezaID, TipoArchivoID = tipoArchivo.TipoArchivoID, esCompleta = true });
 
-                return Json(new { success = true, url = url, idPieza = archivoPieza.PiezaID, esImagen = esImagen });
+                    #endregion
+
+                    return Json(new { success = true, url = url, idPieza = archivoPieza.PiezaID, esImagen = esImagen });
+                }
+            }
+            catch (Exception)
+            {
+
+                ModelState.AddModelError("", "Error desconocido.");
             }
 
             return PartialView("_Editar", archivoPieza);
@@ -507,8 +652,8 @@ namespace RecordFCS_Alt.Controllers
                     var titulo = archivoPieza.Titulo;
                     db.ArchivoPiezas.Remove(archivoPieza);
                     db.SaveChanges();
-                    
-                     if (!Directory.Exists(Server.MapPath(ruta)))
+
+                    if (!Directory.Exists(Server.MapPath(ruta)))
                         Directory.CreateDirectory(Server.MapPath(ruta));
 
                     if (!Directory.Exists(Server.MapPath(rutaThumb)))
@@ -531,12 +676,11 @@ namespace RecordFCS_Alt.Controllers
 
             }
 
-
-
-            
             return Json(new { success = true, url = url, idPieza = piezaID, esImagen = esImagen });
-
         }
+
+
+
 
         protected override void Dispose(bool disposing)
         {

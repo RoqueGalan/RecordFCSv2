@@ -2,7 +2,7 @@
     $.ajaxSetup({ cache: false });
     $("a[data-modal].openModal_TipoArchivo").on("click", function (e) {
 
-        alert("ok");
+        //alert("ok");
         $('#miModalContenido').load(this.href, function () {
             $('#miModal').modal({
                 backdrop: 'static',

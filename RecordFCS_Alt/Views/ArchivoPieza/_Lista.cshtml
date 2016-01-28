@@ -10,7 +10,6 @@
 }
 
 
-
 <div class="row">
 
     <div class="col-lg-4 col-md-4">
@@ -23,7 +22,7 @@
                 <th>
                     @if (User.IsInRole("arcNew") && esCompleta)
                     {
-                        @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nuevo", "Crear", "ArchivoPieza", new { id = id, TipoArchivoID = TipoArchivoID, esCompleta = esCompleta }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-xs pull-right archivoPiezaModal" })
+                        @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nuevo", "Crear", "ArchivoPieza", new { id = id, TipoArchivoID = TipoArchivoID, esCompleta = esCompleta }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success btn-sm pull-right archivoPiezaModal" })
                     }
                 </th>
             </tr>
@@ -42,14 +41,20 @@
 
                             @if (esCompleta)
                             {
+                                if (User.IsInRole("ubiHist"))
+                                {
+                                    @Html.NoEncodeActionLink("<span class='fa fa-history'></span>", "Historial de cambios ", "IndexSimple", "HistorialLog", routeValues: new { id = item.ArchivoPiezaID, tabla = "ArchivoPieza", nombre = item.Titulo }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-black btn-xs openModalLG_Historial" })
+                                }
+
                                 if (User.IsInRole("arcEdit"))
                                 {
                                     @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs archivoPiezaModal" })
                                 }
-                                if (User.IsInRole("arcDel"))
+                                
+                                @*if (User.IsInRole("arcDel"))
                                 {
                                     @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs archivoPiezaModal" })
-                                }
+                                }*@
                             }
                         </div>
                     </td>
@@ -74,6 +79,23 @@
 <script type="text/javascript">
     $(function () {
         $.ajaxSetup({ cache: false });
+
+
+        $("a[data-modal].openModalLG_Historial").on("click", function (e) {
+            $('#miModalContenidoFloatLG').load(this.href, function () {
+                $('#miModalFloatLG').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+
+                $("#miModalFloatLG").css("z-index", "1500");
+
+            });
+            return false;
+        });
+
+
+
 
         $('a[data-modal].archivoPiezaModal').on("click", function (e) {
 

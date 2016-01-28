@@ -4,7 +4,6 @@
 @{
     ViewBag.PagName = "Imágen";
     ViewBag.CtrlName = Model.Titulo;
-    ViewBag.PagDescription = Model.Descripcion;
 }
 
 <script src="~/Content/magnificent/js/dependencias/jquery.bridget.js"></script>
@@ -29,7 +28,7 @@
     <h4 class="modal-title" id="myModalLabel">
         <b>@ViewBag.PagName</b>
         <span>@ViewBag.CtrlName</span>
-        <i class="text-muted">@ViewBag.PagDescription</i>
+        <i>xxxxxx</i>
     </h4>
 </div>
 
@@ -37,11 +36,7 @@
 
 <div class="modal-body">
 
-    @*<img src="@Model.RutaThumb" class="img-responsive" />*@
-
-    @*<div mag-thumb="drag">
-            <img src="@Model.RutaThumb" id="imgMini" class="">
-        </div>*@
+    <!-- #region Render Imagen -->
 
     <div>
         <img src="@Model.RutaThumb" class="img-full" />
@@ -55,10 +50,28 @@
         </div>
 
     </div>
+    <!-- #endregion -->
+
 </div>
 
 <div class="modal-footer">
     <div class="text-center">
+
+        <!-- #region Datos de la imagen -->
+
+        <div class="row clearfix">
+
+            <p><i class="fa fa-asterisk"></i> <b>Titulo: </b> @Model.Titulo</p>
+            <p><i class="fa fa-commenting"></i> <b>Descripción: </b> @Model.Descripcion</p>
+            <p><i class="fa fa-link"></i> <b>Link: </b> @Model.Url</p>
+
+        </div>
+
+
+        <!-- #endregion -->
+
+
+
         <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
     </div>
 </div>
@@ -75,12 +88,6 @@
 
 
     function setupZoom() {
-
-        //$host = $('[mag-thumb="drag"]');
-        //$host.mag({
-        //    position: 'drag',
-        //    toggle: true
-        //});
 
         $host = $('[mag-thumb="drag"]');
         $host.mag({

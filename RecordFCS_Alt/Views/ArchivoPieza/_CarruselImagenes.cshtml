@@ -40,8 +40,8 @@
                             <span class="center-block"><b>Agregue una imagen</b></span>
                             <span class="text-muted"></span>
 
-                                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs " + classModal })
-            
+                            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs " + classModal })
+
                         </div>
                     }
                 </div>
@@ -70,25 +70,33 @@
                             <span class="center-block"><b>@item.Titulo</b></span>
                             <small class="text-muted">@item.Descripcion</small>
 
-                            <span class="center-block">
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </span>
                             <div>
 
                                 @if (esCompleta)
                                 {
                                     if (User.IsInRole("arcNew"))
                                     {
-                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
+                                        @Html.NoEncodeActionLink("<i class='fa fa-plus'></i>", "Nueva Imagen", "Crear", "ArchivoPieza", new { id = piezaID, TipoArchivoID = tipoArchivoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
+                                        @("|")
                                     }
+
+                                    @Html.DisplayFor(modelItem => item.Status)
+
+
+                                    if (User.IsInRole("arcHist"))
+                                    {
+                                        @Html.NoEncodeActionLink("<i class='fa fa-history'></i>", "Historial de cambios ", "IndexSimple", "HistorialLog", routeValues: new { id = item.ArchivoPiezaID, tabla = "ArchivoPieza", nombre = item.Titulo }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs openModalLG_Historial" + classModal })
+                                    }
+
                                     if (User.IsInRole("arcEdit"))
                                     {
-                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
+                                        @Html.NoEncodeActionLink("<i class='fa fa-pencil'></i>", "Editar Imagen", "Editar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs " + classModal })
                                     }
-                                    if (User.IsInRole("arcDel"))
+                                    
+                                    @*if (User.IsInRole("arcDel"))
                                     {
-                                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-danger btn-xs " + classModal })
-                                    }
+                                        @Html.NoEncodeActionLink("<i class='fa fa-trash'></i>", "Eliminar Imagen", "Eliminar", "ArchivoPieza", new { id = item.ArchivoPiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-danger btn-xs " + classModal })
+                                    }*@
                                 }
 
                             </div>
@@ -139,6 +147,20 @@
     $(function () {
         $.ajaxSetup({ cache: false });
 
+
+        $("a[data-modal].openModalLG_Historial@(classModal)").on("click", function (e) {
+            $('#miModalContenidoLG').load(this.href, function () {
+                $('#miModalLG').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+            });
+            return false;
+        });
+
+
+
+
         // Abrir Modales en formulario PRE REGISTRO
         $("a[data-modal].ModalImagen_@CarruselID").on("click", function (e) {
             $('#miModalContenido').load(this.href, function () {
@@ -156,8 +178,8 @@
 
 
         $("a[data-modal].Zoom@(classModal)").on("click", function (e) {
-            $('#miModalContenidoLG').load(this.href, function () {
-                $('#miModalLG').modal({
+            $('#miModalContenido').load(this.href, function () {
+                $('#miModal').modal({
                     backdrop: 'static',
                     keyboard: true
                 }, 'show');

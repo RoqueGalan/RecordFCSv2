@@ -324,11 +324,7 @@ namespace RecordFCS_Alt.Controllers
                     piezaTemp = listaBuscar.FirstOrDefault(a => a.PiezaID == PiezaID);
                     break;
             }
-            
 
-
-
-            
             piezaTemp.Comentario = "";
 
             bool enError = false;

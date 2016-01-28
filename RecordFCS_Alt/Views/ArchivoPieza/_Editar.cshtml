@@ -30,9 +30,8 @@
 
         @if (esImagen)
         {
-            <div class="text-center">
-                <img src="@Model.RutaThumb" class="thumbnail imagenMini" />
-            </div>
+            <img src="@Model.RutaThumb" class="thumbnail imagenMini" style="margin:0 auto;" />
+            <br />
         }
 
         <div class="form-horizontal">
@@ -88,29 +87,52 @@
 
 
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => model.Status)
-                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-
-            <h3 class="text-center">Mostrar en:</h3>
-            @foreach (var itemModel in Model.MostrarArchivos)
+            @if (User.IsInRole("arcDel"))
             {
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-4">
-                            @Html.CheckBox("mosArc_" + itemModel.TipoMostrarArchivoID + "_Status", itemModel.Status)
-                        <label for="@(string.Format("mosArc_{0}_Status",itemModel.TipoMostrarArchivoID))">@itemModel.TipoMostrarArchivo.Nombre</label>
-
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Status)
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
             }
+            else
+            {
+                @Html.HiddenFor(model => model.Status)
+            }
 
+            <hr />
+
+
+            <h3 class="text-center">Mostrar en:</h3>
+            
+            <div class="row">
+
+                @foreach (var itemModel in Model.MostrarArchivos)
+                {
+
+                    <div class="col-md-offset-2 col-md-4 col-xs-offset-1 col-xs-5">
+                        <div class="form-group">
+                                @Html.CheckBox("mosArc_" + itemModel.TipoMostrarArchivoID + "_Status", itemModel.Status)
+                                <label for="@(string.Format("mosArc_{0}_Status",itemModel.TipoMostrarArchivoID))">@itemModel.TipoMostrarArchivo.Nombre</label>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+            <hr />
+
+            <div class="form-group">
+                @Html.Label("Motivo", "Motivo de la actualización", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBox("Motivo", null, new { @class = "form-control", required = true })
+                    @Html.ValidationMessage("Motivo", new { @class = "text-danger" }, "Motivo")
+                </div>
+            </div>
 
 
         </div>

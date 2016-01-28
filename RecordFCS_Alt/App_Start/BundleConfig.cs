@@ -34,7 +34,8 @@ namespace RecordFCS_Alt
                      "~/Content/css/font-awesome.css",
                      "~/Content/bootstrap-subMenus.css",
                      "~/Content/bootstrap-datetimepicker.css",
-                     "~/Content/boosstrap-checkbox.css"
+                     "~/Content/boosstrap-checkbox.css",
+                     "~/Content/bootstrap-vertical-tabs.css"
                      ));
 
             bundles.Add(new ScriptBundle("~/bundles/datetime").Include(

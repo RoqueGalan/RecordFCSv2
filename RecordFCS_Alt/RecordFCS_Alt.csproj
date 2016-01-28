@@ -149,6 +149,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BuscadorController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HistorialLogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenPiezaController.cs" />
     <Compile Include="Controllers\ImprimirController.cs" />
@@ -184,6 +185,7 @@
     </Compile>
     <Compile Include="Helpers\Alerta.cs" />
     <Compile Include="Helpers\CampoPieza.cs" />
+    <Compile Include="Helpers\Historial\LogicaHistorial.cs" />
     <Compile Include="Helpers\HTMLHelpers.cs" />
     <Compile Include="Helpers\MultiButtonAttribute.cs" />
     <Compile Include="Helpers\Seguridad\BaseViewPage.cs" />
@@ -192,45 +194,6 @@
     <Compile Include="Helpers\Structs.cs" />
     <Compile Include="Helpers\Thumbnail.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\AtributoPieza.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\ArchivoPieza.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\MostrarArchivo.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\TipoMostrarArchivo.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\SubCatalogos\TipoArchivo.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\TecnicaPieza.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\Autor.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributo.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\AutorPieza.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\ImagenPieza.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\ListaValor.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\LetraInventario.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\MedidaPieza.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\MostrarAtributo.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Obra.cs" />
-    <Compile Include="Models\DBModels\Movimientos\Movimiento.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoAutorizacion.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoExposicion.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoPieza.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoResponsable.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoSeguro.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoSolicitante.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoTemp.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoTempPieza.cs" />
-    <Compile Include="Models\DBModels\Movimientos\MovimientoTransporte.cs" />
-    <Compile Include="Models\DBModels\Movimientos\TipoMovimiento.cs" />
-    <Compile Include="Models\DBModels\Seguridad\Permiso.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Pieza.cs" />
-    <Compile Include="Models\DBModels\RecordFCSContext.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\Tecnica.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\TipoAtributo.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\SubCatalogos\TipoMedida.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\TipoMostrar.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\TipoObra.cs" />
-    <Compile Include="Models\DBModels\Seguridad\TipoPermiso.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\TipoPieza.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\Ubicacion.cs" />
-    <Compile Include="Models\DBModels\EstructuraObra\Atributos\Catalogos\SubCatalogos\TipoTecnica.cs" />
-    <Compile Include="Models\DBModels\Seguridad\Usuario.cs" />
     <Compile Include="Models\Migraciones\RowArchivo.cs" />
     <Compile Include="Models\Migraciones\RowUsuario.cs" />
     <Compile Include="Models\Reportes\MovimientoTemp.Designer.cs">
@@ -263,6 +226,8 @@
     <Content Include="Content\bootstrap-subMenus.css" />
     <Content Include="Content\bootstrap-switch.css" />
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap-vertical-tabs.css" />
+    <Content Include="Content\bootstrap-vertical-tabs.min.css" />
     <Content Include="Content\carusel.css" />
     <Content Include="Content\Colores.css" />
     <Content Include="Content\css\font-awesome.css" />
@@ -628,11 +593,12 @@
     <Content Include="Views\Imprimir\_Menu.cshtml" />
     <Content Include="Views\Imprimir\_FormatoBasicoPDF.cshtml" />
     <Content Include="Views\Imprimir\_PiezaImprimir.cshtml" />
+    <Content Include="Views\HistorialLog\_Index.cshtml" />
+    <Content Include="Views\HistorialLog\_LogAccionesUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\docxPieza\" />
-    <Folder Include="Models\DBModels\Historial\" />
     <Folder Include="ReportesCrystal\" />
     <Folder Include="Views\ListaPieza\" />
   </ItemGroup>
@@ -642,6 +608,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RecordFCS_Alt.Models\RecordFCS_Alt.Models.csproj">
+      <Project>{e6b5e653-1e92-4809-af38-73a2cac8310d}</Project>
+      <Name>RecordFCS_Alt.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

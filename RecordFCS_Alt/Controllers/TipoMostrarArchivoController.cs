@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using RecordFCS_Alt.Helpers.Seguridad;
+using RecordFCS_Alt.Helpers.Historial;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -66,23 +67,74 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "tMosNew")]
         public ActionResult Crear(TipoMostrarArchivo tipoMostrarArchivo)
         {
-            var tma = db.TipoMostrarArchivos.Select(a => new { a.TipoMostrarArchivoID, a.Nombre }).FirstOrDefault(a => a.Nombre == tipoMostrarArchivo.Nombre);
-
-            if (tma != null)
-                ModelState.AddModelError("Nombre", "Ya existe.");
-
-            if (ModelState.IsValid)
+            try
             {
-                tipoMostrarArchivo.TipoMostrarArchivoID = Guid.NewGuid();
-                db.TipoMostrarArchivos.Add(tipoMostrarArchivo);
-                db.SaveChanges();
+                #region Validaciones previas
 
-                AlertaSuccess(string.Format("Tipo de mostrar archivo <b>{0}</b> creada.", tipoMostrarArchivo.Nombre), true);
+                //validar nombre
+                var tma = db.TipoMostrarArchivos.Select(a => new { a.TipoMostrarArchivoID, a.Nombre }).FirstOrDefault(a => a.Nombre == tipoMostrarArchivo.Nombre);
 
-                string url = Url.Action("Lista", "TipoMostrarArchivo");
+                if (tma != null)
+                    ModelState.AddModelError("Nombre", "Ya existe.");
 
-                return Json(new { success = true, url = url });
+                #endregion
+                
+                if (ModelState.IsValid)
+                {
+                    //Crear la entidad
+                    tipoMostrarArchivo.TipoMostrarArchivoID = Guid.NewGuid();
+                    db.TipoMostrarArchivos.Add(tipoMostrarArchivo);
+
+                    //------ Logica HISTORIAL
+
+                    #region Generar el historial
+
+                    // Generar el historial
+                    var historialLog =
+                        HistorialLogica.CrearEntidad(
+                        tipoMostrarArchivo,
+                        tipoMostrarArchivo.GetType().Name,
+                        tipoMostrarArchivo.TipoMostrarArchivoID.ToString(),
+                        User.UsuarioID,
+                        db);
+
+                    #endregion
+
+                    #region Guardar el historial
+
+                    //Guardar cambios si todo salio correcto
+                    if (historialLog != null)
+                    {
+                        //Guardar la entidad
+                        db.SaveChanges();
+
+                        //Guardar el historial
+                        db.HistorialLogs.Add(historialLog);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+                    #endregion
+
+                    //------
+
+                    //Logica para terminar la instruccion
+                    AlertaSuccess(string.Format("Tipo de mostrar archivo <b>{0}</b> creada.", tipoMostrarArchivo.Nombre), true);
+
+                    string url = Url.Action("Lista", "TipoMostrarArchivo");
+                    return Json(new { success = true, url = url });
+                }
+
             }
+            catch (Exception)
+            {
+
+                ModelState.AddModelError("", "Error desconocido.");
+            }
+
 
             return PartialView("_Crear", tipoMostrarArchivo);
         }
@@ -105,23 +157,89 @@ namespace RecordFCS_Alt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "tMosEdit")]
-        public ActionResult Editar([Bind(Include = "TipoMostrarArchivoID,Nombre,Descripcion,Status")] TipoMostrarArchivo tipoMostrarArchivo)
+        public ActionResult Editar(TipoMostrarArchivo tipoMostrarArchivo, string Motivo)
         {
-            var tm = db.TipoMostrarArchivos.Select(a => new { a.Nombre, a.TipoMostrarArchivoID }).FirstOrDefault(a => a.Nombre == tipoMostrarArchivo.Nombre);
-
-            if (tm != null)
-                if (tm.TipoMostrarArchivoID != tipoMostrarArchivo.TipoMostrarArchivoID)
-                    ModelState.AddModelError("Nombre", "Ya existe.");
-
-            if (ModelState.IsValid)
+            try
             {
-                db.Entry(tipoMostrarArchivo).State = EntityState.Modified;
-                db.SaveChanges();
+                #region Validaciones previas
 
-                AlertaInfo(string.Format("Tipo de mostrar archivo: <b>{0}</b> se editó.", tipoMostrarArchivo.Nombre), true);
-                string url = Url.Action("Lista", "TipoMostrarArchivo");
-                return Json(new { success = true, url = url });
+                //validar el nombre
+                var tm = db.TipoMostrarArchivos.Select(a => new { a.Nombre, a.TipoMostrarArchivoID }).FirstOrDefault(a => a.Nombre == tipoMostrarArchivo.Nombre);
+
+                if (tm != null)
+                    if (tm.TipoMostrarArchivoID != tipoMostrarArchivo.TipoMostrarArchivoID)
+                        ModelState.AddModelError("Nombre", "Ya existe.");
+
+                if (string.IsNullOrWhiteSpace(Motivo))
+                    ModelState.AddModelError("Motivo", "Motivo vacio.");
+
+                #endregion
+               
+                if (ModelState.IsValid)
+                {
+
+                    //------ Logica HISTORIAL
+
+                    #region Generar el historial
+
+                    //objeto del formulario
+                    var objeto = tipoMostrarArchivo;
+                    //Objeto de la base de datos
+                    var objetoDB = db.TipoMostrarArchivos.Find(tipoMostrarArchivo.TipoMostrarArchivoID);
+                    //tabla o clase a la que pertenece
+                    var tablaNombre = objeto.GetType().Name;
+                    //llave primaria del objeto
+                    var llavePrimaria = objetoDB.TipoMostrarArchivoID.ToString();
+
+                    //generar el historial
+                    var historialLog = HistorialLogica.EditarEntidad(
+                        objeto,
+                        objetoDB,
+                        tablaNombre,
+                        llavePrimaria,
+                        User.UsuarioID,
+                        db,
+                        Motivo
+                        );
+
+                    #endregion
+
+                    #region Guardar el historial
+
+                    if (historialLog != null)
+                    {
+                        //Cambiar el estado a la entidad a modificada
+                        db.Entry(objetoDB).State = EntityState.Modified;
+                        //Guardamos la entidad modificada
+                        db.SaveChanges();
+
+                        //Guardar el historial
+                        db.HistorialLogs.Add(historialLog);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                    #endregion
+
+                    //------
+
+                    //Logica para terminar la instruccion
+                    AlertaInfo(string.Format("Tipo de mostrar archivo: <b>{0}</b> se editó.", tipoMostrarArchivo.Nombre), true);
+
+                    string url = Url.Action("Lista", "TipoMostrarArchivo");
+                    return Json(new { success = true, url = url });
+                }
+
             }
+            catch (Exception)
+            {
+
+                ModelState.AddModelError("", "Error desconocido.");
+            }
+
+
             return PartialView("_Editar", tipoMostrarArchivo);
         }
 
@@ -131,9 +249,9 @@ namespace RecordFCS_Alt.Controllers
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
+
             TipoMostrarArchivo tipoMostrarArchivo = db.TipoMostrarArchivos.Find(id);
-            
+
             if (tipoMostrarArchivo == null)
                 return HttpNotFound();
 
@@ -161,7 +279,7 @@ namespace RecordFCS_Alt.Controllers
                     AlertaDefault(string.Format("Se deshabilito <b>{0}</b>", textoNombre), true);
                     break;
                 case "eliminar":
-            db.TipoMostrarArchivos.Remove(tipoMostrarArchivo);
+                    db.TipoMostrarArchivos.Remove(tipoMostrarArchivo);
                     db.SaveChanges();
                     AlertaDanger(string.Format("Se elimino <b>{0}</b>", textoNombre), true);
                     break;

@@ -1,0 +1,213 @@
+﻿@using RecordFCS_Alt.Helpers
+@using RecordFCS_Alt.Models
+@model List<IGrouping<string, HistorialLog>>
+
+
+@{
+    string pagName = "Historial";
+    string tablaNombre = ViewBag.TablaNombre;
+
+    string registroNombre = ViewBag.RegistroNombre;
+
+    string llavePrimaria = ViewBag.LlavePrimaria;
+
+    string claseActiva = "";
+
+    string iconoAccion = "";
+}
+
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <i class="fa fa-history fa-2x"></i>
+        <b>@pagName</b>
+        <span class="text-muted">@tablaNombre</span>
+        [<i class="text-muted">@registroNombre</i>]
+
+    </h4>
+
+</div>
+
+
+<div class="modal-body">
+
+    @if (Model.Count > 0)
+    {
+        <!-- #region Encabezados -->
+        @*<div class="row">
+            <div class="col-xs-5">
+                <p><i class="fa fa-calendar fa-2x"></i> Fecha y Hora</p>
+            </div>
+
+            <div class="col-xs-7">
+                <p><i class="fa fa-info-circle fa-2x"></i> Información</p>
+            </div>
+
+        </div>*@
+            <!-- #endregion -->
+
+        
+        <div class="row clearfix">
+
+            <!-- #region encabezado TABS -->
+            <div class="col-xs-5">
+                <ul class="nav nav-tabs tabs-left nav-pills">
+                    
+                    @{
+                        claseActiva = "active";
+                    }
+                    
+                    @foreach (var itemLista in Model)
+                    {
+                        <span>
+                            <h4>
+                                <b>
+                                    <i class="fa fa-calendar"></i>
+                                    @itemLista.Key
+                                    <span class="badge">@itemLista.Count()</span>
+                                </b>
+                            </h4>
+                        </span>
+                        
+                        foreach (var historialLog in itemLista)
+                        {
+                            <li class="@claseActiva">
+                                <a href="#@historialLog.HistorialLogID" data-toggle="tab">
+                                    <i class="fa fa-clock-o"></i>
+                                    @historialLog.EventoFecha.ToLongTimeString()
+                                </a>
+                            </li>
+
+                            if (itemLista.FirstOrDefault() == historialLog)
+                            {
+                                claseActiva = "";
+                            }
+                        }
+                    }
+                    </ul>
+            </div>
+            <!-- #endregion -->
+
+
+            <!-- #region contenidos TABS -->
+            <div class="col-xs-7">
+                <div class="tab-content">
+                    @{
+        claseActiva = "active";
+                    }
+
+                    @foreach (var itemLista in Model)
+                    {
+
+                        foreach (var historialLog in itemLista)
+                        {
+                            switch (historialLog.EventoTipo)
+                            {
+                                case "Crear":
+                                    iconoAccion = "fa fa-plus";
+                                    break;
+
+                                case "Editar":
+                                    iconoAccion = "fa fa-pencil";
+                                    break;
+
+                                case "Eliminar":
+                                    iconoAccion = "fa fa-trash";
+                                    break;
+                                default:
+                                    iconoAccion = "";
+                                    break;
+                            }
+
+                            <div class="tab-pane @claseActiva" id="@historialLog.HistorialLogID">
+
+                                <div class="breadcrumb">
+                                    <p><i class="fa fa-calendar"></i> <b>Fecha: </b> @historialLog.EventoFecha.ToLongDateString()</p>
+                                    <p><i class="fa fa-clock-o"></i> <b>Hora: </b> @historialLog.EventoFecha.ToLongTimeString()</p>
+                                    <p><i class="@iconoAccion"></i> <b>Tipo: </b> @historialLog.EventoTipo</p>
+                                    <p><i class="fa fa-question-circle"></i> <b>Motivo:</b> @historialLog.Motivo</p>
+                                    <p><i class="fa fa-user"></i> <b>Usuario: </b> @historialLog.Usuario.Nombre @historialLog.Usuario.Apellido</p>
+
+                                </div>
+
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Campo</th>
+                                            <th>Valor Anterior</th>
+                                            <th>Valor Nuevo</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                        @foreach (var item in historialLog.HistorialLogDetalles.OrderBy(a=> a.ColumnaNombre))
+                                        {
+                                            <tr>
+                                                <td><b>@item.ColumnaNombre</b></td>
+                                                <td><i class=" pull-right fa fa-arrow-right"></i><p>@item.ValorOriginal</p></td>
+                                                <td><p>@item.ValorNuevo</p></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+
+
+                                </table>
+
+                            </div>
+
+                                        if (itemLista.FirstOrDefault() == historialLog)
+                                        {
+                                            claseActiva = "";
+                                        }
+                        }
+                    }
+
+                </div>
+            </div>
+            <!-- #endregion -->
+
+        </div>
+
+    }
+    else
+    {
+        <h3>No contiene historial</h3>
+    }
+
+
+    @*<div class="row clearfix" >
+            <div class="col-xs-3">
+                <!-- required for floating -->
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs tabs-left nav-pills">
+                    <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+                    <li><a href="#profile" data-toggle="tab">Profile</a></li>
+                    <li><a href="#messages" data-toggle="tab">Messages</a></li>
+                    <li><a href="#settings" data-toggle="tab">Settings</a></li>
+                </ul>
+            </div>
+
+            <div class="col-xs-9">
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="home">Home Tab.</div>
+                    <div class="tab-pane" id="profile">Profile Tab.</div>
+                    <div class="tab-pane" id="messages">Messages Tab.</div>
+                    <div class="tab-pane" id="settings">Settings Tab.</div>
+                </div>
+            </div>
+
+        </div>*@
+
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+</div>
+
+
+<script src="~/Scripts/add.toolTip.js"></script>

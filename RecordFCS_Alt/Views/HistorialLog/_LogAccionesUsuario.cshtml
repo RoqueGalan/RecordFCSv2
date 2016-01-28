@@ -1,0 +1,29 @@
+﻿@using RecordFCS_Alt.Models
+@model List<IGrouping<DateTime, HistorialLog>>
+
+
+
+<div>
+
+    <ol>
+        @foreach (var itemLista in Model)
+        {
+
+            <li>
+                <p>
+                    @itemLista.Key.ToLongDateString()
+                    <span class="badge">@itemLista.Count()</span>
+                </p>
+
+                <ul>
+                    @foreach (var item in itemLista)
+                    {
+                        <li>@item.EventoFecha.ToLongTimeString()</li>
+                    }
+                </ul>
+            </li>
+        }
+    </ol>
+
+
+</div>
