@@ -37,28 +37,28 @@
     {
         <!-- #region Encabezados -->
         @*<div class="row">
-            <div class="col-xs-5">
-                <p><i class="fa fa-calendar fa-2x"></i> Fecha y Hora</p>
-            </div>
+                <div class="col-xs-5">
+                    <p><i class="fa fa-calendar fa-2x"></i> Fecha y Hora</p>
+                </div>
 
-            <div class="col-xs-7">
-                <p><i class="fa fa-info-circle fa-2x"></i> Información</p>
-            </div>
+                <div class="col-xs-7">
+                    <p><i class="fa fa-info-circle fa-2x"></i> Información</p>
+                </div>
 
-        </div>*@
+            </div>*@
             <!-- #endregion -->
 
-        
+
         <div class="row clearfix">
 
             <!-- #region encabezado TABS -->
             <div class="col-xs-5">
                 <ul class="nav nav-tabs tabs-left nav-pills">
-                    
+
                     @{
-                        claseActiva = "active";
+        claseActiva = "active";
                     }
-                    
+
                     @foreach (var itemLista in Model)
                     {
                         <span>
@@ -70,7 +70,7 @@
                                 </b>
                             </h4>
                         </span>
-                        
+
                         foreach (var historialLog in itemLista)
                         {
                             <li class="@claseActiva">
@@ -86,11 +86,9 @@
                             }
                         }
                     }
-                    </ul>
+                </ul>
             </div>
             <!-- #endregion -->
-
-
             <!-- #region contenidos TABS -->
             <div class="col-xs-7">
                 <div class="tab-content">
@@ -143,7 +141,7 @@
 
 
                                     <tbody>
-                                        @foreach (var item in historialLog.HistorialLogDetalles.OrderBy(a=> a.ColumnaNombre))
+                                        @foreach (var item in historialLog.HistorialLogDetalles.OrderBy(a => a.ColumnaNombre))
                                         {
                                             <tr>
                                                 <td><b>@item.ColumnaNombre</b></td>
@@ -156,12 +154,19 @@
 
                                 </table>
 
+                                @if (historialLog.TablaNombre == "MovimientoTemp")
+                                {
+                                    <div>
+                                        @{ Html.RenderAction("DetallesMovimientoLog", "HistorialLog", new { id = historialLog.HistorialLogID }); }
+                                    </div>
+                                }
+
                             </div>
 
-                                        if (itemLista.FirstOrDefault() == historialLog)
-                                        {
-                                            claseActiva = "";
-                                        }
+                                if (itemLista.FirstOrDefault() == historialLog)
+                                {
+                                    claseActiva = "";
+                                }
                         }
                     }
 

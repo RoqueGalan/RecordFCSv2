@@ -9,9 +9,16 @@ namespace RecordFCS_Alt.Models
 {
     public enum EstadoMovimientoTemp
     {
+        [Display(Name = "Cancelado")]
         Cancelado,
+        [Display(Name = "Concluido")]
         Concluido,
-        Procesando
+        [Display(Name = "Procesando")]
+        Procesando,
+        [Display(Name = "Concluido sin validar")]
+        Concluido_SinValidar,
+        [Display(Name = "Retornado")]
+        Retornado
     }
 
     public class MovimientoTemp
@@ -32,6 +39,13 @@ namespace RecordFCS_Alt.Models
         //    //Solicitante_AvisoSeguridad = false;
         //    //Solicitante_CartasEntregaRecepcion = false;
         //}
+
+        public MovimientoTemp()
+        {
+            EstadoMovimiento = null;
+            
+            EsValido = false;
+        }
 
         //----------------------------------------------------------
         //-------------- M O V I M I E N T O -----------------------
@@ -55,6 +69,7 @@ namespace RecordFCS_Alt.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime? FechaRegistro { get; set; }
+
 
 
 
@@ -277,8 +292,27 @@ namespace RecordFCS_Alt.Models
          * Avalúo	VAR_NotVal	mov_ava_notas	Notas
          */
 
+        //Firmas extras
+        public string FirmaExtra1 { get; set; }
+        public string FirmaExtra2 { get; set; }
+        public string FirmaExtra3 { get; set; }
+        public string FirmaExtra4 { get; set; }
+
+
+        [Display(Name = "Última ejecución")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
+        public DateTime? FechaUltimaEjecucion { get; set; }
+
+
+
+
 
         public string Temp { get; set; }
+
+        [Display(Name = "Valido")]
+        public bool EsValido { get; set; }
+
 
         [ForeignKey("Usuario")]
         public Guid? UsuarioID { get; set; }

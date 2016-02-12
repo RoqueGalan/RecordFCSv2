@@ -16,10 +16,11 @@
     @Scripts.Render("~/bundles/datetime")
     @Scripts.Render("~/bundles/bootstrap")
 
+    <meta name="description" content="The description of my page" />
 </head>
 
 
-<body style="background-color: #ffffff;">
+<body style="background-color: #ffffff;" class="NoSelect">
     @*<div id="loadingAjax">
             <div class="text-center">
                 <span class="fa fa-spin fa-spinner fa-4x"></span>
@@ -44,6 +45,8 @@
         </div>
 
         <!-- MODALES -->
+
+        <!-- #region MODALEs -->
         <!-- modal placeholder-->
         <div id='miModalFloat' class='modal fade in'>
             <div class="modal-dialog">
@@ -69,6 +72,7 @@
                 </div>
             </div>
         </div>
+
         <div id='miModal2' class='modal fade in'>
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -76,6 +80,7 @@
                 </div>
             </div>
         </div>
+
         <div id='miModalLG' class='modal fade in'>
             <div class="modal-dialog modal-lg">
                 <div class="modal-content ">
@@ -91,66 +96,76 @@
                 </div>
             </div>
         </div>
-    </div>
 
-
-
-
-
-
-
-
-    <div id='miModalAlerta' class='modal fade in'>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div id='miModalAlertaContenido'></div>
+        <div id='myModal' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id='myModalContent'></div>
+                </div>
             </div>
         </div>
+
+        <div id='miModalAlerta' class='modal fade in'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id='miModalAlertaContenido'></div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- #endregion -->
+
+
     </div>
 
 
 
     <footer>
-        <p class="text-center">
-            &copy; @DateTime.Now.Year - <b>Record</b> - Registro, Control y Documentación de Obra. <b><i>v.2.1.0</i></b>
-        </p>
 
-        <p id="renderTime">
+        <div class="container">
+            <p class="text-center">
+                &copy; @DateTime.Now.Year - <i class="fa fa-book text-muted"></i> <b>Record</b> - Registro, Control y Documentación de Obra. <b><i>v.2.1.0</i></b>
+            </p>
+        </div>
 
-        </p>
-        
-        @if (IsAuthenticated)
-        {
+    </footer>
 
 
 
-            <script type="text/javascript">
 
-                var IsAuthenticated = true;
-                var ratonActivo = true;
-                $(document).ready(function () {
-                    $.LazyMouse({
-                        delay: 900000 //15 minutos
-                    });
+    @RenderSection("scripts", required: false)
+
+    @if (IsAuthenticated)
+    {
+        <script type="text/javascript">
+
+            var IsAuthenticated = true;
+            var ratonActivo = true;
+            $(document).ready(function () {
+                $.LazyMouse({
+                    delay: 900000 //15 minutos
+                });
+            });
+
+
+            $(document).ready(function () {
+                $("body").bind("mouse.active", function () {
+                    //console.log("Mouse Active");
+
                 });
 
-
-                $(document).ready(function () {
-                    $("body").bind("mouse.active", function () {
-                        //console.log("Mouse Active");
-
-                    });
-
-                    $("body").bind("mouse.inactive", function () {
-                        //console.log("Mouse Inctive");
-                        //if (IsAuthenticated) {
-                        //    CerrarSesion();
-                        //}
-                    });
+                $("body").bind("mouse.inactive", function () {
+                    //console.log("Mouse Inctive");
+                    //if (IsAuthenticated) {
+                    //    CerrarSesion();
+                    //}
                 });
+            });
 
 
-                @*setInterval(function () {
+            @*setInterval(function () {
                     if (IsAuthenticated) {
                         ChecarTiempo();
                     }
@@ -188,87 +203,72 @@
 
 
 
-                function CerrarSesion() {
-                    IsAuthenticated = false;
-                    var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
-                    window.location = myUrl;
-                }
+            function CerrarSesion() {
+                IsAuthenticated = false;
+                var myUrl = '@Url.Action("CerrarSesion","Usuario",null)';
+                window.location = myUrl;
+            }
 
 
-                function AlertaModal(mensaje, esModal) {
+            function AlertaModal(mensaje, esModal) {
 
-                    $.ajaxSetup({ cache: false });
-                    var myurl = '@Url.Action("MensajeModal", "Home")';
-
-
-                    $.ajax({
-                        url: myurl,
-                        type: 'GET',
-                        data: { mensaje: mensaje, esModal: esModal },
-                        //async: false,
-                        success: function (result) {
-                            if (result.success) {
-
-                                //alert("alerta");
-
-                                $('#alertasDiv').load('/Base/_Alertas');
+                $.ajaxSetup({ cache: false });
+                var myurl = '@Url.Action("MensajeModal", "Home")';
 
 
-                            }
-                            else {
-                                //alert("modal");
+                $.ajax({
+                    url: myurl,
+                    type: 'GET',
+                    data: { mensaje: mensaje, esModal: esModal },
+                    //async: false,
+                    success: function (result) {
+                        if (result.success) {
 
-                                $('#miModalAlertaContenido').html(result)
-                                $('#miModalAlerta').modal({
-                                    backdrop: 'static',
-                                    keyboard: true
-                                }, 'show');
-                            }
+                            //alert("alerta");
+
+                            $('#alertasDiv').load('/Base/_Alertas');
+
 
                         }
-                    });
+                        else {
+                            //alert("modal");
+
+                            $('#miModalAlertaContenido').html(result)
+                            $('#miModalAlerta').modal({
+                                backdrop: 'static',
+                                keyboard: true
+                            }, 'show');
+                        }
+
+                    }
+                });
 
 
 
-                    return false;
-                }
+                return false;
+            }
 
 
-            </script>
-        }
-    </footer>
-
-
-    <div id='myModal' class='modal fade in'>
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div id='myModalContent'></div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-    @RenderSection("scripts", required: false)
-
-
-
-
-
-
+        </script>
+    }
 
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
+
     <script src="~/Scripts/jquery-lazymouse.js"></script>
 
+
+    <script>
+        window.oncontextmenu = function () {
+            console.log("Right Click Disabled");
+            return false;
+        }
+    </script>
+
+
 </body>
-
-
-
-
 
 </html>

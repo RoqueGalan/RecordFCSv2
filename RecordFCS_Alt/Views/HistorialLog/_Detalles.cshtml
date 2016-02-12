@@ -1,0 +1,110 @@
+﻿@model RecordFCS_Alt.Models.HistorialLog
+
+
+@{
+    string PagName = "Detalles";
+    string CtrlName = "Historial";
+
+    string iconoAccion = "";
+
+    switch (Model.EventoTipo)
+    {
+        case "Crear":
+            iconoAccion = "fa fa-plus";
+            break;
+
+        case "Editar":
+            iconoAccion = "fa fa-pencil";
+            break;
+
+        case "Eliminar":
+            iconoAccion = "fa fa-trash";
+            break;
+        default:
+            iconoAccion = "";
+            break;
+    }
+
+}
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <i class="fa fa-history fa-2x"></i>
+        <b>@PagName</b>
+        <span class="text-muted">@CtrlName</span>
+        [<i class="text-muted">@Model.EventoFecha.ToLongDateString() a las @Model.EventoFecha.ToShortTimeString()</i>]
+    </h4>
+</div>
+
+
+<div class="modal-body">
+
+    <div class="breadcrumb">
+        <p><span class="text-muted"><i class="fa fa-calendar"></i> <b>Fecha: </b></span> @Model.EventoFecha.ToLongDateString()</p>
+        <p><span class="text-muted"><i class="fa fa-clock-o"></i> <b>Hora: </b></span> @Model.EventoFecha.ToLongTimeString()</p>
+        <p><span class="text-muted"><i class="@iconoAccion"></i> <b>Tipo: </b></span> @Model.EventoTipo</p>
+        <p><span class="text-muted"><i class="fa fa-question-circle"></i> <b>Motivo:</b></span> @Model.Motivo</p>
+        <p><span class="text-muted"><i class="fa fa-user"></i> <b>Usuario: </b></span> @Model.Usuario.Nombre @Model.Usuario.Apellido</p>
+
+    </div>
+
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>Campo</th>
+                <th>Valor Anterior</th>
+                <th>Valor Nuevo</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @foreach (var item in Model.HistorialLogDetalles.OrderBy(a => a.ColumnaNombre))
+            {
+                <tr>
+                    <td><b>@item.ColumnaNombre</b></td>
+                    <td><i class=" pull-right fa fa-arrow-right text-muted"></i><p>@item.ValorOriginal</p></td>
+                    <td><p>@item.ValorNuevo</p></td>
+                </tr>
+            }
+        </tbody>
+
+
+    </table>
+
+
+</div>
+
+
+<div class="modal-footer">
+    @*<a href="@Url.Action("IrA", new { id = Model.HistorialLogID })" class="btn btn-primary pull-left btn_IrA">Ir a la sección modificada</a>*@
+    <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+</div>
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $(".btn_IrA").on("click", function (e) {
+
+
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'POST',
+                success: function (result) {
+
+                    alert("Url: " + result.url);
+
+                }
+            });
+
+            return false;
+        });
+    });
+
+</script>

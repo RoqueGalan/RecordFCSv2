@@ -1,0 +1,78 @@
+﻿@model RecordFCS_Alt.Models.MovimientoTemp
+@using RecordFCS_Alt.Models
+
+@{
+    ViewBag.PagName = "Revertir Movimiento";
+    ViewBag.CtrlName = Model.Folio;
+
+    bool Executar = ViewBag.Executar;
+
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <div class="text-center">
+
+                @if (Executar)
+                {
+                    <h3>
+                        ¿Realmente quieres
+                        <b class="text-danger">
+                            Revertir
+                        </b>
+                        el movimiento
+                        <b>@Model.Folio</b>?
+                    </h3>
+
+                    <p><i class="colorMov-@Model.EstadoMovimiento">@Html.DisplayFor(model => model.EstadoMovimiento)</i> <i class="fa fa-arrow-right"></i> <i class="colorMov-@EstadoMovimientoTemp.Procesando">@EstadoMovimientoTemp.Procesando</i></p>
+
+                    @Html.HiddenFor(model => model.MovimientoTempID)
+                    @Html.Hidden("Executar", Executar)
+
+                }
+                else
+                {
+                    <h3>
+                        No se puede
+                        <b class="text-warning">
+                            Revertir
+                        </b>
+                        el movimiento
+                        <b>@Model.Folio</b>
+                    </h3>
+                    <p>Contacte al administrador del sistema.</p>
+                }
+                
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <input class="btn btn-primary" type="submit" value="Aceptar" />
+
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+
+    </div>
+}
+
+
+<script src="~/Scripts/add.toolTip.js"></script>

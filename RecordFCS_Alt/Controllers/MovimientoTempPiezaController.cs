@@ -16,67 +16,65 @@ namespace RecordFCS_Alt.Controllers
     {
         private RecordFCSContext db = new RecordFCSContext();
 
-        // GET: MovimientoTempPieza
-        public ActionResult Index()
-        {
-            var movimientoTempPiezas = db.MovimientoTempPiezas.Include(m => m.MovimientoTemp).Include(m => m.Pieza);
-            return View(movimientoTempPiezas.ToList());
-        }
-
-        //// GET: MovimientoTempPieza/Details/5
-        //public ActionResult Details(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    MovimientoTempPieza movimientoTempPieza = db.MovimientoTempPiezas.Find(id);
-        //    if (movimientoTempPieza == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(movimientoTempPieza);
-        //}
+        #region Cargar Formulario para modificar las piezas en el movimiento
 
         // GET: MovimientoTempPieza/Create
         public ActionResult FormCrear(Guid id)
         {
-            Session["listaBuscar_" + id] = new List<Item_MovPieza>();
-            Session["listaAceptar_" + id] = new List<Item_MovPieza>();
-            Session["listaError_" + id] = new List<Item_MovPieza>();
+            #region Inicializar
 
+            //Variable Movimiento ID
+            ViewBag.MovID = id;
+
+            //Listas guardadas en variables de sesion
+            var listaBuscar = new List<Item_MovPieza>();
+            var listaAceptar = new List<Item_MovPieza>();
+            var listaError = new List<Item_MovPieza>();
+
+            Session["listaBuscar_" + id] = listaBuscar;
+            Session["listaAceptar_" + id] = listaAceptar;
+            Session["listaError_" + id] = listaError;
+
+            //atributos para el menu de carga de piezas
             var tipoAttGuion = db.TipoAtributos.FirstOrDefault(a => a.Temp == "guion_clave");
-            var listaGuiones = tipoAttGuion.ListaValores.Where(a => a.Status && a.AtributoPiezas.Count > 0).Select(a => new { Nombre = a.Valor + " (" + a.AtributoPiezas.Count +")", GuionID = a.ListaValorID }).OrderBy(a => a.Nombre);
+            var listaGuiones = tipoAttGuion.ListaValores.Where(a => a.Status && a.AtributoPiezas.Count > 0).Select(a => new { Nombre = a.Valor + " (" + a.AtributoPiezas.Count + ")", GuionID = a.ListaValorID }).OrderBy(a => a.Nombre);
             ViewBag.GuionID = new SelectList(listaGuiones, "GuionID", "Nombre");
 
             var listaLetras = db.LetraFolios.Select(a => new { a.LetraFolioID, Nombre = a.Nombre, a.Status }).Where(a => a.Status).OrderBy(a => a.Nombre);
             ViewBag.LetraFolioID = new SelectList(listaLetras, "LetraFolioID", "Nombre", listaLetras.FirstOrDefault().LetraFolioID);
 
-            ViewBag.MovID = id;
+            #endregion
 
+            //Buscar el movimiento
             var mov = db.MovimientosTemp.Find(id);
 
+            //llenar las listas
             if (mov.MovimientoTempPiezas.Count > 0)
             {
-                var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Guion");
+                #region Seleccionar Imagenes mostradas en Guion
+                //var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Guion");
 
-                if (tipoMostrarArchivo == null)
-                {
-                    tipoMostrarArchivo = new TipoMostrarArchivo()
-                    {
-                        TipoMostrarArchivoID = Guid.NewGuid(),
-                        Nombre = "Guion",
-                        Status = true,
-                        Descripcion = "Ficha de movimientos"
-                    };
-                    db.TipoMostrarArchivos.Add(tipoMostrarArchivo);
-                    db.SaveChanges();
-                }
+                //if (tipoMostrarArchivo == null)
+                //{
+                //    tipoMostrarArchivo = new TipoMostrarArchivo()
+                //    {
+                //        TipoMostrarArchivoID = Guid.NewGuid(),
+                //        Nombre = "Guion",
+                //        Status = true,
+                //        Descripcion = "Ficha de movimientos"
+                //    };
+                //    db.TipoMostrarArchivos.Add(tipoMostrarArchivo);
+                //    db.SaveChanges();
+                //}
 
-                TipoArchivo tipoArchivo = db.TipoArchivos.FirstOrDefault(a => a.Temp == "imagen_clave");
+                //TipoArchivo tipoArchivo = db.TipoArchivos.FirstOrDefault(a => a.Temp == "imagen_clave");
+
+                #endregion
+
+                //Atributo titulo
                 var TipoAttTitulo = db.TipoAtributos.FirstOrDefault(a => a.Temp == "titulo");
 
-                var lista = new List<Item_MovPieza>();
+                //lista de piezas guardadas en el movimiento
 
                 foreach (var item in mov.MovimientoTempPiezas.OrderBy(a => a.Pieza.Obra.LetraFolio.Nombre).ThenBy(a => a.Pieza.Obra.NumeroFolio).ThenBy(a => a.Pieza.SubFolio).ToList())
                 {
@@ -97,54 +95,47 @@ namespace RecordFCS_Alt.Controllers
                     obj.EsPendiente = item.EsPendiente;
                     obj.SeMovio = item.SeMovio;
                     obj.ExisteEnMov = true;
+                    obj.Comentario = item.Comentario;
                     obj.EsUltimo = item.Pieza.MovimientoTempPiezas.Where(a => a.Orden > item.Orden && !a.EnError).Count() > 0 ? false : true;
 
 
-                    lista.Add(obj);
+                    if (!obj.EnError)
+                        listaAceptar.Add(obj);
+                    else
+                        listaError.Add(obj);
 
-                }
-                Session["listaBuscar_" + id] = lista;
-
-                foreach (var item in lista.ToList())
-                {
-                    ValidarPieza(item.PiezaID, mov.UbicacionOrigenID, mov.MovimientoTempID);
                 }
             }
 
+            listaBuscar = (List<Item_MovPieza>)Session["listaBuscar_" + id];
+            listaAceptar = (List<Item_MovPieza>)Session["listaAceptar_" + id];
+            listaError = (List<Item_MovPieza>)Session["listaError_" + id];
 
-
-
+            ViewBag.EstadoMovimiento = mov.EstadoMovimiento;
 
             return PartialView("_FormCrear");
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
+        #endregion
+
+
         public JsonResult BuscarPiezas(int? LetraFolioID, Guid? GuionID, bool esGuion, Guid MovimientoID, string NoInventarios = "", bool CargaCompleta = false)
         {
-            //var mov = db.MovimientosTemp.Find(MovimientoID);
-
+            bool resultado = false;
 
             Session["listaBuscar_" + MovimientoID] = new List<Item_MovPieza>();
 
-            //var listaPiezasEnMov = db.MovimientoTempPiezas.Where(a => a.MovimientoTempID == MovimientoID).ToList();
-            bool resultado = false;
             List<Pieza> listaPiezas = new List<Pieza>();
-            /*
-                listas:
-                lista_tabla
-                lista_temporal
-                lista_validas
-                lista_invalidas
-                */
 
             if (esGuion && GuionID != Guid.Empty || GuionID != null)
             {
+                //Carga el guion seleccionado
                 var listaValor = db.ListaValores.Find(GuionID);
                 listaPiezas = listaValor.AtributoPiezas.Select(a => a.Pieza).ToList();
             }
             else if (!String.IsNullOrWhiteSpace(NoInventarios) && (LetraFolioID != 0 || LetraFolioID != null))
             {
+                //Realiza la busqueda por inventario
                 var letra = db.LetraFolios.Find(LetraFolioID);
 
                 if (letra != null)
@@ -197,36 +188,18 @@ namespace RecordFCS_Alt.Controllers
 
 
 
-
+            //Crear la estructura de Item Movimiento Pieza
             if (listaPiezas.Count > 0)
             {
-                var listaEnMov = db.MovimientoTempPiezas.Where(a => a.MovimientoTempID == MovimientoID).ToList();//Session["listaEnMov_" + MovimientoID] == null ? new List<MovimientoTempPieza>() : (List<MovimientoTempPieza>)Session["listaEnMov_" + MovimientoID];
-
                 resultado = true;
 
-                /*
-                listas:
-                lista_tabla
-                lista_temporal
-                lista_validas
-                lista_invalidas
-                */
+                //var listaEnMov = db.MovimientoTempPiezas.Where(a => a.MovimientoTempID == MovimientoID).ToList();//Session["listaEnMov_" + MovimientoID] == null ? new List<MovimientoTempPieza>() : (List<MovimientoTempPieza>)Session["listaEnMov_" + MovimientoID];
+
+
+
                 //var lista = Session["lista_temporal"] == null ? new List<Guid>() : (List<Guid>)Session[listaNombre];
 
                 var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Guion");
-
-                if (tipoMostrarArchivo == null)
-                {
-                    tipoMostrarArchivo = new TipoMostrarArchivo()
-                    {
-                        TipoMostrarArchivoID = Guid.NewGuid(),
-                        Nombre = "Guion",
-                        Status = true,
-                        Descripcion = "Ficha de movimientos"
-                    };
-                    db.TipoMostrarArchivos.Add(tipoMostrarArchivo);
-                    db.SaveChanges();
-                }
 
                 //TipoArchivo tipoArchivo = db.TipoArchivos.FirstOrDefault(a => a.Temp == "imagen_clave");
                 var TipoAttTitulo = db.TipoAtributos.FirstOrDefault(a => a.Temp == "titulo");
@@ -236,40 +209,64 @@ namespace RecordFCS_Alt.Controllers
                 foreach (var item in listaPiezas.OrderBy(a => a.Obra.LetraFolio.Nombre).ThenBy(a => a.Obra.NumeroFolio).ThenBy(a => a.SubFolio).ToList())
                 {
 
-                    var obj = new Item_MovPieza();
+                    var obj = new Item_MovPieza()
+                    {
+                        ObraID = item.ObraID,
+                        PiezaID = item.PiezaID,
+                        UbicacionID = item.UbicacionID,
+                    };
 
 
-                    obj.ObraID = item.ObraID;
                     obj.FolioObra = item.Obra.LetraFolio.Nombre + item.Obra.NumeroFolio;
-                    obj.PiezaID = item.PiezaID;
                     obj.FolioPieza = item.ImprimirFolio();
-                    obj.UbicacionID = item.UbicacionID;
+
                     //var imagen = item.ArchivosPiezas.Where(b => b.Status && b.TipoArchivoID == tipoArchivo.TipoArchivoID && b.MostrarArchivos.Any(c => c.TipoMostrarArchivoID == tipoMostrarArchivo.TipoMostrarArchivoID && c.Status)).OrderBy(b => b.Orden).FirstOrDefault();
                     //obj.Imagen = imagen == null ? "" : imagen.RutaThumb;
-                    var autor = item.AutorPiezas.OrderBy(b => b.Orden).FirstOrDefault(b => b.esPrincipal && b.Status);
-                    obj.Autor = autor == null ? "Sin autor" : autor.Autor == null ? "Sin autor" : autor.Autor.Seudonimo + " " + autor.Autor.Nombre + " " + autor.Autor.ApellidoPaterno + " " + autor.Autor.ApellidoMaterno;
-                    var titulo = item.AtributoPiezas.FirstOrDefault(b => b.Atributo.TipoAtributoID == TipoAttTitulo.TipoAtributoID);
-                    obj.Titulo = titulo == null ? "Sin titulo" : titulo.Valor;
+
+                    //Extraer el autor
+                    try
+                    {
+                        var autor = item.AutorPiezas.OrderBy(b => b.Orden).FirstOrDefault(b => b.esPrincipal && b.Status);
+                        obj.Autor = autor == null ? "Sin autor" : autor.Autor == null ? "Sin autor" : autor.Autor.Seudonimo + " " + autor.Autor.Nombre + " " + autor.Autor.ApellidoPaterno + " " + autor.Autor.ApellidoMaterno;
+                    }
+                    catch (Exception)
+                    {
+                        obj.Autor = "Sin autor";
+                    }
+
+                    //Extraer el titulo
+                    try
+                    {
+                        var titulo = item.AtributoPiezas.FirstOrDefault(b => b.Atributo.TipoAtributoID == TipoAttTitulo.TipoAtributoID);
+                        obj.Titulo = titulo.Valor;
+                    }
+                    catch (Exception)
+                    {
+                        obj.Titulo = "Sin titulo";
+                    }
+
                     //obj.TotalPiezas = item.PiezasHijas.Count();
 
-                    if (listaEnMov.Any(a => a.PiezaID == obj.PiezaID))
+                    //Buscar si la pieza ya esta en el movimiento
+                    if (db.MovimientoTempPiezas.Where(a => a.PiezaID == obj.PiezaID && a.MovimientoTempID == MovimientoID).Count() > 0)
                     {
-                        var tempObj = listaEnMov.FirstOrDefault(a => a.PiezaID == obj.PiezaID);
+                        var piezaMovTemp = db.MovimientoTempPiezas.FirstOrDefault(a => a.PiezaID == obj.PiezaID && a.MovimientoTempID == MovimientoID);
 
-                        obj.EsUltimo = tempObj.Pieza.MovimientoTempPiezas.Where(a => a.Orden > tempObj.Orden && !a.EnError).Count() > 0 ? true : false;
+                        obj.EsUltimo = piezaMovTemp.Pieza.MovimientoTempPiezas.Where(a => a.Orden > piezaMovTemp.Orden && !a.EnError).Count() > 0 ? true : false;
 
-                        obj.Comentario = tempObj.Comentario;
-                        obj.EnError = false;
-                        obj.EsPendiente = tempObj.EsPendiente;
-                        obj.SeMovio = tempObj.SeMovio;
+                        obj.Comentario = piezaMovTemp.Comentario;
+                        obj.EnError = piezaMovTemp.EnError;
+                        obj.EsPendiente = piezaMovTemp.EsPendiente;
+                        obj.SeMovio = piezaMovTemp.SeMovio;
                         obj.ExisteEnMov = true;
+                        //obj.Indice = piezaMovTemp.Orden;
                     }
                     else
                     {
-                        obj.EsUltimo = true;
+                        obj.EsUltimo = false;
                         obj.Comentario = "";
                         obj.EnError = false;
-                        obj.EsPendiente = true;
+                        obj.EsPendiente = false;
                         obj.SeMovio = false;
                         obj.ExisteEnMov = false;
                     }
@@ -291,23 +288,32 @@ namespace RecordFCS_Alt.Controllers
             return Json(new { success = resultado }, JsonRequestBehavior.AllowGet);
         }
 
-        public string Test(Guid PiezaID)
-        {
-            return PiezaID.ToString();
-        }
-
 
         public void ValidarPieza(Guid PiezaID, Guid? UbicacionID, Guid? MovimientoID, string Tipo = "busqueda")
         {
-            //definir listas
-            var listaBuscar = Session["listaBuscar_" + MovimientoID] == null ? new List<Item_MovPieza>() : (List<Item_MovPieza>)Session["listaBuscar_" + MovimientoID];
+            #region Listas
+            //definir las listas
 
+            var listaBuscar = Session["listaBuscar_" + MovimientoID] == null ? new List<Item_MovPieza>() : (List<Item_MovPieza>)Session["listaBuscar_" + MovimientoID];
             var listaAceptar = Session["listaAceptar_" + MovimientoID] == null ? new List<Item_MovPieza>() : (List<Item_MovPieza>)Session["listaAceptar_" + MovimientoID];
             var listaError = Session["listaError_" + MovimientoID] == null ? new List<Item_MovPieza>() : (List<Item_MovPieza>)Session["listaError_" + MovimientoID];
+
+            #endregion
+
+            #region Declaracion
 
             MovimientoTemp mov = db.MovimientosTemp.Find(MovimientoID);
 
             Item_MovPieza piezaTemp = null;
+
+
+            string comentario = "";
+            bool enError = false;
+
+            #endregion
+
+            #region Buscar la Pieza en las listas
+            //Buscar la piezaID en alguna lista para validarla
 
             switch (Tipo)
             {
@@ -327,35 +333,125 @@ namespace RecordFCS_Alt.Controllers
 
             piezaTemp.Comentario = "";
 
-            bool enError = false;
+            #endregion
 
-            //Validar que la pieza este disponible
-            //pieza validar que la pieza no este Pendiente y sin Error y sin Mover en ningun otro movimiento excepto este
-            var listaPiezaMov = db.MovimientoTempPiezas.Where(a => a.PiezaID == PiezaID && a.EsPendiente && !a.EnError && a.MovimientoTempID != MovimientoID).Select(a => a.MovimientoTemp.Folio).OrderBy(a => a).ToList();
 
-            //validar que pieza no este asignada en otro movimiento
-            if (listaPiezaMov.Count > 0)
+
+            #region Validacion 1: Asignada en movimientos
+
+
+            #region Buscar donde sea Pendiente y sin errores
+
+            //lista de movimientos INT, Buscar la pieza en todos los movimientos excepto en este, donde sea pendiente y no tenga errores.
+            List<int> listaMov_ID =
+                db.MovimientoTempPiezas
+                .Where(a =>
+                    a.PiezaID == PiezaID &&
+                    a.MovimientoTempID != MovimientoID &&
+                    a.EsPendiente && !a.EnError
+                    )
+                .Select(a => a.MovimientoTemp.Folio).ToList();
+
+            #endregion
+
+            #region Buscar en Concluido sin validar
+
+            listaMov_ID.AddRange(
+                db.MovimientoTempPiezas.Where(a => a.PiezaID == PiezaID && a.MovimientoTempID != MovimientoID &&
+                a.MovimientoTemp.EstadoMovimiento == EstadoMovimientoTemp.Concluido_SinValidar &&
+                a.SeMovio).Select(a => a.MovimientoTemp.Folio).ToList()
+                );
+
+            #endregion
+
+            #region Buscar en Cancelado
+
+            listaMov_ID.AddRange(
+                db.MovimientoTempPiezas.Where(a => a.PiezaID == PiezaID && a.MovimientoTempID != MovimientoID &&
+                a.MovimientoTemp.EstadoMovimiento == EstadoMovimientoTemp.Cancelado &&
+                a.SeMovio).Select(a => a.MovimientoTemp.Folio).ToList()
+                );
+
+            #endregion
+
+            #region Buscar en Retornado
+
+            listaMov_ID.AddRange(
+                db.MovimientoTempPiezas.Where(a => a.PiezaID == PiezaID && a.MovimientoTempID != MovimientoID &&
+                a.MovimientoTemp.EstadoMovimiento == EstadoMovimientoTemp.Retornado &&
+                a.SeMovio).Select(a => a.MovimientoTemp.Folio).ToList()
+                );
+
+            #endregion
+
+            //Si existe con estas condiciones entonces no es disponible
+            foreach (var Folio in listaMov_ID)
+                comentario += " [" + Folio + "]";
+
+            //Comprobar que no haya estado en algun movimiento
+            if (!string.IsNullOrWhiteSpace(comentario))
             {
-                piezaTemp.Comentario = "Asignada en movimiento(s): ";
-
-                foreach (var item in listaPiezaMov)
-                    piezaTemp.Comentario += "[" + item + "]";
-
-                piezaTemp.Comentario += ". ";
+                piezaTemp.Comentario = "Asignada en:" + comentario + ". ";
                 enError = true;
             }
 
-            //validar que la ubicacion de la pieza sea la misma que este movimiento
-            //puede haber piezas que UbicacionId sea null y es valida
+            #endregion
 
+            #region (Sin utilizar)
+
+
+            ////pieza validar que la pieza no este Pendiente y sin Error y sin Mover en ningun otro movimiento excepto este
+            //var listaPiezaMov = db.MovimientoTempPiezas.Where(a => a.PiezaID == PiezaID && 
+            //    a.MovimientoTempID != MovimientoID && 
+            //    ((a.MovimientoTemp.EstadoMovimiento == EstadoMovimientoTemp.Concluido_SinValidar) || (a.EsPendiente && !a.EnError))).Select(a => a.MovimientoTemp.Folio).OrderBy(a => a).ToList();
+
+            ////validar que pieza no este asignada en otro movimiento
+            //if (listaPiezaMov.Count > 0)
+            //{
+            //    piezaTemp.Comentario = "Asignada en movimiento(s): ";
+
+            //    foreach (var item in listaPiezaMov)
+            //        piezaTemp.Comentario += "[" + item + "]";
+
+            //    piezaTemp.Comentario += ". ";
+            //    enError = true;
+            //}
+
+
+            ////validar que pieza no este en algun movimiento Concluido_SinValidar
+            //var listaPiezaMovSinValidar = db.MovimientoTempPiezas.Where(a => a.PiezaID == PiezaID &&  && a.MovimientoTempID != MovimientoID).Select(a=> a.MovimientoTemp.Folio).OrderBy(a=> a).ToList();
+            //if (listaPiezaMovSinValidar.Count > 0)
+            //{
+            //    piezaTemp.Comentario += "Aginada en movimiento(s) sin validar: ";
+            //    foreach (var item in listaPiezaMovSinValidar)
+            //        piezaTemp.Comentario += "[" + item + "]";
+
+            //    piezaTemp.Comentario += ". ";
+            //    enError = true;
+            //}
+
+            #endregion
+
+
+            #region Validacion 2: Ubicacion
+
+            //validar que la ubicacion de la pieza sea la misma que este movimiento
+
+            //puede haber piezas que UbicacionID sea null y en este caso se concidera valida.
             if (piezaTemp.UbicacionID != null)
             {
+                //Validar que la ubicacion Origen sea igual a la de la pieza
                 if (UbicacionID != piezaTemp.UbicacionID)
                 {
                     piezaTemp.Comentario += "No comparte la misma ubicación origen.";
                     enError = true;
                 }
             }
+
+            #endregion
+
+
+            #region Eliminar la pieza de las listas temporales
 
             //Eliminar de todas las listas la obra
             foreach (var item in listaBuscar.Where(a => a.PiezaID == piezaTemp.PiezaID).ToList())
@@ -367,71 +463,73 @@ namespace RecordFCS_Alt.Controllers
             foreach (var item in listaError.Where(a => a.PiezaID == piezaTemp.PiezaID).ToList())
                 listaError.Remove(item);
 
-            //si obra es valida
-
-            //ignorar si en Obra
+            #endregion
 
 
+            #region Agregar la pieza a la lista
+
+            //Comprobar que la exista en el movimiento            
             if (piezaTemp.ExisteEnMov)
             {
+
+                var temp = db.MovimientoTempPiezas.Find(MovimientoID, PiezaID);
+
+                piezaTemp.EsPendiente = temp.EsPendiente;
+                piezaTemp.ExisteEnMov = true;
+                piezaTemp.SeMovio = temp.SeMovio;
+
+                //Si existe en el movimiento
+
+                //Validar que sea la ultima
+                piezaTemp.EsUltimo = db.MovimientoTempPiezas.Where(a => a.PiezaID == PiezaID && a.Orden > temp.Orden && !a.EnError).Count() > 0 ? false : true;
+
+
                 if (piezaTemp.EsPendiente)
                 {
+                    piezaTemp.EnError = enError;
+
+                    //Agregar a la lista temporal correspondiente 
+
                     if (enError)
-                    {
-                        piezaTemp.EnError = true;
                         listaError.Add(piezaTemp);
-                    }
                     else
-                    {
-                        piezaTemp.EnError = false;
                         listaAceptar.Add(piezaTemp);
-                    }
                 }
                 else
                 {
                     piezaTemp.EnError = false;
                     listaAceptar.Add(piezaTemp);
                 }
+
+
             }
             else
             {
+                //No existe en movimiento
+                piezaTemp.EnError = enError;
+                piezaTemp.EsUltimo = !enError;
+                piezaTemp.EsPendiente = !enError;
+
+                piezaTemp.ExisteEnMov = false;
+                piezaTemp.SeMovio = false;
+
+                //Agregar a la lista temporal correspondiente 
                 if (enError)
-                {
-                    piezaTemp.EnError = true;
                     listaError.Add(piezaTemp);
-                }
                 else
-                {
-                    piezaTemp.EnError = false;
                     listaAceptar.Add(piezaTemp);
-                }
+
             }
 
-            
+            #endregion
 
-            ////solo para busquedas
-            //if (Tipo.ToLower() == "busqueda")
-            //{
-            //    //si la pieza tiene piezas adicionales preguntar si se desea agregarlas
-            //    if (piezaTemp.TotalPiezas > 0)//url = Url.Action("Pregunta_PiezasAdicionales", "MovimientoTempPieza", new { id = piezaTemp.PiezaID });
-            //    {
-            //        url = Url.Action("Pregunta_PiezasAdicionales", "MovimientoTempPieza", new { id = piezaTemp.PiezaID });
-            //        preguntar = true;
-            //    }
+            #region Guardar las listas
 
-            //}
-
-
-            //Session["listaBuscar_" + MovimientoID] = listaBuscar;
-            //Session["listaAceptar_" + MovimientoID] = null;
-            //Session["listaError_" + MovimientoID] = null;
-            //Session["listaBuscar_" + MovimientoID] = null;
             Session["listaAceptar_" + MovimientoID] = listaAceptar.OrderBy(a => a.FolioPieza).ToList();
             Session["listaError_" + MovimientoID] = listaError.OrderBy(a => a.FolioPieza).ToList();
             Session["listaBuscar_" + MovimientoID] = listaBuscar;
 
-
-            //return Json(new { success = true, piezaID = piezaTemp.PiezaID },JsonRequestBehavior.AllowGet);
+            #endregion
         }
 
 
@@ -441,21 +539,20 @@ namespace RecordFCS_Alt.Controllers
             var listaAceptar = Session["listaAceptar_" + MovimientoID] == null ? new List<Item_MovPieza>() : ((List<Item_MovPieza>)Session["listaAceptar_" + MovimientoID]).OrderBy(a => a.FolioPieza).ToList();
 
             int i = 0;
-            foreach (var item in listaAceptar)
-            {
-                item.Indice = i;
-                i++;
-            }
-            foreach (var item in listaError)
-            {
-                item.Indice = i;
-                i++;
-            }
+
+            foreach (var item in listaAceptar) item.Indice = i++;
+
+            foreach (var item in listaError) item.Indice = i++;
 
             Session["listaError_" + MovimientoID] = listaError;
             Session["listaAceptar_" + MovimientoID] = listaAceptar;
 
             ViewBag.NombreLista = NombreLista;
+
+            var EstadoMov = db.MovimientosTemp.Find(MovimientoID).EstadoMovimiento;
+            bool AddPiezaEnabled = (EstadoMov == EstadoMovimientoTemp.Procesando || EstadoMov == EstadoMovimientoTemp.Concluido_SinValidar || EstadoMov == EstadoMovimientoTemp.Concluido) ? true : false;
+
+            ViewBag.AddPiezaEnabled = AddPiezaEnabled;
 
             switch (NombreLista)
             {
@@ -476,19 +573,27 @@ namespace RecordFCS_Alt.Controllers
 
             //Eliminar de todas las listas la obra
             foreach (var item in listaBuscar.Where(a => a.PiezaID == PiezaID).ToList())
+            {
                 listaBuscar.Remove(item);
+                Session["listaBuscar_" + MovimientoID] = listaBuscar;
+            }
 
             foreach (var item in listaAceptar.Where(a => a.PiezaID == PiezaID).ToList())
+            {
                 listaAceptar.Remove(item);
+                Session["listaAceptar_" + MovimientoID] = listaAceptar.OrderBy(a => a.FolioPieza).ToList();
+            }
 
             foreach (var item in listaError.Where(a => a.PiezaID == PiezaID).ToList())
+            {
                 listaError.Remove(item);
-
-            Session["listaAceptar_" + MovimientoID] = listaAceptar.OrderBy(a => a.FolioPieza).ToList();
-            Session["listaError_" + MovimientoID] = listaError.OrderBy(a => a.FolioPieza).ToList();
-            Session["listaBuscar_" + MovimientoID] = listaBuscar;
+                Session["listaError_" + MovimientoID] = listaError.OrderBy(a => a.FolioPieza).ToList();
+            }
 
         }
+
+        #region Sin uso
+
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -565,6 +670,8 @@ namespace RecordFCS_Alt.Controllers
         //    db.SaveChanges();
         //    return RedirectToAction("Index");
         //}
+
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

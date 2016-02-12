@@ -40,11 +40,20 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(Html.DisplayFor(modelItem => item.Folio).ToString(), "Detalles", new { id = item.MovimientoTempID }, new { target = "_blank" })
+                <b>
+                    @if (User.IsInRole("movDeta"))
+                    {
+                        @Html.ActionLink(Html.DisplayFor(modelItem => item.Folio).ToString(), "Detalles", new { id = item.MovimientoTempID }, new { target = "_blank", @Class = "link link-inverse" })
+                    }
+                    else
+                    {
+                        <span>@Html.DisplayFor(modelItem => item.Folio)</span>
+                    }
+                </b>
             </td>
             <td>
                 @*@item.FechaSalida.Value.ToLongDateString() a las
-                @item.FechaSalida.Value.ToShortTimeString()*@
+                    @item.FechaSalida.Value.ToShortTimeString()*@
                 @Html.DisplayFor(modelItem => item.FechaSalida)
 
 
@@ -59,12 +68,18 @@
                 @Html.DisplayFor(modelItem => item.TipoMovimiento.Nombre)
             </td>
             <td>
-                <span class="colorStatusMov-@item.EstadoMovimiento">
+                <b class="colorMov-@item.EstadoMovimiento">
+
                     @Html.DisplayFor(modelItem => item.EstadoMovimiento)
-                </span>
+                </b>
             </td>
             <td>
                 @item.MovimientoTempPiezas.Count
+
+                @if (User.IsInRole("movHist"))
+                {
+                    @Html.NoEncodeActionLink("<span class='fa fa-history'></span>", "Historial " + item.Folio, "IndexSimple", "HistorialLog", routeValues: new { id = item.MovimientoTempID, tabla = "MovimientoTemp", nombre = item.Folio }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-black btn-xs pull-right openModalLG_Historial" })
+                }
             </td>
         </tr>
     }
@@ -112,3 +127,38 @@
         });
     });
 </script>
+
+
+<script type="text/javascript">
+
+    $("a[data-modal].openModalLG_Historial").on("click", function (e) {
+
+        esperaDialogo.mostrar('Por favor, espere. Validando el historial completo.');
+
+        $.ajax({
+            url: this.href,
+            type: 'GET',
+            success: function (result) {
+
+                //Cargar primero el resultado en el div del modal
+                $('#miModalContenidoLG').html(result);
+                //Ocultar el dialogo 
+                esperaDialogo.ocultar();
+
+            },
+            complete: function () {
+
+                //Una vez completado, mostrar el modal con la info cargada
+                $('#miModalLG').modal({
+                    backdrop: 'static',
+                    keyboard: true
+                }, 'show');
+                
+            }
+        });
+
+        return false;
+    });
+
+</script>
+

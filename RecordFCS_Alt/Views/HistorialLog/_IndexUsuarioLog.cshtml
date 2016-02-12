@@ -1,0 +1,144 @@
+﻿@using RecordFCS_Alt.Models
+
+@model Guid
+
+
+<div id="TablaAcciones">
+
+    <h4 class="text-center">Rango de fechas</h4>
+
+        @using (Html.BeginForm("BuscarPorFechas", "HistorialLog", FormMethod.Get, new { @Class = "formConsultar" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.Hidden("UsuarioID",Model)
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("FechaInicial", "Inicial", htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                <div class="input-group date" id="FechaInicialDTP">
+                                    @Html.TextBox("FechaInicial", "", new { @class = "form-control", readOnly = "" })
+
+                                    <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+
+                                $(function () {
+                                    $('#FechaInicialDTP').datetimepicker({
+
+                                        //minDate: fechaMin, //limitar que no se seleccione fechas pasadas a hoy
+                                        format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                        //disabledDates: [
+                                        //    moment("12/25/2013"),
+                                        //    new Date(2013, 11 - 1, 21),
+                                        //    "11/22/2013 00:53"
+                                        //],
+                                        toolbarPlacement: 'top',
+                                        showTodayButton: true,
+                                        showClose: true,
+                                        showClear: true,
+                                        ignoreReadonly: true,
+                                        useCurrent: false //Important! See issue #1075
+                                    });
+                                });
+                            </script>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.Label("FechaFinal", "Final", htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                <div class="input-group date" id="FechaFinalDTP">
+                                    @Html.TextBox("FechaFinal", "", new { @class = "form-control", readOnly = "" })
+
+                                    <div class="btn btn-primary input-group-addon" data-toggle="tooltip" title="Abrir calendario">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                                $(function () {
+
+                                    $('#FechaFinalDTP').datetimepicker({
+                                        format: "DD/MM/YYYY hh:mm A", //formato: dia/mes/año hora:minuto AM/PM
+                                        toolbarPlacement: 'top',
+                                        showClose: true,
+                                        showClear: true,
+                                        ignoreReadonly: true,
+                                        useCurrent: false //Important! See issue #1075
+                                    });
+
+                                    $("#FechaInicialDTP").on("dp.change", function (e) {
+                                        $('#FechaFinalDTP').data("DateTimePicker").minDate(e.date);
+                                    });
+
+                                    $("#FechaFinalDTP").on("dp.change", function (e) {
+                                        $('#FechaInicialDTP').data("DateTimePicker").maxDate(e.date);
+                                    });
+
+                                });
+                            </script>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="text-center">
+
+                        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-original-title="Buscar Acciones"><i class="fa fa-search"></i> Buscar</button>
+                    </div>
+                </div>
+
+                <hr />
+
+            </div>
+
+        }
+
+
+        <div id="renderListaAcciones"></div>
+
+</div>
+
+
+
+<script src="~/Scripts/add.toolTip.js"></script>
+
+<script>
+
+    $('form.formConsultar').submit(function (e) {
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: $(this).serialize(),
+            success: function (result) {
+                $('#renderListaAcciones').html(result);//  Campo que actualizara
+                $('#alertasDiv').load('/Base/_Alertas');
+            }
+        });
+        return false;
+    });
+
+</script>
+
+
+

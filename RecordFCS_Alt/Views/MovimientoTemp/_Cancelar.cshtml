@@ -1,0 +1,82 @@
+﻿@model RecordFCS_Alt.Models.MovimientoTemp
+
+@{
+    List<string> listaPiezasEnError = (List<string>)ViewBag.listaPiezasEnError;
+    ViewBag.PagName = "Cancelar Movimiento";
+    ViewBag.CtrlName = Model.Folio;
+
+    bool Executar = ViewBag.Executar;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <div class="text-center">
+
+                @if (Executar)
+                {
+                    <h3>
+                        ¿Realmente quieres
+                        <b class="text-danger">
+                            Cancelar
+                        </b>
+                        el movimiento
+                        <b>@Model.Folio</b>?
+                    </h3>
+
+
+                    @Html.HiddenFor(model => model.MovimientoTempID)
+                    @Html.Hidden("Executar", Executar);
+                }
+                else
+                {
+                    <h3>
+                        No se puede
+                        <b class="text-danger">
+                            Cancelar
+                        </b>
+                        el movimiento
+                        <b>@Model.Folio</b>
+                    </h3>
+                    <p>Las siguientes piezas ya estan asignadas en otros movimientos:</p>
+
+                    foreach (var item in listaPiezasEnError)
+                    {
+                        <p><span class="text-muted">@item</span></p>
+                    }
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        @if (Executar)
+        {
+            <input class="btn btn-primary" type="submit" value="Aceptar" />
+        }
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+
+    </div>
+}
+
+
+<script src="~/Scripts/add.toolTip.js"></script>

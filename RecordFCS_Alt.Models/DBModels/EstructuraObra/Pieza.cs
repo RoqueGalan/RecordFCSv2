@@ -64,7 +64,6 @@ namespace RecordFCS_Alt.Models
         //  audio
 
 
-        public virtual ICollection<MovimientoPieza> MovimientoPiezas { get; set; }
         public virtual ICollection<MovimientoTempPieza> MovimientoTempPiezas { get; set; }
 
 

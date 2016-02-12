@@ -1,0 +1,71 @@
+﻿@model RecordFCS_Alt.Models.Obra
+
+@{
+    ViewBag.PagName = "Editar Obra";
+    ViewBag.CtrlName = Model.LetraFolio.Nombre + Model.NumeroFolio;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-toggle="tooltip" title="Cerrar">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.ObraID)
+            @Html.HiddenFor(model => model.NumeroFolio)
+            @Html.HiddenFor(model => model.FechaRegistro)
+            @Html.HiddenFor(model => model.TipoObraID)
+            @Html.HiddenFor(model => model.LetraFolioID)
+            @Html.HiddenFor(model => model.Temp)
+
+            @if (User.IsInRole("oDel"))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.Status)
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.Status)
+            }
+
+
+            <div class="form-group">
+                @Html.Label("Motivo", "Motivo de la actualización", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBox("Motivo", null, new { @class = "form-control", required = true })
+                    @Html.ValidationMessage("Motivo", new { @class = "text-danger" }, "Motivo")
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Guardar" />
+    </div>
+}
+
+<script src="~/Scripts/add.toolTip.js"></script>

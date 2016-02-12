@@ -9,6 +9,14 @@ namespace RecordFCS_Alt.Models
 {
     public class MovimientoTempPieza
     {
+        public MovimientoTempPieza()
+        {
+            SeMovio = false;
+            EsPendiente = true;
+            EnError = true;
+            Orden = 0;
+        }
+
         [Key]
         [Column(Order = 1)]
         [ForeignKey("MovimientoTemp")]
@@ -27,6 +35,7 @@ namespace RecordFCS_Alt.Models
 
         public bool EsPendiente { get; set; }// = true;
         public bool EnError { get; set; }// = true;
+
         //Virtuales
         public virtual Pieza Pieza { get; set; }
         public virtual MovimientoTemp MovimientoTemp { get; set; }

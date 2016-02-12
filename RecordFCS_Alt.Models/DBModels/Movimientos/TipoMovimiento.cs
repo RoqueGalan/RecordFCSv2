@@ -16,7 +16,7 @@ namespace RecordFCS_Alt.Models
         public bool Status { get; set; }
 
         //virtual
-        public virtual ICollection<Movimiento> Movimientos { get; set; }
+        //public virtual ICollection<Movimiento> Movimientos { get; set; }
 
         public virtual ICollection<MovimientoTemp> MovimientosTemporales { get; set; }
     }

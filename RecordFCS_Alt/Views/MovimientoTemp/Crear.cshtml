@@ -38,6 +38,9 @@
                 @Html.HiddenFor(model => model.TipoMovimientoID)
                 @Html.HiddenFor(model => model.TieneExposicion)
                 @Html.HiddenFor(model => model.FechaRegistro)
+                @Html.HiddenFor(model => model.EsValido)
+
+
 
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -59,7 +62,7 @@
                                 </span>
                             </div>
                             @Html.ValidationMessageFor(model => model.UbicacionOrigenID, "", new { @class = "text-danger" })
-                            <p class="help-block">NOTA: Al seleccionar la ubicación origen, solo se mostratan las Obras/Piezas que coincidan con la misma.</p>
+                            @*<p class="help-block">NOTA: Al seleccionar la ubicación origen, solo se mostratan las Obras/Piezas que coincidan con la misma.</p>*@
                         </div>
                     </div>
 
@@ -1089,3 +1092,36 @@
     
     }
 <script src="~/Scripts/add.toolTip.js"></script>
+
+
+
+<script>
+
+    $('form').submit(function (e) {
+        e.preventDefault();
+
+
+        esperaDialogo.mostrar('Por favor, espere. Se esta guardando el movimiento.');
+
+
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: $(this).serialize(),
+            success: function (result) {
+
+                if (result.success) {
+                    window.location.href = result.url;
+                }
+                else {
+                    esperaDialogo.ocultar();
+                }
+
+            }
+        });
+
+
+    });
+
+</script>

@@ -1,8 +1,11 @@
 ﻿@model List<RecordFCS_Alt.Models.ViewModels.Item_MovPieza>
 
+
 @{
     string NombreLista = ViewBag.NombreLista;
+    bool AddPiezaEnabled = ViewBag.AddPiezaEnabled;
 }
+
 @*id= renderListaPiezas*@
 
 @switch (NombreLista)
@@ -12,22 +15,44 @@
         {
             <tr>
                 <td>
-                    @if (item.ExisteEnMov && !item.EsPendiente && item.SeMovio)
-                    {
-                        <span class="fa fa-lock"></span>
-                    }
                     @item.FolioPieza
                 </td>
+
                 <td>
                     @item.Comentario
 
                     <div class="pull-right">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" class="check-error" value="@item.PiezaID">
-                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                            </label>
-                        </div>
+
+                        @if (AddPiezaEnabled)
+                        {
+                            if (!item.SeMovio)
+                            {
+                                if (item.ExisteEnMov)
+                                {
+                                    <span class="fa fa-unlock" data-toggle="tooltip" title="Desbloqueada"></span>
+
+                                }
+
+                                if (AddPiezaEnabled)
+                                {
+                                    <div class="checkbox pull-right">
+                                        <label>
+                                            <input type="checkbox" class="check-error" value="@item.PiezaID">
+                                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                        </label>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                if (item.ExisteEnMov)
+                                {
+                                    <span class="fa fa-lock" data-toggle="tooltip" title="Bloqueada"></span>
+
+                                }
+                            }
+                        }
+
 
                         @Html.Hidden("ListaPiezas[" + item.Indice + "].PiezaID", item.PiezaID)
                         @Html.Hidden("ListaPiezas[" + item.Indice + "].EnError", item.EnError)
@@ -42,7 +67,11 @@
 
 
                     </div>
+
                 </td>
+
+
+
             </tr>
         }
         break;
@@ -52,44 +81,61 @@
         {
             <tr>
                 <td>
-
-
-
-
-                    @*@if (!item.EsPendiente && item.SeMovio)
-                        {
-                            <span class="fa fa-lock"></span>
-                        }
-
-                        @if (!item.ExisteEnMov)
-                        {
-                            <span class="fa fa-plus"></span>
-                        }*@
-
                     @item.FolioPieza
                 </td>
+
                 <td>
                     @item.Titulo
                 </td>
+
                 <td>
                     @item.Autor
 
                     <div class="pull-right">
 
-                        @if (item.EsUltimo)
+                        @if (AddPiezaEnabled)
                         {
-                            //item.EsPendiente && !item.SeMovio &&
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" class="check-aceptar" value="@item.PiezaID">
-                                    <span class="cr"><i class="cr-icon fa fa-check"></i></span>
-                                </label>
-                            </div>
+
+                            if (item.SeMovio)
+                            {
+                                <span class="fa fa-exchange" data-toggle="tooltip" title="Movida"></span>
+                            }
+
+
+                            if (item.EsUltimo)
+                            {
+                                if (item.ExisteEnMov)
+                                {
+                                    <span class="fa fa-unlock" data-toggle="tooltip" title="Desbloqueada"></span>
+
+                                }
+
+
+                                <div class="checkbox pull-right">
+                                    <label>
+                                        <input type="checkbox" class="check-aceptar" value="@item.PiezaID">
+                                        <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                    </label>
+                                </div>
+
+                            }
+                            else
+                            {
+                                if (item.ExisteEnMov)
+                                {
+                                    <span class="fa fa-lock" data-toggle="tooltip" title="Bloqueada"></span>
+
+                                }
+                            }
+
                         }
-                        else
-                        {
-                            <span class="fa fa-lock"></span>
-                        }
+
+
+
+
+
+
+
 
                         @Html.Hidden("ListaPiezas[" + item.Indice + "].Comentario", item.Comentario)
                         @Html.Hidden("ListaPiezas[" + item.Indice + "].EnError", item.EnError)
@@ -106,11 +152,14 @@
 
 
                     </div>
+
                 </td>
+
             </tr>
         }
         break;
 }
+
 
 
 
@@ -128,7 +177,7 @@
             $('#fiel' + listaNombre).hide();
             if (listaNombre == "listaAceptar") {
                 $('#btnSubmitEditar').prop('disabled', true);
-                
+
             }
         }
         else{
@@ -139,7 +188,7 @@
         }
 
 
-        
+
 
 
     });
@@ -148,3 +197,5 @@
 
 
 
+
+<script src="~/Scripts/add.toolTip.js"></script>

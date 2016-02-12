@@ -29,9 +29,11 @@ namespace RecordFCS_Alt.Models
         [Display(Name = "Letra")]
         [Remote("EsUnico", "LetraFolio", HttpMethod = "POST", AdditionalFields = "LetraFolioID", ErrorMessage = "Ya existe, intenta otra letra.")]
         public string Nombre { get; set; }
+        
         [StringLength(127)]
         [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
+
         [Display(Name = "Estado")]
         public bool Status { get; set; }
     }

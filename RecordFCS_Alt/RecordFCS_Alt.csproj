@@ -159,7 +159,6 @@
     <Compile Include="Controllers\MedidaPiezaController.cs" />
     <Compile Include="Controllers\MigracionCEHMController.cs" />
     <Compile Include="Controllers\MostrarAtributoController.cs" />
-    <Compile Include="Controllers\MovimientoController.cs" />
     <Compile Include="Controllers\MovimientoTempController.cs" />
     <Compile Include="Controllers\MovimientoTempPiezaController.cs" />
     <Compile Include="Controllers\ObraController.cs" />
@@ -185,7 +184,6 @@
     </Compile>
     <Compile Include="Helpers\Alerta.cs" />
     <Compile Include="Helpers\CampoPieza.cs" />
-    <Compile Include="Helpers\Historial\LogicaHistorial.cs" />
     <Compile Include="Helpers\HTMLHelpers.cs" />
     <Compile Include="Helpers\MultiButtonAttribute.cs" />
     <Compile Include="Helpers\Seguridad\BaseViewPage.cs" />
@@ -252,6 +250,7 @@
     <Content Include="Content\img\home\logoCEHMCS.png" />
     <Content Include="Content\img\home\logoFCS.png" />
     <Content Include="Content\img\home\logoSoumayaFCS.png" />
+    <Content Include="Content\img\label_fondo.png" />
     <Content Include="Content\img\listado\bgMS_color.png" />
     <Content Include="Content\img\listado\bgMS_gris.png" />
     <Content Include="Content\img\listado\headFCS_plano.png" />
@@ -279,6 +278,7 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\piezaMini.css" />
     <Content Include="Content\Print.css" />
+    <Content Include="Content\Print_Etiquetas.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\theme.css" />
     <Content Include="Content\bootstrap-switch.min.css" />
@@ -329,6 +329,7 @@
     <Content Include="Scripts\autorLista.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-loadingModal.js" />
     <Content Include="Scripts\bootstrap-tabVertical.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -534,23 +535,11 @@
     <Content Include="Views\TipoMovimiento\Index.cshtml" />
     <Content Include="Views\TipoMovimiento\_Editar.cshtml" />
     <Content Include="Views\TipoMovimiento\_Lista.cshtml" />
-    <Content Include="Views\Movimiento\_Crear.cshtml" />
-    <Content Include="Views\Movimiento\Delete.cshtml" />
-    <Content Include="Views\Movimiento\Details.cshtml" />
-    <Content Include="Views\Movimiento\Edit.cshtml" />
-    <Content Include="Views\Movimiento\Index.cshtml" />
-    <Content Include="Views\Movimiento\_Error.cshtml" />
-    <Content Include="Views\Movimiento\_CrearLista.cshtml" />
     <Content Include="Views\Pieza\_Crear.cshtml" />
     <Content Include="Views\ImagenPieza\_Detalles.cshtml" />
     <Content Include="Views\Pieza\_Eliminar.cshtml" />
     <Content Include="Views\Obra\_Eliminar.cshtml" />
-    <Content Include="Views\Movimiento\_ResultadosBusqueda.cshtml" />
-    <Content Include="Views\Movimiento\_FichaMini.cshtml" />
-    <Content Include="Views\Movimiento\_ListaPiezaTemporal.cshtml" />
     <Content Include="Views\Home\_MensajeModal.cshtml" />
-    <Content Include="Views\Movimiento\_Lista.cshtml" />
-    <Content Include="Views\Movimiento\Detalles.cshtml" />
     <Content Include="Views\TipoMostrarArchivo\_Crear.cshtml" />
     <Content Include="Views\TipoMostrarArchivo\_Eliminar.cshtml" />
     <Content Include="Views\TipoMostrarArchivo\Index.cshtml" />
@@ -594,11 +583,22 @@
     <Content Include="Views\Imprimir\_FormatoBasicoPDF.cshtml" />
     <Content Include="Views\Imprimir\_PiezaImprimir.cshtml" />
     <Content Include="Views\HistorialLog\_Index.cshtml" />
-    <Content Include="Views\HistorialLog\_LogAccionesUsuario.cshtml" />
+    <Content Include="Views\HistorialLog\_IndexUsuarioLog.cshtml" />
+    <Content Include="Views\Pieza\_Editar.cshtml" />
+    <Content Include="Views\Obra\_Editar.cshtml" />
+    <Content Include="Views\HistorialLog\_ListaPorFechas.cshtml" />
+    <Content Include="Views\HistorialLog\_Detalles.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Enum.cshtml" />
+    <Content Include="Views\HistorialLog\_DetallesMovimientoLog.cshtml" />
+    <Content Include="Views\MovimientoTemp\_Cancelar.cshtml" />
+    <Content Include="Views\MovimientoTemp\_Revertir.cshtml" />
+    <Content Include="Views\Imprimir\_FormatoEtiqueta5163PDF.cshtml" />
+    <Content Include="Views\Imprimir\_PiezaImprimirEtiqueta5163.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\docxPieza\" />
+    <Folder Include="Helpers\Historial\" />
     <Folder Include="ReportesCrystal\" />
     <Folder Include="Views\ListaPieza\" />
   </ItemGroup>

@@ -2,6 +2,7 @@
 using RecordFCS_Alt.Models.ViewModels;
 using RecordFCS_Alt.Models.ViewsModel;
 using Rotativa;
+using Rotativa.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,6 +43,11 @@ namespace RecordFCS_Alt.Controllers
                     case "Conservacion":
                         nombreDatos = "Completos";
                         nombreArchivos = "Conservacion";
+                        break;
+
+                    case "Etiqueta":
+                        nombreDatos = "Etiquetas";
+                        nombreArchivos = "Basicos";
                         break;
 
                     default:
@@ -321,6 +327,7 @@ namespace RecordFCS_Alt.Controllers
         public ActionResult Imprimir(itemImprimir imprimir, string ListaPiezasID = "")
         {
             string[] listaID = ListaPiezasID.Split(',');
+            string FormatoImpresion = "_FormatoBasicoPDF";
             imprimir.ListaPiezas = new List<itemPiezaMini>();
 
             foreach (var itemID in listaID)
@@ -332,7 +339,6 @@ namespace RecordFCS_Alt.Controllers
                     //extraer toda la informacion de la pieza
                     //llenar la lista piezas
                     generarPiezaImprimir(piezaTemp, imprimir);
-
                 }
 
             }
@@ -351,7 +357,26 @@ namespace RecordFCS_Alt.Controllers
             }
 
             ViewBag.tipo = tipo;
-            return new ViewAsPdf("_FormatoBasicoPDF", imprimir);
+
+            if (imprimir.TipoImprimir == "Etiqueta")
+            {
+                FormatoImpresion = "_FormatoEtiqueta5163PDF";
+
+
+
+                return new ViewAsPdf(FormatoImpresion, imprimir)
+                {
+                    // FileName = flightPlan.ListingItemDetailsModel.FlightDetails + ".pdf",
+                    PageSize = Size.Letter,
+                    PageOrientation = Orientation.Portrait,
+                    PageMargins = new Margins(0, 0, 0, 0),
+                    //PageWidth = 210,
+                    //PageHeight = 297
+                    CustomSwitches = "--disable-smart-shrinking"
+                };
+            }
+             
+            return new ViewAsPdf(FormatoImpresion, imprimir);
         }
 
 

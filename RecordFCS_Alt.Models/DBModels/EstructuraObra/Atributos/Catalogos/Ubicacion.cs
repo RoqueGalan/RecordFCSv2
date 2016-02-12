@@ -12,7 +12,6 @@ namespace RecordFCS_Alt.Models
     {
         public Ubicacion()
         {
-
             EsValido = false;
         }
 
@@ -32,7 +31,6 @@ namespace RecordFCS_Alt.Models
      
         //Virtuales
         public virtual ICollection<Pieza> Piezas { get; set; }
-        public virtual ICollection<Movimiento> Movimientos { get; set; }
 
     }
 

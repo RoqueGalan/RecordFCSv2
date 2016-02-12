@@ -56,14 +56,14 @@ namespace RecordFCS_Alt.Models
 
         // movimientos
         public DbSet<TipoMovimiento> TipoMovimientos { get; set; }
-        public DbSet<Movimiento> Movimientos { get; set; }
-        public DbSet<MovimientoAutorizacion> MovimientoAutorizaciones { get; set; }
-        public DbSet<MovimientoExposicion> MovimientoExposiciones { get; set; }
-        public DbSet<MovimientoPieza> MovimientoPiezas { get; set; }
-        public DbSet<MovimientoResponsable> MovimientoResponsables { get; set; }
-        public DbSet<MovimientoSeguro> MovimientoSeguros { get; set; }
-        public DbSet<MovimientoSolicitante> MovimientoSolicitante { get; set; }
-        public DbSet<MovimientoTransporte> MovimientoTransporte { get; set; }
+        //public DbSet<Movimiento> Movimientos { get; set; }
+        //public DbSet<MovimientoAutorizacion> MovimientoAutorizaciones { get; set; }
+        //public DbSet<MovimientoExposicion> MovimientoExposiciones { get; set; }
+        //public DbSet<MovimientoPieza> MovimientoPiezas { get; set; }
+        //public DbSet<MovimientoResponsable> MovimientoResponsables { get; set; }
+        //public DbSet<MovimientoSeguro> MovimientoSeguros { get; set; }
+        //public DbSet<MovimientoSolicitante> MovimientoSolicitante { get; set; }
+        //public DbSet<MovimientoTransporte> MovimientoTransporte { get; set; }
 
         // movimientos temporales
 

@@ -102,21 +102,14 @@
     <Compile Include="DBModels\EstructuraObra\TipoPieza.cs" />
     <Compile Include="DBModels\Historial\HistorialLog.cs" />
     <Compile Include="DBModels\Historial\HistorialLogDetalle.cs" />
-    <Compile Include="DBModels\Movimientos\Movimiento.cs" />
-    <Compile Include="DBModels\Movimientos\MovimientoAutorizacion.cs" />
-    <Compile Include="DBModels\Movimientos\MovimientoExposicion.cs" />
-    <Compile Include="DBModels\Movimientos\MovimientoPieza.cs" />
-    <Compile Include="DBModels\Movimientos\MovimientoResponsable.cs" />
-    <Compile Include="DBModels\Movimientos\MovimientoSeguro.cs" />
-    <Compile Include="DBModels\Movimientos\MovimientoSolicitante.cs" />
     <Compile Include="DBModels\Movimientos\Temporal\MovimientoTemp.cs" />
     <Compile Include="DBModels\Movimientos\Temporal\MovimientoTempPieza.cs" />
-    <Compile Include="DBModels\Movimientos\MovimientoTransporte.cs" />
     <Compile Include="DBModels\Movimientos\TipoMovimiento.cs" />
     <Compile Include="DBModels\RecordFCSContext.cs" />
     <Compile Include="DBModels\Seguridad\Permiso.cs" />
     <Compile Include="DBModels\Seguridad\TipoPermiso.cs" />
     <Compile Include="DBModels\Seguridad\Usuario.cs" />
+    <Compile Include="Helpers\Historial\LogicaHistorial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

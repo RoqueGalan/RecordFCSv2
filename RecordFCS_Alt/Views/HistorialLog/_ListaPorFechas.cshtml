@@ -1,0 +1,150 @@
+﻿@using RecordFCS_Alt.Models
+@using RecordFCS_Alt.Helpers
+
+@model IEnumerable<HistorialLog>
+
+<h2>Resultados</h2>
+
+<div class="panel-group" id="accordionDeAños" role="tablist" aria-multiselectable="true">
+
+    @foreach (var listaAño in Model.GroupBy(a => a.EventoFecha.ToString("yyyy")))
+    {
+        string añoTexto = listaAño.Key;
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading" role="tab" id="heading_@añoTexto">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDeAños" href="#collapse_@añoTexto" aria-expanded="false" aria-controls="collapse_@añoTexto">
+                        <i class="fa fa-calendar-o"></i> Año @listaAño.Key
+                    </a>
+                </h4>
+            </div>
+
+            <div id="collapse_@añoTexto" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@añoTexto">
+                <div class="panel-body">
+
+                    <div class="panel-group" id="accordionDeMeses_@añoTexto" role="tablist" aria-multiselectable="true">
+
+                        @foreach (var listaMes in listaAño.GroupBy(a => a.EventoFecha.ToString("MMMM")))
+                        {
+                            string mesTexto = añoTexto + listaMes.Key;
+
+                            <div class="panel">
+
+                                <div class="panel-heading" role="tab" id="heading_@mesTexto">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDeMeses_@añoTexto" href="#collapse_@mesTexto" aria-expanded="false" aria-controls="collapse_@mesTexto">
+                                            <i class="fa fa-calendar"></i> Mes @listaMes.Key
+                                        </a>
+                                    </h4>
+                                </div>
+
+                                <div id="collapse_@mesTexto" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@mesTexto">
+                                    <div class="panel-body">
+
+                                        <div class="panel-group" id="accordionDeDias_@mesTexto" role="tablist" aria-multiselectable="true">
+
+                                            @foreach (var listaDia in listaMes.GroupBy(a => a.EventoFecha.ToString("dd")))
+                                            {
+                                                string diaTexto = mesTexto + listaDia.Key;
+
+
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-heading" role="tab" id="heading_@diaTexto">
+                                                        <h4 class="panel-title">
+                                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDeDias_@mesTexto" href="#collapse_@diaTexto" aria-expanded="false" aria-controls="collapse_@diaTexto">
+                                                                <i class="fa fa-calendar-check-o"></i> Día @listaDia.Key
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+
+                                                    <div id="collapse_@diaTexto" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@diaTexto">
+                                                        <div class="panel-body">
+
+                                                            <div class="panel-group" id="accordionDeHoras_@diaTexto" role="tablist" aria-multiselectable="true">
+                                                                @foreach (var listaHora in listaDia.GroupBy(a => a.EventoFecha.ToString("HH")))
+                                                                {
+                                                                    string horaTexto = diaTexto + listaHora.Key;
+
+                                                                    <div class="panel">
+
+                                                                        <div class="panel-heading" role="tab" id="heading_@horaTexto">
+                                                                            <h4 class="panel-title">
+                                                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionDeHoras_@diaTexto" href="#collapse_@horaTexto" aria-expanded="false" aria-controls="collapse_@horaTexto">
+                                                                                    <i class="fa fa-clock-o"></i> Hora: @listaHora.Key hrs.
+                                                                                </a>
+                                                                            </h4>
+                                                                        </div>
+
+                                                                        <div id="collapse_@horaTexto" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@horaTexto">
+                                                                            <div class="container">
+
+                                                                                @foreach (var historial in listaHora)
+                                                                                {
+                                                                                    <p>
+                                                                                        <a href="@Url.Action("Detalles", "HistorialLog", new { id = historial.HistorialLogID })" class="link link-primary openModal_Historial" data-modal="" data-toggle="tooltip" title="Detalles: @historial.EventoFecha.ToLongTimeString()">
+
+                                                                                            <span class='fa fa-link'></span>
+
+                                                                                            <b>@historial.TablaNombre</b>
+
+                                                                                            <span class="text-muted">
+                                                                                                <i>Motivo: </i>   @historial.Motivo
+                                                                                            </span>
+
+
+                                                                                        </a>
+
+                                                                                    </p>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+
+                                                                }
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            }
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    }
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    $("a[data-modal].openModal_Historial").on("click", function (e) {
+        $('#miModalContenido').load(this.href, function () {
+            $('#miModal').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+        });
+        return false;
+    });
+
+</script>
+
+<script src="~/Scripts/add.toolTip.js"></script>

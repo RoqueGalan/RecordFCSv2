@@ -81,18 +81,18 @@
         $.ajaxSetup({ cache: false });
 
 
-        $("a[data-modal].openModalLG_Historial").on("click", function (e) {
-            $('#miModalContenidoFloatLG').load(this.href, function () {
-                $('#miModalFloatLG').modal({
-                    backdrop: 'static',
-                    keyboard: true
-                }, 'show');
+        //$("a[data-modal].openModalLG_Historial").on("click", function (e) {
+        //    $('#miModalContenidoFloatLG').load(this.href, function () {
+        //        $('#miModalFloatLG').modal({
+        //            backdrop: 'static',
+        //            keyboard: true
+        //        }, 'show');
 
-                $("#miModalFloatLG").css("z-index", "1500");
+        //        $("#miModalFloatLG").css("z-index", "1500");
 
-            });
-            return false;
-        });
+        //    });
+        //    return false;
+        //});
 
 
 
