@@ -116,10 +116,16 @@ namespace RecordFCS_Alt.Controllers
             var tipoMostrarDatos = db.TipoMostarlos.FirstOrDefault(a => a.Nombre == nombreDatos);
             List<Atributo> listaAtt = pieza.TipoPieza.Atributos.Where(a => a.Status && a.MostrarAtributos.Any(b => b.TipoMostrarID == tipoMostrarDatos.TipoMostrarID && b.Status) && a.TipoAtributo.Status).OrderBy(a => a.Orden).ToList();
 
+
             //llenar los atributos de la pieza
             foreach (var att in listaAtt)
             {
                 var tipoAtt = att.TipoAtributo;
+                var infoAtt = att.MostrarAtributos.FirstOrDefault(a => a.TipoMostrarID == tipoMostrarDatos.TipoMostrarID);
+
+                infoAtt.InicioHTML = infoAtt.InicioHTML ?? "";
+                infoAtt.FinHTML = infoAtt.FinHTML ?? "";
+
 
                 var attFicha = new itemPiezaMiniAtt()
                 {
@@ -304,6 +310,14 @@ namespace RecordFCS_Alt.Controllers
 
                 if (attFicha.Valores.Count > 0)
                 {
+                    //Asignarles la etiqueta html
+
+                    foreach (var etiquetaHTML in infoAtt.InicioHTML.Split(','))
+                        if (!string.IsNullOrWhiteSpace(etiquetaHTML))
+                            foreach (var itemValor in attFicha.Valores)
+                                itemValor.Valor = "<" + etiquetaHTML + ">" + itemValor.Valor + "</" + etiquetaHTML + ">";
+
+
                     piezaMini.Atributos.Add(attFicha);
                 }
             }
@@ -375,7 +389,7 @@ namespace RecordFCS_Alt.Controllers
                     CustomSwitches = "--disable-smart-shrinking"
                 };
             }
-             
+
             return new ViewAsPdf(FormatoImpresion, imprimir);
         }
 

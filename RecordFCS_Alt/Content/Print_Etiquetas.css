@@ -1,22 +1,44 @@
 ﻿body {
-    width: 8.5in;
-    margin: 0in .1875in;
+    width: 8.5in !important;
+    /*padding-top: 1.4cm !important;
+    padding-bottom: 1.4cm !important;
+    padding-left: 0.2cm !important;*/
+    /*margin: 0in .1875in;*/
+    padding: 1.4cm 0.2cm 1.4cm;
 }
 
-.label {
-    /* Avery 5160 labels -- CSS and HTML by MM at Boulder Information Services */
-    width: 2.025in; /* plus .6 inches from padding */
-    height: .875in; /* plus .125 inches from padding */
-    padding: .125in .3in 0;
-    margin-right: .125in; /* the gutter */
+.label_5163 {
+    /* Avery 5163 labels */
+    width: 10.16cm;
+    height: 5.08cm;
+    margin-left: 0.25cm;
+    margin-right: 0.2cm;
     float: left;
-    text-align: center;
     overflow: hidden;
-    outline: 1px dotted; /* outline doesn't occupy space like border does */
+    /* outline: 1px solid; outline doesn't occupy space like border does */
+}
+
+
+
+
+.margen-superior {
+    height: 1.4cm;
 }
 
 .page-break {
     clear: left;
     display: block;
     page-break-after: always;
+}
+
+
+.print-imagen-label {
+    padding: 10px;
+    min-width: 150px !important;
+    max-width: 150px !important;
+}
+
+
+.media-body.etiqueta {
+    padding: 10px;
 }
