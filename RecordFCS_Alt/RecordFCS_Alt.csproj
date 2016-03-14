@@ -192,6 +192,7 @@
     <Compile Include="Helpers\Structs.cs" />
     <Compile Include="Helpers\Thumbnail.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ItemFichaBasica.cs" />
     <Compile Include="Models\Migraciones\RowArchivo.cs" />
     <Compile Include="Models\Migraciones\RowUsuario.cs" />
     <Compile Include="Models\Reportes\MovimientoTemp.Designer.cs">
@@ -594,6 +595,7 @@
     <Content Include="Views\MovimientoTemp\_Revertir.cshtml" />
     <Content Include="Views\Imprimir\_FormatoEtiqueta5163PDF.cshtml" />
     <Content Include="Views\Imprimir\_PiezaImprimirEtiqueta5163.cshtml" />
+    <Content Include="Views\Pieza\_FichaSimple.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

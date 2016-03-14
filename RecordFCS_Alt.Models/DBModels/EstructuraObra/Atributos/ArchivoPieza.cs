@@ -54,7 +54,7 @@ namespace RecordFCS_Alt.Models
         [NotMapped]
         public string RutaThumb
         {
-            get
+            get 
             {
                 return TipoArchivo.Ruta + "thumb/" + NombreArchivo + Extension;
             }
