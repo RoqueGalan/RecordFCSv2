@@ -6,8 +6,6 @@
 
 
     string tipo = ViewBag.tipo;
-
-
 }
 
 <div class="row">
@@ -40,9 +38,9 @@
 
         @Html.Raw("<td class='print-borde-todos " + tipo + "'>");
 
-                                                   //Html.RenderAction("FichaPrint", "Imprimir", new { id = item, Tipo = Model.TipoImprimir, DatosCompletos = Model.DatosCompletos });
-                                                   Html.RenderPartial("~/Views/Imprimir/_PiezaImprimir.cshtml", item);
-                                                @Html.Raw("</td>");
+                                                                //Html.RenderAction("FichaPrint", "Imprimir", new { id = item, Tipo = Model.TipoImprimir, DatosCompletos = Model.DatosCompletos });
+                                                                Html.RenderPartial("~/Views/Imprimir/_PiezaImprimir.cshtml", item);
+                                                                @Html.Raw("</td>");
 
 
                                                                   if ((i % 2) != 0)
@@ -60,5 +58,3 @@
     }
 
 </table>
-
-

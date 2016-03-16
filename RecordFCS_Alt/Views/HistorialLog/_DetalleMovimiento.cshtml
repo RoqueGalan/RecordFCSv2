@@ -1,0 +1,68 @@
+﻿@model RecordFCS_Alt.Models.HistorialLog
+
+
+@{
+
+    string iconoAccion = ViewBag.icono;
+
+
+
+
+}
+
+<div class="breadcrumb">
+    <p><i class="fa fa-calendar"></i> <b>Fecha: </b> @Model.EventoFecha.ToLongDateString()</p>
+    <p><i class="fa fa-clock-o"></i> <b>Hora: </b> @Model.EventoFecha.ToLongTimeString()</p>
+    <p><i class="@iconoAccion"></i> <b>Tipo: </b> @Model.EventoTipo</p>
+    <p><i class="fa fa-question-circle"></i> <b>Motivo:</b> @Model.Motivo</p>
+    <p><i class="fa fa-user"></i> <b>Usuario: </b> @Model.Usuario.Nombre @Model.Usuario.Apellido</p>
+
+</div>
+
+
+<table class="table table-condensed table-striped">
+
+    <thead>
+        <tr>
+            <th></th>
+            <th>Dato</th>
+            <th>Actualización</th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @foreach (var item in Model.HistorialLogDetalles.OrderBy(a => a.ColumnaNombre))
+        {
+            <tr>
+                <td><b>@item.ColumnaNombre</b></td>
+                <td><p>@item.ValorOriginal</p></td>
+                <td><p>@item.ValorNuevo</p></td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+@*@if (Model.TablaNombre == "MovimientoTemp")
+    {
+        <div>
+            @{ Html.RenderAction("DetallesMovimientoLog", "HistorialLog", new { id = Model.HistorialLogID }); }
+        </div>
+    }*@
+
+
+<div id="contenedor_PiezasEnMovimiento">
+    Cargando el historial de las piezas...
+</div>
+
+
+
+<script>
+    var url = '@Url.Action("PiezasEnMovimiento", "HistorialLog", new { id = Model.HistorialLogID })';
+
+    $('#contenedor_PiezasEnMovimiento').load(url);
+
+</script>
+

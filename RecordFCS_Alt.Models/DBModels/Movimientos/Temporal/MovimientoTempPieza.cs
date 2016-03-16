@@ -36,6 +36,8 @@ namespace RecordFCS_Alt.Models
         public bool EsPendiente { get; set; }// = true;
         public bool EnError { get; set; }// = true;
 
+        public string FolioPieza { get; set; } //Solo es para agilizar las vistas en movimietnos
+
         //Virtuales
         public virtual Pieza Pieza { get; set; }
         public virtual MovimientoTemp MovimientoTemp { get; set; }

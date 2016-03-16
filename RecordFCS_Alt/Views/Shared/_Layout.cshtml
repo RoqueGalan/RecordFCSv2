@@ -20,7 +20,7 @@
 </head>
 
 
-<body style="background-color: #ffffff;" class="NoSelect">
+<body style="background-color: #ffffff;" class="">
     @*<div id="loadingAjax">
             <div class="text-center">
                 <span class="fa fa-spin fa-spinner fa-4x"></span>
@@ -255,18 +255,18 @@
     <script type="text/javascript">
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
-        })
+        })@*<script>
+        window.oncontextmenu = function () {
+            console.log("Right Click Disabled");
+            return false;
+        }
+    </script>*@
     </script>
 
     <script src="~/Scripts/jquery-lazymouse.js"></script>
 
 
-    <script>
-        window.oncontextmenu = function () {
-            console.log("Right Click Disabled");
-            return false;
-        }
-    </script>
+    
 
 
 </body>

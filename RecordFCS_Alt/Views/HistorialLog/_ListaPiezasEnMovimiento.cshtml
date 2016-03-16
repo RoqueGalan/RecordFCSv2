@@ -1,0 +1,43 @@
+﻿@model List<RecordFCS_Alt.Models.HistorialLog>
+
+
+@if (Model.Count > 0)
+{
+    <h3><b>Piezas</b></h3>
+
+    foreach (var hist in Model)
+    {
+        <div>
+            <div class="fondo-@hist.Color() barra-2px"></div>
+
+            <h4><b><i class="fa @hist.Icono() texto-@hist.Color()"></i> @hist.TablaNombre</b></h4>
+
+            <table class="table table-condensed table-striped">
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Dato</th>
+                        <th>Actualización</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in hist.HistorialLogDetalles)
+                    {
+                        <tr>
+                            <td><b>@item.ColumnaNombre</b></td>
+                            <td><p>@item.ValorOriginal</p></td>
+                            <td><p>@item.ValorNuevo</p></td>
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+
+        </div>
+    }
+}
+
+

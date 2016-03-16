@@ -26,7 +26,8 @@ namespace RecordFCS_Alt.Models
         {
             get
             {
-                return string.IsNullOrWhiteSpace(_ValorOriginal) ? _ValorOriginal : _ExtraerValorDeTabla(_ValorOriginal);
+                //return string.IsNullOrWhiteSpace(_ValorOriginal) ? _ValorOriginal : _ExtraerValorDeTabla(_ValorOriginal);
+                return _ValorOriginal;
             }
             set
             {
@@ -38,7 +39,8 @@ namespace RecordFCS_Alt.Models
         {
             get
             {
-                return string.IsNullOrWhiteSpace(_ValorNuevo) ? _ValorNuevo : _ExtraerValorDeTabla(_ValorNuevo);
+                //return string.IsNullOrWhiteSpace(_ValorNuevo) ? _ValorNuevo : _ExtraerValorDeTabla(_ValorNuevo);
+                return _ValorNuevo;
 
             }
             set

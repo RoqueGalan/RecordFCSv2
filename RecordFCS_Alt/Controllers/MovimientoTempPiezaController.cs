@@ -9,18 +9,25 @@ using System.Web.Mvc;
 using RecordFCS_Alt.Models;
 using System.Text.RegularExpressions;
 using RecordFCS_Alt.Models.ViewModels;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace RecordFCS_Alt.Controllers
 {
-    public class MovimientoTempPiezaController : Controller
+    public class MovimientoTempPiezaController : AsyncController
     {
         private RecordFCSContext db = new RecordFCSContext();
 
         #region Cargar Formulario para modificar las piezas en el movimiento
 
         // GET: MovimientoTempPieza/Create
-        public ActionResult FormCrear(Guid id)
+        public async Task<ActionResult> FormCrear(Guid id)
         {
+
+            db = new RecordFCSContext();
+            db.Configuration.ValidateOnSaveEnabled = false;
+            db.Configuration.AutoDetectChangesEnabled = false;
+
             #region Inicializar
 
             //Variable Movimiento ID
@@ -48,70 +55,119 @@ namespace RecordFCS_Alt.Controllers
             //Buscar el movimiento
             var mov = db.MovimientosTemp.Find(id);
 
-            //llenar las listas
-            if (mov.MovimientoTempPiezas.Count > 0)
-            {
-                #region Seleccionar Imagenes mostradas en Guion
-                //var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Guion");
-
-                //if (tipoMostrarArchivo == null)
-                //{
-                //    tipoMostrarArchivo = new TipoMostrarArchivo()
-                //    {
-                //        TipoMostrarArchivoID = Guid.NewGuid(),
-                //        Nombre = "Guion",
-                //        Status = true,
-                //        Descripcion = "Ficha de movimientos"
-                //    };
-                //    db.TipoMostrarArchivos.Add(tipoMostrarArchivo);
-                //    db.SaveChanges();
-                //}
-
-                //TipoArchivo tipoArchivo = db.TipoArchivos.FirstOrDefault(a => a.Temp == "imagen_clave");
-
-                #endregion
-
-                //Atributo titulo
-                var TipoAttTitulo = db.TipoAtributos.FirstOrDefault(a => a.Temp == "titulo");
-
-                //lista de piezas guardadas en el movimiento
-
-                foreach (var item in mov.MovimientoTempPiezas.OrderBy(a => a.Pieza.Obra.LetraFolio.Nombre).ThenBy(a => a.Pieza.Obra.NumeroFolio).ThenBy(a => a.Pieza.SubFolio).ToList())
-                {
-                    var obj = new Item_MovPieza();
-
-                    obj.ObraID = item.Pieza.ObraID;
-                    obj.FolioObra = item.Pieza.Obra.LetraFolio.Nombre + item.Pieza.Obra.NumeroFolio;
-                    obj.PiezaID = item.PiezaID;
-                    obj.FolioPieza = item.Pieza.ImprimirFolio();
-                    obj.UbicacionID = item.Pieza.UbicacionID;
-                    //var imagen = item.ArchivosPiezas.Where(b => b.Status && b.TipoArchivoID == tipoArchivo.TipoArchivoID && b.MostrarArchivos.Any(c => c.TipoMostrarArchivoID == tipoMostrarArchivo.TipoMostrarArchivoID && c.Status)).OrderBy(b => b.Orden).FirstOrDefault();
-                    //obj.Imagen = imagen == null ? "" : imagen.RutaThumb;
-                    var autor = item.Pieza.AutorPiezas.OrderBy(b => b.Orden).FirstOrDefault(b => b.esPrincipal && b.Status);
-                    obj.Autor = autor == null ? "Sin autor" : autor.Autor == null ? "Sin autor" : autor.Autor.Seudonimo + " " + autor.Autor.Nombre + " " + autor.Autor.ApellidoPaterno + " " + autor.Autor.ApellidoMaterno; var titulo = item.Pieza.AtributoPiezas.FirstOrDefault(b => b.Atributo.TipoAtributoID == TipoAttTitulo.TipoAtributoID);
-                    obj.Titulo = titulo == null ? "Sin titulo" : titulo.Valor;
-                    //obj.TotalPiezas = item.PiezasHijas.Count();
-                    obj.EnError = item.EnError;
-                    obj.EsPendiente = item.EsPendiente;
-                    obj.SeMovio = item.SeMovio;
-                    obj.ExisteEnMov = true;
-                    obj.Comentario = item.Comentario;
-                    obj.EsUltimo = item.Pieza.MovimientoTempPiezas.Where(a => a.Orden > item.Orden && !a.EnError).Count() > 0 ? false : true;
-
-
-                    if (!obj.EnError)
-                        listaAceptar.Add(obj);
-                    else
-                        listaError.Add(obj);
-
-                }
-            }
-
-            listaBuscar = (List<Item_MovPieza>)Session["listaBuscar_" + id];
-            listaAceptar = (List<Item_MovPieza>)Session["listaAceptar_" + id];
-            listaError = (List<Item_MovPieza>)Session["listaError_" + id];
-
             ViewBag.EstadoMovimiento = mov.EstadoMovimiento;
+
+
+
+
+            //llenar las listas
+
+            #region Seleccionar Imagenes mostradas en Guion
+            //var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Guion");
+
+            //if (tipoMostrarArchivo == null)
+            //{
+            //    tipoMostrarArchivo = new TipoMostrarArchivo()
+            //    {
+            //        TipoMostrarArchivoID = Guid.NewGuid(),
+            //        Nombre = "Guion",
+            //        Status = true,
+            //        Descripcion = "Ficha de movimientos"
+            //    };
+            //    db.TipoMostrarArchivos.Add(tipoMostrarArchivo);
+            //    db.SaveChanges();
+            //}
+
+            //TipoArchivo tipoArchivo = db.TipoArchivos.FirstOrDefault(a => a.Temp == "imagen_clave");
+
+            #endregion
+
+            //Atributo titulo
+            var TipoAttTitulo = db.TipoAtributos.FirstOrDefault(a => a.Temp == "titulo");
+
+            //lista de piezas guardadas en el movimiento
+
+            db = new RecordFCSContext();
+            db.Configuration.ValidateOnSaveEnabled = false;
+            db.Configuration.AutoDetectChangesEnabled = false;
+
+
+            //var listaOrdenada = db.MovimientoTempPiezas.Where(a=> a.MovimientoTempID == mov.MovimientoTempID).OrderBy(a => a.Pieza.Obra.LetraFolio.Nombre).ThenBy(a => a.Pieza.Obra.NumeroFolio).ThenBy(a => a.Pieza.SubFolio).ToList();
+
+            var lista = db.MovimientoTempPiezas
+                        .Where(a => a.MovimientoTempID == mov.MovimientoTempID)
+                        .OrderBy(a => a.Pieza.Obra.LetraFolio.Nombre)
+                        .ThenBy(a => a.Pieza.Obra.NumeroFolio)
+                        .ThenBy(a => a.Pieza.SubFolio)
+                        .Select(a => new Item_MovPieza()
+                        {
+                            ObraID = a.Pieza.ObraID,
+                            FolioObra = a.Pieza.Obra.LetraFolio.Nombre + a.Pieza.Obra.NumeroFolio,
+                            FolioPieza = a.FolioPieza,
+                            PiezaID = a.PiezaID,
+                            UbicacionID = a.Pieza.UbicacionID,
+                            EnError = a.EnError,
+                            EsPendiente = a.EsPendiente,
+                            SeMovio = a.SeMovio,
+                            ExisteEnMov = true,
+                            Comentario = a.Comentario,
+                            EsUltimo = a.Pieza.MovimientoTempPiezas.Where(b => b.Orden > a.Orden && !a.EnError).Count() > 0 ? false : true
+                        })
+                        .ToList();
+
+            ////Extraer los campos que necesitan mas logica
+            //foreach (var item in lista)
+            //{
+            //    item.FolioPieza = db.Piezas.FirstOrDefault(a => a.PiezaID == item.PiezaID).ImprimirFolio();
+            //}
+
+
+
+            #region No se usa ya
+
+            //foreach (var obj in lista)
+            //{
+
+
+
+
+
+            //    ////var obj = new Item_MovPieza();
+
+            //    ////obj.ObraID = item.Pieza.ObraID;
+            //    ////obj.FolioObra = item.Pieza.Obra.LetraFolio.Nombre + item.Pieza.Obra.NumeroFolio;
+            //    ////obj.PiezaID = item.PiezaID;
+            //    ////obj.FolioPieza = item.Pieza.ImprimirFolio();
+            //    ////obj.UbicacionID = item.Pieza.UbicacionID;
+            //    //////var imagen = item.ArchivosPiezas.Where(b => b.Status && b.TipoArchivoID == tipoArchivo.TipoArchivoID && b.MostrarArchivos.Any(c => c.TipoMostrarArchivoID == tipoMostrarArchivo.TipoMostrarArchivoID && c.Status)).OrderBy(b => b.Orden).FirstOrDefault();
+            //    //////obj.Imagen = imagen == null ? "" : imagen.RutaThumb;
+            //    ////var autor = item.Pieza.AutorPiezas.OrderBy(b => b.Orden).FirstOrDefault(b => b.esPrincipal && b.Status);
+            //    ////obj.Autor = autor == null ? "Sin autor" : autor.Autor == null ? "Sin autor" : autor.Autor.Seudonimo + " " + autor.Autor.Nombre + " " + autor.Autor.ApellidoPaterno + " " + autor.Autor.ApellidoMaterno; var titulo = item.Pieza.AtributoPiezas.FirstOrDefault(b => b.Atributo.TipoAtributoID == TipoAttTitulo.TipoAtributoID);
+            //    ////obj.Titulo = titulo == null ? "Sin titulo" : titulo.Valor;
+            //    //////obj.TotalPiezas = item.PiezasHijas.Count();
+            //    ////obj.EnError = item.EnError;
+            //    ////obj.EsPendiente = item.EsPendiente;
+            //    ////obj.SeMovio = item.SeMovio;
+            //    ////obj.ExisteEnMov = true;
+            //    ////obj.Comentario = item.Comentario;
+            //    ////obj.EsUltimo = item.Pieza.MovimientoTempPiezas.Where(a => a.Orden > item.Orden && !a.EnError).Count() > 0 ? false : true;
+
+
+            //    ////if (!obj.EnError)
+            //    ////    listaAceptar.Add(obj);
+            //    ////else
+            //    ////    listaError.Add(obj);
+
+            //}
+
+            #endregion
+
+            listaError.AddRange(lista.Where(a => a.EnError).ToList());
+            listaAceptar.AddRange(lista.Where(a => !a.EnError).ToList());
+
+            //listaBuscar = (List<Item_MovPieza>)Session["listaBuscar_" + id];
+            //listaAceptar = (List<Item_MovPieza>)Session["listaAceptar_" + id];
+            //listaError = (List<Item_MovPieza>)Session["listaError_" + id];
 
             return PartialView("_FormCrear");
         }
@@ -195,8 +251,6 @@ namespace RecordFCS_Alt.Controllers
 
                 //var listaEnMov = db.MovimientoTempPiezas.Where(a => a.MovimientoTempID == MovimientoID).ToList();//Session["listaEnMov_" + MovimientoID] == null ? new List<MovimientoTempPieza>() : (List<MovimientoTempPieza>)Session["listaEnMov_" + MovimientoID];
 
-
-
                 //var lista = Session["lista_temporal"] == null ? new List<Guid>() : (List<Guid>)Session[listaNombre];
 
                 var tipoMostrarArchivo = db.TipoMostrarArchivos.FirstOrDefault(a => a.Nombre == "Guion");
@@ -223,27 +277,27 @@ namespace RecordFCS_Alt.Controllers
                     //var imagen = item.ArchivosPiezas.Where(b => b.Status && b.TipoArchivoID == tipoArchivo.TipoArchivoID && b.MostrarArchivos.Any(c => c.TipoMostrarArchivoID == tipoMostrarArchivo.TipoMostrarArchivoID && c.Status)).OrderBy(b => b.Orden).FirstOrDefault();
                     //obj.Imagen = imagen == null ? "" : imagen.RutaThumb;
 
-                    //Extraer el autor
-                    try
-                    {
-                        var autor = item.AutorPiezas.OrderBy(b => b.Orden).FirstOrDefault(b => b.esPrincipal && b.Status);
-                        obj.Autor = autor == null ? "Sin autor" : autor.Autor == null ? "Sin autor" : autor.Autor.Seudonimo + " " + autor.Autor.Nombre + " " + autor.Autor.ApellidoPaterno + " " + autor.Autor.ApellidoMaterno;
-                    }
-                    catch (Exception)
-                    {
-                        obj.Autor = "Sin autor";
-                    }
+                    ////Extraer el autor
+                    //try
+                    //{
+                    //    var autor = item.AutorPiezas.OrderBy(b => b.Orden).FirstOrDefault(b => b.esPrincipal && b.Status);
+                    //    obj.Autor = autor == null ? "Sin autor" : autor.Autor == null ? "Sin autor" : autor.Autor.Seudonimo + " " + autor.Autor.Nombre + " " + autor.Autor.ApellidoPaterno + " " + autor.Autor.ApellidoMaterno;
+                    //}
+                    //catch (Exception)
+                    //{
+                    //    obj.Autor = "Sin autor";
+                    //}
 
-                    //Extraer el titulo
-                    try
-                    {
-                        var titulo = item.AtributoPiezas.FirstOrDefault(b => b.Atributo.TipoAtributoID == TipoAttTitulo.TipoAtributoID);
-                        obj.Titulo = titulo.Valor;
-                    }
-                    catch (Exception)
-                    {
-                        obj.Titulo = "Sin titulo";
-                    }
+                    ////Extraer el titulo
+                    //try
+                    //{
+                    //    var titulo = item.AtributoPiezas.FirstOrDefault(b => b.Atributo.TipoAtributoID == TipoAttTitulo.TipoAtributoID);
+                    //    obj.Titulo = titulo.Valor;
+                    //}
+                    //catch (Exception)
+                    //{
+                    //    obj.Titulo = "Sin titulo";
+                    //}
 
                     //obj.TotalPiezas = item.PiezasHijas.Count();
 
@@ -450,6 +504,13 @@ namespace RecordFCS_Alt.Controllers
 
             #endregion
 
+            #region Validación 3: Folio Pieza
+            if (string.IsNullOrWhiteSpace(piezaTemp.FolioPieza))
+            {
+                piezaTemp.FolioPieza = db.Piezas.Find(piezaTemp.PiezaID).ImprimirFolio();
+            }
+
+            #endregion
 
             #region Eliminar la pieza de las listas temporales
 
@@ -533,7 +594,7 @@ namespace RecordFCS_Alt.Controllers
         }
 
 
-        public ActionResult RefrescarLista(Guid MovimientoID, string NombreLista = "listaAceptar")
+        public async Task<ActionResult> RefrescarLista(Guid MovimientoID, string NombreLista = "listaAceptar")
         {
             var listaError = Session["listaError_" + MovimientoID] == null ? new List<Item_MovPieza>() : ((List<Item_MovPieza>)Session["listaError_" + MovimientoID]).OrderBy(a => a.FolioPieza).ToList();
             var listaAceptar = Session["listaAceptar_" + MovimientoID] == null ? new List<Item_MovPieza>() : ((List<Item_MovPieza>)Session["listaAceptar_" + MovimientoID]).OrderBy(a => a.FolioPieza).ToList();

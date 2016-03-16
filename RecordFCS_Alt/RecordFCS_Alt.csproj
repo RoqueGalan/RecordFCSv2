@@ -596,6 +596,10 @@
     <Content Include="Views\Imprimir\_FormatoEtiqueta5163PDF.cshtml" />
     <Content Include="Views\Imprimir\_PiezaImprimirEtiqueta5163.cshtml" />
     <Content Include="Views\Pieza\_FichaSimple.cshtml" />
+    <Content Include="Views\HistorialLog\_IndexMovimiento.cshtml" />
+    <Content Include="Views\HistorialLog\_DetalleMovimiento.cshtml" />
+    <Content Include="Views\HistorialLog\_ListaPiezasEnMovimiento.cshtml" />
+    <Content Include="Views\Imprimir\_FormatoMovimientoTemp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

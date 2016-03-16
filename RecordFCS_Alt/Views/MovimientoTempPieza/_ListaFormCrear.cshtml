@@ -66,6 +66,8 @@
                         @Html.Hidden("ListaPiezas[" + item.Indice + "].EsUltimo", item.EsUltimo)
 
 
+
+
                     </div>
 
                 </td>
@@ -84,12 +86,12 @@
                     @item.FolioPieza
                 </td>
 
-                <td>
+                @*<td>
                     @item.Titulo
-                </td>
+                </td>*@
 
                 <td>
-                    @item.Autor
+                    @*@item.Autor*@
 
                     <div class="pull-right">
 
@@ -186,11 +188,6 @@
                 $('#btnSubmitEditar').prop('disabled', false);
             }
         }
-
-
-
-
-
     });
 </script>
 

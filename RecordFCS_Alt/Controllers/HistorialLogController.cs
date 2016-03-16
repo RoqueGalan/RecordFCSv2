@@ -5,12 +5,14 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace RecordFCS_Alt.Controllers
 {
-    public class HistorialLogController : Controller
+    public class HistorialLogController : AsyncController
     {
 
         private RecordFCSContext db = new RecordFCSContext();
@@ -218,5 +220,106 @@ namespace RecordFCS_Alt.Controllers
             return PartialView("_DetallesMovimientoLog", lista);
         }
 
+
+
+
+        #region Historial de MOVIMIENTOS
+
+        public ActionResult IndexMovimiento(string id)
+        {
+            var db = new RecordFCSContext();
+            db.Configuration.LazyLoadingEnabled = false;
+
+            string tabla = "MovimientoTemp";
+
+            var lista = db.HistorialLogs.Where(a => a.LlavePrimaria == id && a.TablaNombre == tabla).OrderByDescending(a => a.EventoFecha).ToList();
+
+            return PartialView("_IndexMovimiento", lista);
+        }
+
+
+        public ActionResult DetalleMovimiento(Guid? id)
+        {
+            // el id es el ID del HistorialLog
+            var db = new RecordFCSContext();
+
+
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            
+            HistorialLog movLog = db.HistorialLogs.Find(id);
+            
+            if (movLog == null) return HttpNotFound();
+
+
+            var icono = "";
+
+            switch (movLog.EventoTipo)
+            {
+                case "Crear":
+                    icono = "fa fa-plus";
+                    break;
+
+                case "Editar":
+                    icono = "fa fa-pencil";
+                    break;
+
+                case "Eliminar":
+                    icono = "fa fa-trash";
+                    break;
+                default:
+                    icono = "";
+                    break;
+            }
+
+
+            ViewBag.icono = icono;
+
+            return PartialView("_DetalleMovimiento", movLog);
+        }
+
+
+        public async Task<ActionResult> PiezasEnMovimiento(Guid? id)
+        {
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            HistorialLog historial = db.HistorialLogs.Find(id);
+            if (historial == null) return HttpNotFound();
+
+            List<HistorialLog> lista = new List<HistorialLog>();
+
+            //Buscar las piezas que corresponden al movimiento
+
+            lista = await db.HistorialLogs.Where(a => a.LlavePrimaria.StartsWith(historial.LlavePrimaria + ",") && a.EventoFecha == historial.EventoFecha).ToListAsync();
+
+            foreach (var item in lista)
+            {
+                try
+                {
+                    Guid PiezaID = new Guid(item.LlavePrimaria.Replace(historial.LlavePrimaria + ",", ""));
+
+                    if (PiezaID != Guid.Empty)
+                        item.TablaNombre = db.Piezas.FirstOrDefault(a => a.PiezaID == PiezaID).ImprimirFolio();
+                    else
+                        item.TablaNombre = "Pieza sin existencia";
+
+                    item.HistorialLogDetalles = item.HistorialLogDetalles.Where(a => a.ColumnaNombre != "PiezaID").OrderBy(a=> a.ColumnaNombre).ToList();
+
+                }
+                catch (Exception)
+                {
+                    item.TablaNombre = "Pieza sin existencia";
+                }
+
+
+            }
+
+
+            lista = lista.OrderBy(a => a.TablaNombre).ToList();
+
+
+            return PartialView("_ListaPiezasEnMovimiento",lista);
+        }
+
+
+        #endregion
     }
 }

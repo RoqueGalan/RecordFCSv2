@@ -33,6 +33,48 @@ namespace RecordFCS_Alt.Models
         public virtual Usuario Usuario { get; set; }
         public virtual ICollection<HistorialLogDetalle> HistorialLogDetalles { get; set; }
 
+
+        //extras
+        public virtual string Color()
+        {
+            string color = "";
+
+            switch (this.EventoTipo)
+            {
+                case "Crear":
+                    color = "success";
+                    break;
+                case "Editar":
+                    color = "info";
+                    break;
+                case "Eliminar":
+                    color = "danger";
+                    break;
+            }
+
+            return color;
+        }
+
+        public virtual string Icono()
+        {
+            string icono = "";
+
+            switch (this.EventoTipo)
+            {
+                case "Crear":
+                    icono = "fa-plus";
+                    break;
+                case "Editar":
+                    icono = "fa-pencil";
+                    break;
+                case "Eliminar":
+                    icono = "fa-trash";
+                    break;
+            }
+
+            return icono;
+        }
+
     }
 
     public class HistorialLogMetadata

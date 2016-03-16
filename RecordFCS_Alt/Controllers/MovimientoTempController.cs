@@ -16,6 +16,7 @@ using RecordFCS_Alt.Models.ViewsModel;
 using System.Text.RegularExpressions;
 using System.IO;
 using RecordFCS_Alt.Helpers.Historial;
+using System.Threading.Tasks;
 
 namespace RecordFCS_Alt.Controllers
 {
@@ -28,6 +29,7 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movList")]
         public ActionResult Index(MovimientoTemp MovTemp = null)
         {
+            db = new RecordFCSContext();
 
             var listaLetras = db.LetraFolios.Select(a => new { a.LetraFolioID, Nombre = a.Nombre, a.Status }).Where(a => a.Status).OrderBy(a => a.Nombre);
             ViewBag.LetraFolioID = new SelectList(listaLetras, "LetraFolioID", "Nombre", listaLetras.FirstOrDefault().LetraFolioID);
@@ -59,6 +61,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "")]
         public ActionResult BuscarMovimientos(int? FolioMovimiento, string FechaInicial, string FechaFinal, Guid? UbicacionOrigenID, Guid? UbicacionDestinoID, string PalabraFrase, EstadoMovimientoTemp? EstadoMovimiento, int? pagina = null)
         {
+            db = new RecordFCSContext();
+
             int pagTamano = 50;
             int pagIndex = 1;
             pagIndex = pagina.HasValue ? Convert.ToInt32(pagina) : 1;
@@ -131,6 +135,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movDeta")]
         public ActionResult Detalles(Guid? id)
         {
+            db = new RecordFCSContext();
+
             #region Validar que exista el movimiento
 
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -157,7 +163,7 @@ namespace RecordFCS_Alt.Controllers
             bool BtnCancelarEnabled = false;
             bool BtnRevertirEnabled = false;
             bool BtnEditarEnabled = true;
-            bool BtnImprimirEnabled = true;
+            bool BtnImprimirEnabled = false;
 
 
 
@@ -166,59 +172,96 @@ namespace RecordFCS_Alt.Controllers
             //Tipo de atributo a mostrar
             var TipoAttTitulo = db.TipoAtributos.FirstOrDefault(a => a.Temp == "titulo");
 
+            //lista de piezas guardadas en el moviento
+
+
+            var lista = db.MovimientoTempPiezas
+                       .Where(a => a.MovimientoTempID == mov.MovimientoTempID)
+                       .OrderBy(a => a.Pieza.Obra.LetraFolio.Nombre)
+                       .ThenBy(a => a.Pieza.Obra.NumeroFolio)
+                       .ThenBy(a => a.Pieza.SubFolio)
+                       .Select(a => new Item_MovPieza()
+                       {
+                           ObraID = a.Pieza.ObraID,
+                           FolioObra = a.Pieza.Obra.LetraFolio.Nombre + a.Pieza.Obra.NumeroFolio,
+                           FolioPieza = a.FolioPieza,//a.Pieza.Obra.LetraFolio.Nombre + a.Pieza.Obra.NumeroFolio + a.
+                           PiezaID = a.PiezaID,
+                           UbicacionID = a.Pieza.UbicacionID,
+                           EnError = a.EnError,
+                           EsPendiente = a.EsPendiente,
+                           SeMovio = a.SeMovio,
+                           ExisteEnMov = true,
+                           Comentario = a.Comentario,
+                           EsUltimo = a.Pieza.MovimientoTempPiezas.Where(b => b.Orden > a.Orden && !a.EnError).Count() > 0 ? false : true
+                       }).ToList();
+
+
+            //foreach (var item in lista)
+            //{
+            //    var p = db.Piezas.AsNoTracking().FirstOrDefault(a => a.PiezaID == item.PiezaID);
+
+            //    item.FolioPieza = p.ImprimirFolio();
+            //}
+
             //lista de Items de tipo movimiento pieza
-            var lista = new List<Item_MovPieza>();
+            //var lista = new List<Item_MovPieza>();
 
             //Crear la lista
-            foreach (var item in mov.MovimientoTempPiezas.OrderBy(a => a.Pieza.Obra.LetraFolio.Nombre).ThenBy(a => a.Pieza.Obra.NumeroFolio).ThenBy(a => a.Pieza.SubFolio).ToList())
-            {
-                var obj = new Item_MovPieza()
-                {
-                    ObraID = item.Pieza.ObraID,
-                    PiezaID = item.PiezaID,
-                    UbicacionID = item.Pieza.UbicacionID,
-                    EnError = item.EnError,
-                    EsPendiente = item.EsPendiente,
-                    SeMovio = item.SeMovio,
-                    ExisteEnMov = true,
-                    Comentario = item.Comentario,
-                };
+            //foreach (var item in lista)
+            //{
+            //    db = new RecordFCSContext();
+            //    db.Configuration.ValidateOnSaveEnabled = false;
+            //    db.Configuration.AutoDetectChangesEnabled = false;
 
-                obj.FolioObra = item.Pieza.Obra.LetraFolio.Nombre + item.Pieza.Obra.NumeroFolio;
-                obj.FolioPieza = item.Pieza.ImprimirFolio();
+            //    item.FolioPieza = db.Piezas.FirstOrDefault(a => a.PiezaID == item.PiezaID).ImprimirFolio();
 
-                //var imagen = item.ArchivosPiezas.Where(b => b.Status && b.TipoArchivoID == tipoArchivo.TipoArchivoID && b.MostrarArchivos.Any(c => c.TipoMostrarArchivoID == tipoMostrarArchivo.TipoMostrarArchivoID && c.Status)).OrderBy(b => b.Orden).FirstOrDefault();
-                //obj.Imagen = imagen == null ? "" : imagen.RutaThumb;
+            //    //var obj = new Item_MovPieza()
+            //    //{
+            //    //    ObraID = item.Pieza.ObraID,
+            //    //    PiezaID = item.PiezaID,
+            //    //    UbicacionID = item.Pieza.UbicacionID,
+            //    //    EnError = item.EnError,
+            //    //    EsPendiente = item.EsPendiente,
+            //    //    SeMovio = item.SeMovio,
+            //    //    ExisteEnMov = true,
+            //    //    Comentario = item.Comentario,
+            //    //};
 
-                //Extraer el autor
-                try
-                {
-                    var autor = item.Pieza.AutorPiezas.OrderBy(b => b.Orden).FirstOrDefault(b => b.esPrincipal && b.Status);
-                    obj.Autor = autor.Autor.Seudonimo + " " + autor.Autor.Nombre + " " + autor.Autor.ApellidoPaterno + " " + autor.Autor.ApellidoMaterno;
-                }
-                catch (Exception)
-                {
-                    obj.Autor = "Sin autor";
-                }
+            //    //obj.FolioObra = item.Pieza.Obra.LetraFolio.Nombre + item.Pieza.Obra.NumeroFolio;
+            //    //obj.FolioPieza = item.Pieza.ImprimirFolio();
 
-                //Extraer el titulo
-                try
-                {
-                    var titulo = item.Pieza.AtributoPiezas.FirstOrDefault(b => b.Atributo.TipoAtributoID == TipoAttTitulo.TipoAtributoID);
-                    obj.Titulo = titulo.Valor;
-                }
-                catch (Exception)
-                {
-                    obj.Titulo = "Sin titulo";
-                }
+            //    ////var imagen = item.ArchivosPiezas.Where(b => b.Status && b.TipoArchivoID == tipoArchivo.TipoArchivoID && b.MostrarArchivos.Any(c => c.TipoMostrarArchivoID == tipoMostrarArchivo.TipoMostrarArchivoID && c.Status)).OrderBy(b => b.Orden).FirstOrDefault();
+            //    ////obj.Imagen = imagen == null ? "" : imagen.RutaThumb;
 
-                //obj.TotalPiezas = item.PiezasHijas.Count();
+            //    //////Extraer el autor
+            //    ////try
+            //    ////{
+            //    ////    var autor = item.Pieza.AutorPiezas.OrderBy(b => b.Orden).FirstOrDefault(b => b.esPrincipal && b.Status);
+            //    ////    obj.Autor = autor.Autor.Seudonimo + " " + autor.Autor.Nombre + " " + autor.Autor.ApellidoPaterno + " " + autor.Autor.ApellidoMaterno;
+            //    ////}
+            //    ////catch (Exception)
+            //    ////{
+            //    ////    obj.Autor = "Sin autor";
+            //    ////}
 
-                //Saber si es el ultimo registro (Este no sirve, solo como referencia)
-                obj.EsUltimo = item.Pieza.MovimientoTempPiezas.Where(a => a.Orden > item.Orden && !a.EnError).Count() > 0 ? false : true;
+            //    //////Extraer el titulo
+            //    ////try
+            //    ////{
+            //    ////    var titulo = item.Pieza.AtributoPiezas.FirstOrDefault(b => b.Atributo.TipoAtributoID == TipoAttTitulo.TipoAtributoID);
+            //    ////    obj.Titulo = titulo.Valor;
+            //    ////}
+            //    ////catch (Exception)
+            //    ////{
+            //    ////    obj.Titulo = "Sin titulo";
+            //    ////}
 
-                lista.Add(obj);
-            }
+            //    ////obj.TotalPiezas = item.PiezasHijas.Count();
+
+            //    ////Saber si es el ultimo registro (Este no sirve, solo como referencia)
+            //    //obj.EsUltimo = item.Pieza.MovimientoTempPiezas.Where(a => a.Orden > item.Orden && !a.EnError).Count() > 0 ? false : true;
+
+            //    //lista.Add(obj);
+            //}
 
             ViewData["ListaPiezasMov_" + id] = lista;
 
@@ -319,6 +362,12 @@ namespace RecordFCS_Alt.Controllers
 
             #endregion
 
+
+            BtnImprimirEnabled = (mov.MovimientoTempPiezas.Where(a => (a.SeMovio || a.EsPendiente) && !a.EnError).Count() == 0) ? false : true;
+
+
+
+
             ViewBag.InfoEstadoMov = InfoEstadoMov;
 
             #region Botones
@@ -345,6 +394,8 @@ namespace RecordFCS_Alt.Controllers
         //[CustomAuthorize(permiso = "")]
         public ActionResult ImprimirBoletin(Guid? id)
         {
+            db = new RecordFCSContext();
+
             string NombreArchivo = "Boletin_";
 
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -352,24 +403,24 @@ namespace RecordFCS_Alt.Controllers
             if (mov == null) return HttpNotFound();
 
             //Movimiento con piezas aceptadas
-            
+
             switch (mov.EstadoMovimiento)
             {
-                    //Imprimir todas las piezas
+                //Imprimir todas las piezas
                 case EstadoMovimientoTemp.Cancelado:
                 case EstadoMovimientoTemp.Retornado:
                     mov.MovimientoTempPiezas = mov.MovimientoTempPiezas;
                     break;
-                    //Imprimir todas las piezas con estatus verdadero en SeMovio 
+                //Imprimir todas las piezas con estatus verdadero en SeMovio 
                 case EstadoMovimientoTemp.Concluido:
                 case EstadoMovimientoTemp.Concluido_SinValidar:
                     mov.MovimientoTempPiezas = mov.MovimientoTempPiezas.Where(a => a.SeMovio).ToList();
                     break;
-                    //Imprimir todas las piezas con estatus falso en EnError
+                //Imprimir todas las piezas con estatus falso en EnError
                 case EstadoMovimientoTemp.Procesando:
                     mov.MovimientoTempPiezas = mov.MovimientoTempPiezas.Where(a => !a.EnError).ToList();
                     break;
-                    //Imprimir ninguna de las piezas
+                //Imprimir ninguna de las piezas
                 default:
                     mov.MovimientoTempPiezas = new List<MovimientoTempPieza>();
                     break;
@@ -378,7 +429,7 @@ namespace RecordFCS_Alt.Controllers
             //Ordenas si no es 0
             if (mov.MovimientoTempPiezas.Count > 1)
                 mov.MovimientoTempPiezas = mov.MovimientoTempPiezas.OrderBy(a => a.Pieza.Obra.LetraFolio.Nombre).ThenBy(a => a.Pieza.Obra.NumeroFolio).ThenBy(a => a.Pieza.SubFolio).ToList();
-            
+
 
             TipoArchivo tipoArchivo = db.TipoArchivos.FirstOrDefault(a => a.Temp == "imagen_clave");
 
@@ -400,6 +451,8 @@ namespace RecordFCS_Alt.Controllers
 
         public ActionResult FichaPrint(Guid? id, int i)
         {
+            db = new RecordFCSContext();
+
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -662,6 +715,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movNew")]
         public ActionResult Crear(Guid? TipoMovimientoID, bool TieneExposicion)
         {
+            db = new RecordFCSContext();
+
             var tipoMov = db.TipoMovimientos.Find(TipoMovimientoID);
 
             if (tipoMov == null) return HttpNotFound();
@@ -699,6 +754,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movNew")]
         public ActionResult Crear(MovimientoTemp movimientoTemp)
         {
+            db = new RecordFCSContext();
+
             //Validacion 
             if (movimientoTemp.FechaSalida == null)
                 ModelState.AddModelError("FechaSalida", "Ingrese una fecha.");
@@ -807,6 +864,7 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movEdit")]
         public ActionResult Editar(Guid? id, bool EnExpo = false)
         {
+            db = new RecordFCSContext();
 
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -867,6 +925,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movEdit")]
         public ActionResult Editar(MovimientoTemp movimientoTemp, List<Item_MovPieza> ListaPiezas, string Motivo, bool ForzarMovimiento = false)
         {
+            db = new RecordFCSContext();
+
             #region Validaciones previas
 
 
@@ -908,7 +968,8 @@ namespace RecordFCS_Alt.Controllers
                     EsPendiente = item.EsPendiente,
                     MovimientoTempID = movimientoTemp.MovimientoTempID,
                     PiezaID = item.PiezaID,
-                    SeMovio = item.SeMovio
+                    SeMovio = item.SeMovio,
+                    FolioPieza = item.FolioPieza
                 };
 
                 temp.Comentario = item.EnError ? item.Comentario : "";
@@ -942,7 +1003,8 @@ namespace RecordFCS_Alt.Controllers
 
                 movimientoTemp.FechaUltimaEjecucion = fechaEdicion;
 
-                //Crear el historial del movimiento
+                #region Crear el historial del movimiento
+
                 //------ Logica HISTORIAL
 
                 #region Generar el historial
@@ -988,6 +1050,8 @@ namespace RecordFCS_Alt.Controllers
 
                 //------
 
+                #endregion
+
                 AlertaSuccess("Se edito el movimiento: <b>" + movimientoTemp.Folio + "</b>", true);
 
                 //Crear el historial de las piezas del movimiento
@@ -997,11 +1061,13 @@ namespace RecordFCS_Alt.Controllers
                 //Agregar
                 #region Lista Agregar
 
+                db = new RecordFCSContext();
+                db.Configuration.LazyLoadingEnabled = false;
+
                 foreach (var item in listaAdd)
                 {
-                    var pieza = db.Piezas.Find(item.PiezaID);
 
-                    var ordenActual = pieza.MovimientoTempPiezas.Count > 0 ? pieza.MovimientoTempPiezas.OrderByDescending(a => a.Orden).FirstOrDefault().Orden : 0;
+                    var ordenActual = db.MovimientoTempPiezas.Where(a => a.PiezaID == item.PiezaID).Count() > 0 ? db.MovimientoTempPiezas.Where(a => a.PiezaID == item.PiezaID).OrderByDescending(a => a.Orden).FirstOrDefault().Orden : 0;
 
                     item.Orden = item.EnError ? 0 : ordenActual + 1;
 
@@ -1025,19 +1091,13 @@ namespace RecordFCS_Alt.Controllers
 
                     #endregion
 
-                    #region Guardar el historial
+                    #region Agrega el historial
 
                     if (historialLogAdd != null)
                     {
-                        //Guardar la entidad 
-                        db.SaveChanges();
-
                         //Guardar el historial
                         db.HistorialLogs.Add(historialLogAdd);
-                        db.SaveChanges();
-
                         AlertaSuccess("Se agrego la pieza [<b>" + temp.FolioPieza + "</b>]", true);
-
                     }
                     else
                     {
@@ -1050,18 +1110,29 @@ namespace RecordFCS_Alt.Controllers
 
                 }
 
+                #region Guardar el historial y la entidad
+
+                //Guardar todo 
+                db.SaveChanges();
+
+                #endregion
+
                 #endregion
 
                 //Editar
                 #region Lista Editar
 
+                db = new RecordFCSContext();
+                db.Configuration.LazyLoadingEnabled = false;
+
                 foreach (var item in listaEdit.ToList())
                 {
+
                     //Piezas SeMovio = no se pueden edita
 
                     //buscar la pieza
-                    var pieza = db.Piezas.Find(item.PiezaID);
-                    var piezaMovOriginal = pieza.MovimientoTempPiezas.FirstOrDefault(a => a.MovimientoTempID == movimientoTemp.MovimientoTempID);
+                    //var pieza = db.Piezas.Find(item.PiezaID);
+                    var piezaMovOriginal = db.MovimientoTempPiezas.FirstOrDefault(a => a.PiezaID == item.PiezaID && a.MovimientoTempID == movimientoTemp.MovimientoTempID);
 
 
                     if (piezaMovOriginal.SeMovio)
@@ -1091,7 +1162,7 @@ namespace RecordFCS_Alt.Controllers
                                 if (piezaMovOriginal.Orden == 0)
                                 {
                                     //generar un orden
-                                    var ordenActual = pieza.MovimientoTempPiezas.Count > 0 ? pieza.MovimientoTempPiezas.OrderByDescending(a => a.Orden).FirstOrDefault().Orden : 0;
+                                    var ordenActual = db.MovimientoTempPiezas.Where(a => a.PiezaID == item.PiezaID).Count() > 0 ? db.MovimientoTempPiezas.Where(a => a.PiezaID == item.PiezaID).OrderByDescending(a => a.Orden).FirstOrDefault().Orden : 0;
                                     item.Orden = item.EnError ? 0 : ordenActual + 1;
                                 }
 
@@ -1120,7 +1191,7 @@ namespace RecordFCS_Alt.Controllers
                         itemTemp.EsPendiente = item.EsPendiente;
                         itemTemp.Orden = item.Orden;
                         itemTemp.SeMovio = item.SeMovio;
-
+                        itemTemp.FolioPieza = item.FolioPieza;
 
                         //------ Logica HISTORIAL
 
@@ -1150,18 +1221,15 @@ namespace RecordFCS_Alt.Controllers
 
                         #endregion
 
-                        #region Guardar el historial
+                        #region Agrega el historial
 
                         if (historialLogEdit != null)
                         {
                             //Cambiar el estado a la entidad a modificada
                             db.Entry(objetoDBEdit).State = EntityState.Modified;
-                            //Guardamos la entidad modificada
-                            db.SaveChanges();
 
                             //Guardar el historial
                             db.HistorialLogs.Add(historialLogEdit);
-                            db.SaveChanges();
                         }
 
                         #endregion
@@ -1171,13 +1239,25 @@ namespace RecordFCS_Alt.Controllers
                     }
                 }
 
+                #region Guardar el historial y la entidad
+
+                //Guardar todo 
+                db.SaveChanges();
+
+                #endregion
+
                 #endregion
 
                 //Eliminar
                 #region ListaEliminar
 
+                db = new RecordFCSContext();
+                //db.Configuration.LazyLoadingEnabled = false;
+
                 foreach (var PiezaIDDel in listaGuidActual)
                 {
+
+
                     var item = db.MovimientoTempPiezas.FirstOrDefault(a => a.PiezaID == PiezaIDDel && a.MovimientoTempID == movimientoTemp.MovimientoTempID);
 
                     bool esEliminable = false;
@@ -1187,8 +1267,9 @@ namespace RecordFCS_Alt.Controllers
                     //saber si es eliminable y si se puede regresar el estado
                     if (item != null)
                     {
-                        bool esUltimo = item.Pieza.MovimientoTempPiezas.Where(a => a.Orden > item.Orden && !a.EnError).Count() > 0 ? false : true;
-                        bool conPendientes = item.Pieza.MovimientoTempPiezas.Where(a => a.EsPendiente && a.MovimientoTempID != movimientoTemp.MovimientoTempID && !a.EnError).Count() > 0 ? true : false;
+                        bool esUltimo = db.MovimientoTempPiezas.Where(a => a.PiezaID == item.PiezaID && a.Orden > item.Orden && !a.EnError).Count() > 0 ? false : true;
+                        bool conPendientes = db.MovimientoTempPiezas.Where(a => a.PiezaID == item.PiezaID && a.EsPendiente && a.MovimientoTempID != movimientoTemp.MovimientoTempID && !a.EnError).Count() > 0 ? true : false;
+
                         Folio = item.Pieza.ImprimirFolio();
 
                         if (item.SeMovio)
@@ -1234,12 +1315,9 @@ namespace RecordFCS_Alt.Controllers
                         //Guardar cambios si todo salio correcto
                         if (historialLogDel != null)
                         {
-                            //Guardar la entidad
-                            db.SaveChanges();
-
                             //Guardar el historial
                             db.HistorialLogs.Add(historialLogDel);
-                            db.SaveChanges();
+
                             AlertaDanger("Se elimino la pieza [<b>" + Folio + "</b>]", true);
 
                         }
@@ -1293,12 +1371,11 @@ namespace RecordFCS_Alt.Controllers
                                     {
                                         //Cambiar el estado a la entidad a modificada
                                         db.Entry(objetoDBDelUbi).State = EntityState.Modified;
-                                        //Guardamos la entidad modificada
-                                        db.SaveChanges();
+
 
                                         //Guardar el historial
                                         db.HistorialLogs.Add(historialLogDelUbi);
-                                        db.SaveChanges();
+
                                     }
 
                                     #endregion
@@ -1312,11 +1389,19 @@ namespace RecordFCS_Alt.Controllers
                     }
                 }
 
+                #region Guardar el historial
+
+                //Guardar todo 
+                db.SaveChanges();
+
+                #endregion
+
                 #endregion
 
                 if (ForzarMovimiento)
                 {
                     //Logica para forzar el movimiento 
+                    db = new RecordFCSContext();
 
                     var mov = db.MovimientosTemp.Find(movimientoTemp.MovimientoTempID);
 
@@ -1435,6 +1520,8 @@ namespace RecordFCS_Alt.Controllers
 
         public bool EjecutarMovimiento(Guid? id, EstadoMovimientoTemp Estado, DateTime? Fecha = null)
         {
+            db = new RecordFCSContext();
+
             bool bandera = false;
 
             Fecha = Fecha ?? DateTime.Now;
@@ -1459,10 +1546,13 @@ namespace RecordFCS_Alt.Controllers
 
         private bool EjecutarMovimiento(MovimientoTemp mov, EstadoMovimientoTemp Estado, DateTime Fecha, string Motivo = null)
         {
+
             bool bandera = false;
 
             try
             {
+                db = new RecordFCSContext();
+
                 Motivo = Motivo ?? "Ejecución del movimiento.";
                 //Revalidar las piezas del movimiento que fueron validas y que no se hayan movido y sean pendientes
                 int contadorPMovidas = 0;
@@ -1817,6 +1907,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movCancel")]
         public ActionResult CancelarMovimiento(Guid? id)
         {
+            db = new RecordFCSContext();
+
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             MovimientoTemp mov = db.MovimientosTemp.Find(id);
@@ -1868,6 +1960,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movCancel")]
         public ActionResult CancelarMovimientoConfirmado(Guid MovimientoTempID, bool Executar)
         {
+            db = new RecordFCSContext();
+
             bool bandera = false;
 
             if (Executar)
@@ -1892,6 +1986,8 @@ namespace RecordFCS_Alt.Controllers
 
         private bool Cancelar(MovimientoTemp mov, bool Executar)
         {
+            db = new RecordFCSContext();
+
             bool bandera = false;
 
             DateTime Fecha = DateTime.Now;
@@ -2172,6 +2268,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movRevertir")]
         public ActionResult RevertirMovimiento(Guid? id)
         {
+            db = new RecordFCSContext();
+
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             MovimientoTemp mov = db.MovimientosTemp.Find(id);
@@ -2194,6 +2292,8 @@ namespace RecordFCS_Alt.Controllers
         [CustomAuthorize(permiso = "movRevertir")]
         public ActionResult RevertirMovimientoConfirmado(Guid MovimientoTempID, bool Executar)
         {
+            db = new RecordFCSContext();
+
             bool bandera = false;
 
             if (Executar)
@@ -2298,6 +2398,7 @@ namespace RecordFCS_Alt.Controllers
             }
             base.Dispose(disposing);
         }
+
 
     }
 }

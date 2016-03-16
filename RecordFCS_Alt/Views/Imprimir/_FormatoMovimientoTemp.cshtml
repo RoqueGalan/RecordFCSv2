@@ -1,15 +1,21 @@
-﻿@model RecordFCS_Alt.Models.MovimientoTemp
+﻿@using RecordFCS_Alt.Models.ViewsModel
+@model RecordFCS_Alt.Models.MovimientoTemp
 
 @{
     Layout = "~/Views/Shared/_LayoutPrintPDF.cshtml";
 }
 
+
 @{
+    List<itemPiezaMini> listaPiezas = (List<itemPiezaMini>)ViewData["ListaPiezasMov_" + Model.MovimientoTempID];
+    
     string tipoMov = Model.TipoMovimiento.Nombre;
     int i = 0;
 }
+    <!-- #region Datos Basicos Movimiento -->
 
 <div class="row">
+
     <div class="col-xs-4">
         <span class="pull-left">
             <img src="~/Content/img/home/carrusel/logo_soumaya.png" class="img-responsive" />
@@ -522,9 +528,14 @@
 
 <p class="saltoPagina">&nbsp;</p>
 
+<!-- #endregion -->
+
+
+
+<!-- #region Lista de piezas -->
 
 <table class="table" border="1">
-    @foreach (var item in Model.MovimientoTempPiezas)
+    @foreach (var item in listaPiezas)
     {
         if ((i % 6) == 0)
         {
@@ -538,8 +549,8 @@
 
         @Html.Raw("<td class='print-borde-todos'>");
 
-                                                   Html.RenderAction("FichaPrint", "MovimientoTemp", new { id = item.PiezaID, i = i });
-
+                                                   //Html.RenderAction("FichaPrint", "Imprimir", new { id = item, Tipo = Model.TipoImprimir, DatosCompletos = Model.DatosCompletos });
+                                                   Html.RenderPartial("~/Views/Imprimir/_PiezaImprimir.cshtml", item);
                                                 @Html.Raw("</td>");
 
 
@@ -558,3 +569,5 @@
     }
 
 </table>
+
+<!-- #endregion -->

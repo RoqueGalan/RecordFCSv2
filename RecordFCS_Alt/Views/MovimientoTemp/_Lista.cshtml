@@ -43,7 +43,7 @@
                 <b>
                     @if (User.IsInRole("movDeta"))
                     {
-                        @Html.ActionLink(Html.DisplayFor(modelItem => item.Folio).ToString(), "Detalles", new { id = item.MovimientoTempID }, new { target = "_blank", @Class = "link link-inverse" })
+                        @Html.ActionLink(Html.DisplayFor(modelItem => item.Folio).ToString(), "Detalles", new { id = item.MovimientoTempID }, new { target = "_blank",data_toggle = "tooltip", title="Abrir detalles movimiento", @Class = "btn btn-default btn-xs" })
                     }
                     else
                     {
@@ -78,7 +78,7 @@
 
                 @if (User.IsInRole("movHist"))
                 {
-                    @Html.NoEncodeActionLink("<span class='fa fa-history'></span>", "Historial " + item.Folio, "IndexSimple", "HistorialLog", routeValues: new { id = item.MovimientoTempID, tabla = "MovimientoTemp", nombre = item.Folio }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-black btn-xs pull-right openModalLG_Historial" })
+                    @Html.NoEncodeActionLink("<span class='fa fa-history'></span>", "Historial " + item.Folio, "IndexMovimiento", "HistorialLog", routeValues: new { id = item.MovimientoTempID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-black btn-xs pull-right openModalLG_Historial" })
                 }
             </td>
         </tr>
@@ -142,7 +142,7 @@
 
                 //Cargar primero el resultado en el div del modal
                 $('#miModalContenidoLG').html(result);
-                //Ocultar el dialogo 
+                //Ocultar el dialogo
                 esperaDialogo.ocultar();
 
             },
@@ -153,7 +153,7 @@
                     backdrop: 'static',
                     keyboard: true
                 }, 'show');
-                
+
             }
         });
 
